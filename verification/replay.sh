@@ -46,6 +46,7 @@ fi
 if [[ $mode == k16 || $mode == all ]]; then
     "$lean_bin" "$root/cases/k16/Untouched16.lean"
     "$lean_bin" "$root/cases/k16/Perfect16.lean"
+    "$lean_bin" -s 65536 "$root/cases/k16/three-exceptions/ThreeExceptions.lean"
     "$lean_bin" -s 65536 "$root/cases/k16/SevenSet.lean"
     "$lean_bin" -s 65536 "$root/cases/k16/SevenMoments.lean"
 fi
