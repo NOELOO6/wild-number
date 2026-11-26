@@ -1,0 +1,6 @@
+*.olean
+*.ilean
+__pycache__/
+.lake/
+cases/k13/ninesym.cnf
+cases/k13/ninesym.lrat
