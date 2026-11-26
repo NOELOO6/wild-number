@@ -2,6 +2,7 @@
 
 | Question | Report |
 | --- | --- |
+| Can the last K15 color be repaired outside both six-color families? | [Two swaps keeping fourteen connected](../cases/k15/vertex-redraw/) · [A test on three points](../cases/k15/three-stars/) |
 | What can the last two colors block? | [New general bounds and a two-line K19 repair](last-two-colors.md) |
 | What settles K17 and K18, and which new K15 and K16 colorings work? | [Twelve lines and two-color rearrangements](seventeen-and-two-color-switches.md) |
 | What did the five-hour K15 and K16 search establish? | [Results, examples, and remaining gap](five-hour-search.md) |

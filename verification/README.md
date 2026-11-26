@@ -5,6 +5,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay als
 | What to check | Command |
 | --- | --- |
 | The 13-point obstruction certificate and its regenerated formula | `./verification/replay.sh k13` |
+| Three-point and four-point K15 families, the two-swap repair and the 2,800-grouping search | `./verification/replay.sh stars` |
 | The 15-point counts, examples and Python cross-checks | `./verification/replay.sh k15` |
 | The 16-point deletion theorem and catalogue witnesses | `./verification/replay.sh k16` |
 | The K17/K18 case proof, including independent C++ replay | `./verification/replay.sh k17` |

@@ -6,6 +6,8 @@ You can name any nine colors that must stay connected. At least 666 groupings co
 
 | Case or experiment | Conclusion | Evidence |
 | --- | --- | --- |
+| Three points passing the quartet test | With the missing colors fixed, ten work for every legal coloring of the other 66 ordinary lines. | [Seven cases and graph proof](three-stars/) |
+| Outside both six-color redraw families | All 90 single swaps fail in a concrete drawing. Two swaps work. A four-point pattern also guarantees ten for every legal redraw of 55 lines preserving the missing colors. | [The swaps, the pattern and the proof](vertex-redraw/) |
 | Every minimum proper coloring | Wild number 10 or 11 | [Written proof](../../reports/k15-wild-number.pdf) and [Lean counting lemma](Near15.lean) · [End-to-end eleven-line bound](../../verification/graph-bounds/) |
 | Any eleven named colors in any coloring | At least 14,126 ten-line groupings connect all eleven. | [Proof and counts](prescribed/) |
 | A pattern of 32 specified lines on the completed graph | Any proper coloring of the other 88 lines leaves at least four successful ten-line choices. | [Concrete table and Lean checks](eight-points/) |

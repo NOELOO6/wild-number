@@ -7,8 +7,11 @@ build=$(mktemp -d)
 trap 'rm -rf -- "$build"' EXIT
 export LEAN_PATH="$build${LEAN_PATH:+:$LEAN_PATH}"
 mode=${1:-all}
-case "$mode" in all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors|search-redraw) ;; *) echo "Usage: $0 [all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors|search-redraw]" >&2; exit 2;; esac
+case "$mode" in all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors|search-redraw|stars) ;; *) echo "Usage: $0 [all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors|search-redraw|stars]" >&2; exit 2;; esac
 "$lean_bin" --version
+if [[ $mode == stars || $mode == all ]]; then
+    "$root/verification/vertex-redraw.sh" "$lean_bin" "$build"
+fi
 if [[ $mode == search-redraw || $mode == all ]]; then
     "$root/verification/search-redraw.sh" "$lean_bin" "$build"
 fi
@@ -34,6 +37,7 @@ if [[ $mode == k15 || $mode == k16 || $mode == all ]]; then
     "$lean_bin" -s 65536 "$root/cases/k16/three-exceptions/EveryDeletion.lean"
 fi
 if [[ $mode == k15 || $mode == all ]]; then
+    "$lean_bin" -o "$build/WeightedSurvivor.olean" "$root/cases/k15/five-colors/WeightedSurvivor.lean"
     "$lean_bin" -s 65536 "$root/cases/k15/five-colors/Completion.lean"
     "$lean_bin" -o "$build/CheckBase.olean" "$root/cases/k15/CheckBase.lean"
     "$lean_bin" -s 65536 -o "$build/Endgame.olean" "$root/cases/k15/Endgame.lean"

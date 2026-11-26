@@ -2,7 +2,7 @@
 
 How many lines in a colored graph need to work as **every** color? On 13 and 14 points the answer is **nine**. On 17 and 18 points it is **twelve**. For 15 and 16 points every coloring needs **ten or eleven**, and the question is whether ten always work. On nineteen points every coloring needs thirteen or fourteen, and thirteen suffice for every rotational coloring and after any eight round-robin colors are redrawn.
 
-[Last-color results at a glance](reports/last-two-colors.md) · [Thirteen lines on arbitrary K19](cases/k19/one-piece/) · [Eight colors redrawn on K19](cases/k19/redraw/) · [Choose twelve or thirteen colors](cases/k15/prescribed/) · [End-to-end graph bounds](verification/graph-bounds/) · [Six colors redrawn](cases/k16/recoloring/) · [Nineteen points](cases/k19/) · [Twelve lines on seventeen points](cases/k17/) · [Results by graph size](#results-by-graph-size) · [The last color on 15 points](cases/k15/) · [Replay the proofs](verification/) · [Read the reports](reports/)
+[Ten lines from three points on K15](cases/k15/three-stars/) · [The last color in two swaps](cases/k15/vertex-redraw/) · [Last-color results at a glance](reports/last-two-colors.md) · [Thirteen lines on arbitrary K19](cases/k19/one-piece/) · [Eight colors redrawn on K19](cases/k19/redraw/) · [Choose twelve or thirteen colors](cases/k15/prescribed/) · [End-to-end graph bounds](verification/graph-bounds/) · [Six colors redrawn](cases/k16/recoloring/) · [Nineteen points](cases/k19/) · [Twelve lines on seventeen points](cases/k17/) · [Results by graph size](#results-by-graph-size) · [The last color on 15 points](cases/k15/) · [Replay the proofs](verification/) · [Read the reports](reports/)
 
 ## The puzzle
 
