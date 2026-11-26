@@ -48,4 +48,6 @@ In a separate coloring, keep points 0 through 5 together as a set and split them
 
 Lean checks paths on the successful groupings and separating cuts on the failed ones. A counterexample would have to defeat all 1,401,400 groupings on fifteen points. Ten wild lines leave at least five groups. A one-point group fails for the color missing there. A two-point group fails for the color of its internal line. That forces any winning choice of ten to have exactly five groups of three. [Search coloring](six-point-search.txt) · [Checked counts](FixedSix.lean)
 
+All 19 can be removed by changing three colors. In a different drawing, all 2,800 fail, and a single exchange gives a winning grouping. [Follow-up and full counts](../six-point-trap/)
+
 Run `./verification/replay.sh stars` from the repository root.

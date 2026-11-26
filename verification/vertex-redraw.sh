@@ -20,7 +20,30 @@ run_lean() {
     "$lean" --root="$(dirname "$source")" -j "${LEAN_JOBS:-3}" -s 65536 "$@" \
         -o "$build/$(basename "$source" .lean).olean" "$source"
 }
-for name in FourStars Outside Repair FixedSix Separation; do
+names=(FourStars Outside Repair FixedSix Separation)
+if [[ ${3:-stars} != stars ]]; then
+    trap_src="$src/six-point-trap"
+    native_module "$four/FourStars.lean" -lVertexRedraw "${core[@]}"
+    native_module "$four/Outside.lean" -lFourStars -lSearchExample -lVertexRedraw "${core[@]}"
+    native_module "$four/Repair.lean" -lOutside -lFourStars -lSearchExample -lVertexRedraw "${core[@]}"
+    deps=(-lRepair -lOutside -lFourStars -lSearchExample -lVertexRedraw "${core[@]}")
+    native_module "$four/FixedSix.lean" "${deps[@]}"
+    native_module "$trap_src/SixTrap.lean" -lFixedSix "${deps[@]}"
+    run_lean "$trap_src/SixTrapCounts.lean" "--plugin=$build/libSixTrap.$ext"
+    run_lean "$trap_src/TwoExceptions.lean" "--plugin=$build/libSixTrap.$ext"
+    native_module "$trap_src/SixBoundary.lean" -lSixTrap -lFixedSix "${deps[@]}"
+    run_lean "$trap_src/SixBoundaryCounts.lean" "--plugin=$build/libSixBoundary.$ext"
+    run_lean "$trap_src/BoundaryProof.lean" "--plugin=$build/libSixBoundary.$ext"
+    run_lean "$trap_src/SixBoundaryResult.lean" "--plugin=$build/libSixBoundary.$ext"
+    native_module "$trap_src/OutsidePatterns.lean" -lSixBoundary -lSixTrap -lFixedSix "${deps[@]}"
+    run_lean "$trap_src/PatternChecks.lean" "--plugin=$build/libOutsidePatterns.$ext"
+    run_lean "$trap_src/PatternProof.lean" "--plugin=$build/libOutsidePatterns.$ext"
+    native_module "$trap_src/LastNineteen.lean" -lSixTrap -lFixedSix "${deps[@]}"
+    run_lean "$trap_src/TwoColors.lean" "--plugin=$build/libLastNineteen.$ext"
+    if [[ ${3:-} == six-point-trap ]]; then exit 0; fi
+    names=(Separation)
+fi
+for name in "${names[@]}"; do
     run_lean "$four/$name.lean" "--plugin=$build/libVertexRedraw.$ext" "--plugin=$build/libSearchExample.$ext"
 done
 native_module "$three/ThreeStars.lean" -lVertexRedraw "${core[@]}"

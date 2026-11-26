@@ -6,6 +6,7 @@ You can name any nine colors that must stay connected. At least 666 groupings co
 
 | Case or experiment | Conclusion | Evidence |
 | --- | --- | --- |
+| The six points of the 19-survivor drawing | At least 19 wins in each of 3,725,456 proper completions. Two other drawings defeat all 2,800 marked groupings and still admit ten wild lines. | [Counts, drawings and proofs](six-point-trap/) |
 | Three points passing the quartet test | With the missing colors fixed, ten work for every legal coloring of the other 66 ordinary lines. | [Seven cases and graph proof](three-stars/) |
 | Outside both six-color redraw families | All 90 single swaps fail in a concrete drawing. Two swaps work. A four-point pattern also guarantees ten for every legal redraw of 55 lines preserving the missing colors. | [The swaps, the pattern and the proof](vertex-redraw/) |
 | Every minimum proper coloring | Wild number 10 or 11 | [Written proof](../../reports/k15-wild-number.pdf) and [Lean counting lemma](Near15.lean) · [End-to-end eleven-line bound](../../verification/graph-bounds/) |

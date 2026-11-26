@@ -5,7 +5,8 @@ def isolates (s : Nat) (es : E) :=
   (List.finRange 15).any (fun v => s.testBit v.val) &&
   (List.finRange 15).any (fun v => !s.testBit v.val) &&
   es.all (fun e => s.testBit e.1.val == s.testBit e.2.val)
-private theorem no_path {s es} (iso : isolates s es=true) : ¬Connected (Adj es) := by
+/-- A nonempty proper side with no edge leaving it rules out connectivity. -/
+theorem isolated_not_connected {s es} (iso : isolates s es=true) : ¬Connected (Adj es) := by
   obtain ⟨points,edges⟩ := Bool.and_eq_true_iff.mp iso
   obtain ⟨yes,no⟩ := Bool.and_eq_true_iff.mp points
   obtain ⟨x,_,hx⟩ := List.any_eq_true.mp yes
@@ -27,7 +28,7 @@ def blocked (g : List Nat) (c : C) := (g ++ Teams.unorderedPairs g (· ||| ·)).
 private theorem disconnected {g c} (h : blocked g c=true) :
     ¬Connected (Adj (trial g ++ actualEdges (partner c))) := by
   obtain ⟨_,_,iso⟩ := List.any_eq_true.mp h
-  exact no_path iso
+  exact isolated_not_connected iso
 theorem recorded : blocked start 12=true ∧
     ((swaps start).all fun g => colors.any (blocked g))=true ∧
     (colors.all fun c => decide (c=12) || passes 0 (trial start ++ actualEdges (partner c)))=true := by native_decide
