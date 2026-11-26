@@ -4,6 +4,8 @@
 
 | Result | Scope |
 | --- | --- |
+| [Redraw any six round-robin colors](recoloring/) | Ten work for every proper redraw, whichever point you leave untouched. |
+| [Eight pairs with a common color](paired-colors/) | Ten work whenever exchanging all partners preserves each color. |
 | [Protect any five colors](../k15/protected-colors/) | Ten lines connect at least fourteen colors including any five named in advance. Four can be protected if the untouched point is prescribed. |
 | [Any two-color switch in a sevenfold coloring](two-color-switch/) | Ten work while avoiding any prescribed point, for every recoloring of the chosen two colors. |
 | [Four specified colors](four-colors/) | Four colors in the cube or two-halves pattern suffice for every legal choice of the other eleven. |

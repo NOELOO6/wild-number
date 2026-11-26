@@ -5,6 +5,8 @@
 | Case or experiment | Conclusion | Evidence |
 | --- | --- | --- |
 | Every minimum proper coloring | Wild number 10 or 11 | [Written proof](../../reports/k15-wild-number.pdf) and [Lean counting lemma](Near15.lean) |
+| Redraw any six colors of a round-robin completion | Ten lines connect all fifteen colors after any specified point is deleted. | [Proof and ten-line example](../k16/recoloring/) |
+| Eight pairs in the completed coloring | Exchanging all partners preserves the colors, and the eight pair lines have one color. Every deletion admits ten wild lines. | [Three cases and ticket counts](../k16/paired-colors/) |
 | Protect any four colors | Ten lines connect at least fourteen colors including all four. A separate cycle test can guarantee all fifteen. | [General result and quick test](protected-colors/) |
 | Rearrange any two colors of a sevenfold-symmetric completion | Every possible deletion still admits ten lines, including asymmetric examples. | [Theorem and example](../k16/two-color-switch/) |
 | The K17 counting method on K15 | Even four aggregate failure totals can miss whether any grouping works. | [Exact comparison tables](moment-test/) |

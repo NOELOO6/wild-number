@@ -10,6 +10,9 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay als
 | The K17/K18 case proof, including independent C++ replay | `./verification/replay.sh k17` |
 | The two-color result for K15/K16, examples and moment test | `./verification/replay.sh switches` |
 | The unrestricted protected-color theorem and a sufficient test for ten | `./verification/replay.sh protected` |
+| The eight-pair K15/K16 family, with any point omitted | `./verification/replay.sh paired` |
+| Every way to redraw six round-robin colors on K15/K16 | `./verification/replay.sh six` |
+| The K19 rotation proof, placement counts and repair lemma | `./verification/replay.sh k19` |
 | All of the above | `./verification/replay.sh` |
 | Determine the answer for a supplied K15 coloring | `python3 verification/solve.py 15 examples/search-coloring.json` |
 | Count all groupings for a supplied K16 coloring | `python3 verification/solve.py 16 examples/search-coloring.json --count` |

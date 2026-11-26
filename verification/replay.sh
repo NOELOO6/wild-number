@@ -7,7 +7,7 @@ build=$(mktemp -d)
 trap 'rm -rf -- "$build"' EXIT
 export LEAN_PATH="$build${LEAN_PATH:+:$LEAN_PATH}"
 mode=${1:-all}
-case "$mode" in all|k13|k15|k16|k17|switches|protected) ;; *) echo "Usage: $0 [all|k13|k15|k16|k17|switches|protected]" >&2; exit 2;; esac
+case "$mode" in all|k13|k15|k16|k17|k19|paired|six|switches|protected) ;; *) echo "Usage: $0 [all|k13|k15|k16|k17|k19|paired|six|switches|protected]" >&2; exit 2;; esac
 "$lean_bin" --version
 if [[ $mode == k13 || $mode == all ]]; then
     cp "$root/cases/k13/CertifiedNine.lean" "$build/"
@@ -69,3 +69,11 @@ fi
 if [[ $mode == k15 || $mode == k16 || $mode == protected || $mode == all ]]; then
     "$root/verification/protected.sh" "$lean_bin" "$build"
 fi
+
+case "$mode" in
+    all) "$root/verification/placements.sh" "$lean_bin" "$build" combined ;;
+    k15|k16)
+        "$root/verification/placements.sh" "$lean_bin" "$build" paired
+        "$root/verification/placements.sh" "$lean_bin" "$build" six ;;
+    paired|six|k19) "$root/verification/placements.sh" "$lean_bin" "$build" "$mode" ;;
+esac

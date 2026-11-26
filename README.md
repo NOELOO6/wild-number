@@ -1,8 +1,8 @@
 # Wild numbers of complete graphs
 
-How many lines in a colored graph need to work as **every** color? On 13 and 14 points the answer is **nine**. On 17 and 18 points it is **twelve**. For 15 and 16 points every coloring needs **ten or eleven**, and the question is whether ten always work.
+How many lines in a colored graph need to work as **every** color? On 13 and 14 points the answer is **nine**. On 17 and 18 points it is **twelve**. For 15 and 16 points every coloring needs **ten or eleven**, and the question is whether ten always work. On nineteen points every coloring needs thirteen or fourteen, and thirteen suffice for every rotational coloring.
 
-[Twelve lines on seventeen points](cases/k17/) · [Results by graph size](#results-by-graph-size) · [The last color on 15 points](cases/k15/) · [Replay the proofs](verification/) · [Read the reports](reports/)
+[Six colors redrawn](cases/k16/recoloring/) · [Nineteen points](cases/k19/) · [Twelve lines on seventeen points](cases/k17/) · [Results by graph size](#results-by-graph-size) · [The last color on 15 points](cases/k15/) · [Replay the proofs](verification/) · [Read the reports](reports/)
 
 ## The puzzle
 
@@ -23,8 +23,11 @@ The choice of wild lines can depend on the coloring. The conjecture asks for the
 | 15 | 10 | Every coloring needs 10 or 11. Several families have exact value 10. | [Results and counterexample search](cases/k15/) |
 | 16 | 10 | Every coloring needs 10 or 11. Ten work exactly when one vertex deletion works. | [Deletion theorem and catalogue](cases/k16/) |
 | 17, 18 | 12 | Exact for every minimum proper coloring. At least 403,637 twelve-line groupings work on K17. | [Proof, table and worked example](cases/k17/) |
+| 19 | 13 | Every coloring needs 13 or 14. Every rotational coloring needs exactly 13. | [Counts, proof scope and working solver](cases/k19/) |
 
 For other orders the prediction is $\lfloor 4\lceil n/2\rceil/3\rfloor$. An external project reports the conjecture for all orders at least 155. This repository does not independently verify that large-order result. [Public research record](https://github.com/1337isnot1337/solved-conjectures/issues/155)
+
+On fifteen and sixteen points, all six colors you name in the standard round-robin coloring may be redrawn together. Ten lines still work, with any specified point untouched. A second ten-line result applies when swapping the members of eight same-color pairs preserves every color. [Six-color theorem](cases/k16/recoloring/) · [Eight-pair theorem](cases/k16/paired-colors/)
 
 On fifteen and sixteen points, a sevenfold coloring can lose its symmetry completely when two colors are rearranged. Ten wild lines still work, with any specified point left untouched on K16. [Proof and concrete example](cases/k16/two-color-switch/)
 
