@@ -7,8 +7,11 @@ build=$(mktemp -d)
 trap 'rm -rf -- "$build"' EXIT
 export LEAN_PATH="$build${LEAN_PATH:+:$LEAN_PATH}"
 mode=${1:-all}
-case "$mode" in all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected) ;; *) echo "Usage: $0 [all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected]" >&2; exit 2;; esac
+case "$mode" in all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed) ;; *) echo "Usage: $0 [all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed]" >&2; exit 2;; esac
 "$lean_bin" --version
+if [[ $mode == prescribed || $mode == all ]]; then
+    "$root/verification/prescribed.sh" "$lean_bin" "$build"
+fi
 if [[ $mode == k13 || $mode == all ]]; then
     cp "$root/cases/k13/CertifiedNine.lean" "$build/"
     for ext in cnf lrat; do gzip -dc "$root/cases/k13/ninesym.$ext.gz" > "$build/ninesym.$ext"; done
