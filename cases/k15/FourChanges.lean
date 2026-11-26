@@ -117,6 +117,20 @@ def pure (s : Nat) (m : Array Nat) :=
 theorem no_two_teams : (List.range 32768).all (fun s =>
     weight s != 8 || !mates.all (pure s)) = true := by native_decide
 
+/-- For a finite neighbor, record its square count and the square count of
+    the point missing the color of the edge to it. A symmetry preserves the
+    full sorted list, so unique lists distinguish all finite vertices. -/
+def signature (x : Nat) := ((List.range 15).filterMap (fun c =>
+  let y := mates[c]![x]!
+  if y < 15 then some (16*squares y + squares (mates[c]![15]!)) else none)).mergeSort
+theorem signatures_distinguish :
+    ((List.range 15).map signature).Nodup := by native_decide
+
+theorem best_team_split : ((List.range 32768).filter (fun s => weight s == 8)).all
+    (fun s => (mates.toList.filter (pure s)).length ≤ 4) = true ∧
+    ((List.range 32768).filter (fun s => weight s == 8 && (mates.toList.filter (pure s)).length == 4)).length = 5 := by
+  native_decide
+
 #print axioms no_three_changes
 #print axioms solution_works
 end FourChanges

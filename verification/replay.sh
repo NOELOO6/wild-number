@@ -20,7 +20,8 @@ if [[ $mode != k13 ]]; then
 fi
 if [[ $mode == k15 || $mode == all ]]; then
     "$lean_bin" -o "$build/CheckBase.olean" "$root/cases/k15/CheckBase.lean"
-    for file in Cyclic15 Near15 Teams HardRepair LineTrap FourChanges Seven; do "$lean_bin" "$root/cases/k15/$file.lean"; done
+    "$lean_bin" -o "$build/Teams.olean" "$root/cases/k15/Teams.lean"
+    for file in Cyclic15 Near15 Trade HardRepair LineTrap FourChanges Seven; do "$lean_bin" "$root/cases/k15/$file.lean"; done
     python3 "$root/cases/k15/verify_k15.py"
     python3 "$root/cases/k15/check_example.py"
     python3 "$root/cases/k15/check_four_changes.py"

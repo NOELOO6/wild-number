@@ -29,3 +29,5 @@ A separate program tried all 1,401,400 ways to split the fifteen points into fiv
 | **Total** | **121,224** |
 
 The coloring lies outside the cyclic, two-team and perfect-factorization families checked earlier. A cyclic symmetry would give each point the same number of alternating four-edge loops. Points 0 and 2 have 12 and 8. Even one such loop rules out a perfect factorization. For the two-team test, the program checked every split into two groups of eight after adjoining the extra point. [Coloring data](../cases/k15/four-changes.json) · [Independent checker](../cases/k15/check_four_changes.py)
+
+The point labels can also be recovered from the coloring itself. Each point has a different list of square counts when its neighbors and edge colors are considered together. This proves the coloring has no nonidentity symmetry. Across all 6,435 splits into two teams of eight, the largest number of colors obeying the team rule is four. Five splits attain four. Lean checks both finite tests.

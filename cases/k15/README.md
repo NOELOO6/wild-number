@@ -8,6 +8,7 @@
 | Cyclic colorings | Ten suffice for all 631 labeled starting patterns | [Lean](Cyclic15.lean) and [independent path checks](verify_k15.py) |
 | Colorings with a rotation of order seven | Ten work for all 797,448 compatible pairs of labeled starters | [Proof and explanation](seven.md) · [Lean](Seven.lean) |
 | Colorings from two teams of eight | At least 48 of 1,800 tested arrangements work for every admissible initial choice | [Proof, page 2](../../reports/last-color-k15-k16.pdf) and [Lean counts](Teams.lean) |
+| Two teams with up to two exceptional colors | Ten work even if the two exceptional colors mix within-team and cross-team lines | [Counting proof](trade.md) · [Lean](Trade.lean) |
 | Deletions of a perfect one-factorization | Ten suffice for all 3,155 catalogue entries, for every deleted point | [Catalogue verification](../k16/Perfect16.lean) |
 | Fixing two triples early | A coloring defeats all 280 completions of one choice, then admits a different grouping | [Example](anchor-obstruction.json) |
 | Moving a single wild line at a time | One starting arrangement cannot be repaired while keeping fourteen colors connected at every step | [Lean](LineTrap.lean) and [example](line-trap.json) |
