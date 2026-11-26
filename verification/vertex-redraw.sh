@@ -29,6 +29,12 @@ if [[ ${3:-stars} != stars ]]; then
     deps=(-lRepair -lOutside -lFourStars -lSearchExample -lVertexRedraw "${core[@]}")
     native_module "$four/FixedSix.lean" "${deps[@]}"
     native_module "$trap_src/SixTrap.lean" -lFixedSix "${deps[@]}"
+    if [[ ${3:-} == seven-point ]]; then
+        native_module "$trap_src/SixBoundary.lean" -lSixTrap -lFixedSix "${deps[@]}"
+        run_lean "$trap_src/BoundaryProof.lean" "--plugin=$build/libSixBoundary.$ext"
+        source "$root/verification/seven-point.sh"
+        exit 0
+    fi
     run_lean "$trap_src/SixTrapCounts.lean" "--plugin=$build/libSixTrap.$ext"
     run_lean "$trap_src/TwoExceptions.lean" "--plugin=$build/libSixTrap.$ext"
     native_module "$trap_src/SixBoundary.lean" -lSixTrap -lFixedSix "${deps[@]}"
@@ -41,6 +47,7 @@ if [[ ${3:-stars} != stars ]]; then
     native_module "$trap_src/LastNineteen.lean" -lSixTrap -lFixedSix "${deps[@]}"
     run_lean "$trap_src/TwoColors.lean" "--plugin=$build/libLastNineteen.$ext"
     if [[ ${3:-} == six-point-trap ]]; then exit 0; fi
+    if [[ ${3:-} == all ]]; then source "$root/verification/seven-point.sh"; fi
     names=(Separation)
 fi
 for name in "${names[@]}"; do

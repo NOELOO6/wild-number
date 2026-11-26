@@ -26,10 +26,12 @@ structure Row where
   wins : Nat
   deriving Inhabited, DecidableEq, Repr
 
-def encode (m : R) : Row :=
+def encodeWith (unfixed m : R) : Row :=
   let es := erase m
-  ⟨bits (fun (e : Edge 16) => m.contains e || m.contains (e.2,e.1)) hiddenPairs,
+  ⟨bits (fun (e : Edge 16) => m.contains e || m.contains (e.2,e.1)) unfixed,
    bits (fun g => passes 0 (g ++ es)) wilds⟩
+
+def encode := encodeWith hiddenPairs
 
 def order : List C := [0,12,11,7,14,2,3,5,6,10,13,8,9,4,1]
 def pools (cs : List C) := cs.map fun c => (possible c).map encode

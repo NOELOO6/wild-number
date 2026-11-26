@@ -11,6 +11,10 @@
 
 The seven-point rule uses the chosen six points and an extra point. Join that extra point to each old point in the color missing there. The rule says that each color has at most two lines entirely among those seven points. The strict question is whether all 2,800 can fail while this rule holds. The two zeros leave that question open.
 
+## The seven-point rule
+
+With the original 36 outside lines and nine outside missing colors fixed, changing all 69 ordinary lines touching the six points still leaves a winner. Allowing the outside lines to change as well gives a strict example with 15 winners. The broader search with the outside lines fixed covers 243,143 other choices of outside missing colors. [Results, examples and Lean proofs](../seven-point/)
+
 ## How one exchange wins
 
 In the first zero example, the following grouping loses. Exchange **3 and 9** between two triples. The new grouping connects all fifteen colors. In each triple, draw a wild line from the first point to the second and from the second to the third.

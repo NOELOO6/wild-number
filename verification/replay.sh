@@ -7,9 +7,9 @@ build=$(mktemp -d)
 trap 'rm -rf -- "$build"' EXIT
 export LEAN_PATH="$build${LEAN_PATH:+:$LEAN_PATH}"
 mode=${1:-all}
-case "$mode" in all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors|search-redraw|stars|six-point-trap) ;; *) echo "Usage: $0 [all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors|search-redraw|stars|six-point-trap]" >&2; exit 2;; esac
+case "$mode" in all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors|search-redraw|stars|six-point-trap|seven-point) ;; *) echo "Usage: $0 [all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors|search-redraw|stars|six-point-trap|seven-point]" >&2; exit 2;; esac
 "$lean_bin" --version
-if [[ $mode == stars || $mode == six-point-trap || $mode == all ]]; then
+if [[ $mode == stars || $mode == six-point-trap || $mode == seven-point || $mode == all ]]; then
     "$root/verification/vertex-redraw.sh" "$lean_bin" "$build" "$mode"
 fi
 if [[ $mode == search-redraw || $mode == all ]]; then

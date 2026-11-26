@@ -119,13 +119,13 @@ private theorem selectRows (f : C→V→V) (inv : ∀ c x,f c (f c x)=x)
     · contradiction
   · exact ok _ new
 
-private theorem hidden_disjoint {a b : V→V} {m n : R} (ia : ∀ x,a (a x)=x)
+private theorem hidden_disjoint (unfixed : R) {a b : V→V} {m n : R} (ia : ∀ x,a (a x)=x)
     (ib : ∀ x,b (b x)=x) (hm : respects a m) (hn : respects b n)
-    (proper : ∀ x,a x≠b x) : (encode m).hidden &&& (encode n).hidden=0 := by
+    (proper : ∀ x,a x≠b x) : (encodeWith unfixed m).hidden &&& (encodeWith unfixed n).hidden=0 := by
   apply Nat.eq_of_testBit_eq
   intro i
-  simp only [encode,Nat.testBit_and,bit_lookup,Nat.zero_testBit]
-  cases h : hiddenPairs[i]? with
+  simp only [encodeWith,Nat.testBit_and,bit_lookup,Nat.zero_testBit]
+  cases h : unfixed[i]? with
   | none => simp
   | some e =>
     have get {v : V→V} {r : R} (iv : ∀ x,v (v x)=x) (allow : respects v r)
@@ -175,31 +175,33 @@ private theorem remaining_bit (rs : List Row) (alive i : Nat)
 
 /-- Each listed index gives its own grouping of the fixed six and the outside
 nine. All fifteen ordinary graphs have paths after its ten wild edges are added. -/
-theorem nineteen_of_census (verified : (scan (pools order) 0 initial).belowNineteen=0)
-    (f : C→V→V) (inv : ∀ c x,f c (f c x)=x) (ne : ∀ c x,f c x≠x)
+theorem nineteen_of_options (unfixed : R) (opts : C → List R) (seq : List C)
+    (distinct : seq.Nodup) (covers : ∀ c : C, c ∈ seq)
+    (verified : (scan (seq.map fun c => (opts c).map (encodeWith unfixed)) 0 initial).belowNineteen=0)
+    (f : C→V→V) (inv : ∀ c x,f c (f c x)=x)
     (proper : ∀ c d,c≠d → ∀ x,f c x≠f d x)
-    (agree : ∀ c x,x.val<6 → f c x=ref c x) :
+    (selected : ∀ c, ∃ m ∈ opts c, respects (f c) m) :
     ∃ is : List Nat,is.Nodup ∧ is.length=19 ∧ ∀ i∈is,
       ∃ g, FixedSix.all[i]?=some g ∧ ∀ c,Connected (Adj (trial g++actualEdges (f c))) := by
   classical
-  let m (c : C) := Classical.choose (selectRows f inv ne agree c)
-  have spec (c : C) : m c∈possible c ∧ respects (f c) (m c) :=
-    Classical.choose_spec (selectRows f inv ne agree c)
-  let pick (c : C) := encode (m c)
+  let m (c : C) := Classical.choose (selected c)
+  have spec (c : C) : m c∈opts c ∧ respects (f c) (m c) :=
+    Classical.choose_spec (selected c)
+  let pick (c : C) := encodeWith unfixed (m c)
   have choices (cs : List C) : Choices (cs.map pick)
-      (cs.map fun c => (possible c).map encode) := by
+      (cs.map fun c => (opts c).map (encodeWith unfixed)) := by
     induction cs with
     | nil => exact .nil
     | cons c cs ih => exact .cons (List.mem_map.mpr ⟨m c,(spec c).1,rfl⟩) ih
-  have legal := compatible_of_pairwise pick order 0 (by decide) (by simp) (fun c d diff =>
-    hidden_disjoint (inv c) (inv d) (spec c).2 (spec d).2 (proper c d diff))
-  obtain ⟨is,nd,len,ok⟩ := positions_of_enough (scan_branch _ _ _ _ (choices order) legal verified)
+  have legal := compatible_of_pairwise pick seq 0 distinct (by simp) (fun c d diff =>
+    hidden_disjoint unfixed (inv c) (inv d) (spec c).2 (spec d).2 (proper c d diff))
+  obtain ⟨is,nd,len,ok⟩ := positions_of_enough (scan_branch _ _ _ _ (choices seq) legal verified)
   refine ⟨is,nd,len,?_⟩
   intro i hi
   have yes (c : C) := (remaining_bit _ _ i (ok i hi)).2 (pick c)
-    (List.mem_map.mpr ⟨c,(by decide : ∀ d : C,d∈order) c,rfl⟩)
+    (List.mem_map.mpr ⟨c,covers c,rfl⟩)
   have graph (c : C) : ((FixedSix.all[i]?).map (fun g => passes 0 (trial g ++ erase (m c)))).getD false = true := by
-    simpa [pick,encode,bit_lookup,wilds,Function.comp_def] using yes c
+    simpa [pick,encodeWith,bit_lookup,wilds,Function.comp_def] using yes c
   cases eq : FixedSix.all[i]? with
   | none => have := graph 0; simp [eq] at this
   | some g =>
@@ -215,4 +217,12 @@ theorem nineteen_of_census (verified : (scan (pools order) 0 initial).belowNinet
         exact ⟨p,List.mem_map.mpr ⟨p.1,(by decide : ∀ x : V,x∈points) _,Prod.ext rfl ((spec c).2 p inc)⟩,image⟩
     exact Walk.mapInto id (fun _ _ edge => Walk.step (.stay _) (edge.imp sub sub))
       (connected_of_passes 0 _ h a b)
+theorem nineteen_of_census (verified : (scan (pools order) 0 initial).belowNineteen=0)
+    (f : C→V→V) (inv : ∀ c x,f c (f c x)=x) (ne : ∀ c x,f c x≠x)
+    (proper : ∀ c d,c≠d → ∀ x,f c x≠f d x)
+    (agree : ∀ c x,x.val<6 → f c x=ref c x) :
+    ∃ is : List Nat,is.Nodup ∧ is.length=19 ∧ ∀ i∈is,
+      ∃ g, FixedSix.all[i]?=some g ∧ ∀ c,Connected (Adj (trial g++actualEdges (f c))) := by
+  exact nineteen_of_options hiddenPairs possible order (by decide) (by decide) verified f inv proper
+    (selectRows f inv ne agree)
 end SixBoundary
