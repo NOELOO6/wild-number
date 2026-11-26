@@ -4,7 +4,7 @@
 
 | Coloring | Guaranteed result | Check |
 | --- | ---: | --- |
-| Every proper nineteen-color assignment | Thirteen lines leave at most one color in two pieces. Fourteen lines connect everything. | [Placement argument](PlacementCertificate.lean) · [Last line](Repair.lean) |
+| Every proper nineteen-color assignment | Thirteen lines leave at most one color in two pieces. Fourteen lines connect everything. | [End-to-end graph theorem](../../verification/graph-bounds/Bounds.lean) · [Placement argument](PlacementCertificate.lean) |
 | Every rotational assignment | Thirteen lines connect all nineteen colors. | [Exact graph theorem](ExactRotation.lean) · [Graph paths](EdgeWalk.lean) |
 
 ## Where the fourteenth line comes from
@@ -52,4 +52,4 @@ For a concrete example, pair point $i$ with $19-i$ for $i=1,\ldots,9$ and rotate
 
 ## Verification scope
 
-Lean proves the path statement for every normalized rotational starter, the independent matching totals, the placement theorem for every game satisfying its slot rules, and the one-edge path repair. The translation of an arbitrary graph coloring into that placement game is the written argument above. The general 13-or-14 bound consequently has a computer-assisted proof with a written graph reduction. A single end-to-end Lean theorem starting with an arbitrary edge-coloring function remains to be formalized. Run `./verification/replay.sh k19` for the complete replay.
+Lean proves the path statement for every normalized rotational starter, the independent matching totals, the placement theorem for every game satisfying its slot rules, and the one-edge path repair. The stronger placement statement that thirteen lines can leave at most one extra piece still uses the written translation into the placement game. The unrestricted 13-or-14 bound has a separate, end-to-end Lean proof. It starts with an arbitrary colored graph, counts closed cuts, and constructs paths in each color after one repair. Its numerical checks run in the kernel. [Read the graph proof and replay it](../../verification/graph-bounds/). Run `./verification/replay.sh k19` for the rotation and placement checks.

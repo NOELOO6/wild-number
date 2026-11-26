@@ -1,6 +1,6 @@
 # Check a result
 
-Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay also uses a C++20 compiler. The accelerated checks build shared modules with the Lean installation’s matching `leanc`. Linux was used for the recorded checks. The Lean sources use its standard library. Run from the repository root.
+Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay also uses a C++20 compiler. The accelerated checks build shared modules with the Lean installation’s matching `leanc`. Linux was used for the recorded checks. The rotation and placement sources use its standard library. The separate end-to-end graph bounds use the pinned mathlib release. Run from the repository root.
 
 | What to check | Command |
 | --- | --- |
@@ -14,7 +14,8 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay als
 | Seventy candidate layouts and the 32-line local pattern | `./verification/replay.sh eight` |
 | Every way to redraw six round-robin colors on K15/K16 | `./verification/replay.sh six` |
 | The K19 rotation proof, placement counts and repair lemma | `./verification/replay.sh k19` |
-| All of the above | `./verification/replay.sh` |
+| All standard-library checks above | `./verification/replay.sh` |
+| End-to-end graph bounds for arbitrary K15, K16 and K19 colorings | `./verification/graph-bounds.sh` |
 | Determine the answer for a supplied K15 coloring | `python3 verification/solve.py 15 examples/search-coloring.json` |
 | Count all groupings for a supplied K16 coloring | `python3 verification/solve.py 16 examples/search-coloring.json --count` |
 | Just the two-line repair example, using Python | `python3 cases/k15/check_example.py` |
