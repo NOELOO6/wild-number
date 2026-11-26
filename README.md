@@ -32,6 +32,8 @@ For K₁₇ and K₁₈, the universal statement has a computer-assisted written
 | K₁₁, K₁₂ | 8 | ✅ Solved | [Theorem 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
 | All n ≥ 155 | ⌊4⌈n/2⌉/3⌋ | Reported solved | [External proof and verification record](https://github.com/1337isnot1337/solved-conjectures/issues/155) |
 
+This repository also verifies every case from K₃ through K₁₂ end to end in Lean. The theorems quantify over every minimum proper coloring and prove both sufficiency and necessity. [Lean statements](verification/exact/SmallOrders.lean) · [Replay command](verification/)
+
 Dawkins et al. also proved the conjectured expression is a lower bound for every n ≥ 3. [Theorem 3.4](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS1)
 
 ## Verification
