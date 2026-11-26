@@ -1,6 +1,6 @@
 # Decide a 15-point or 16-point coloring from a seven-point start
 
-**Ten wild lines work whenever the coloring has a start with a score of 38 or less.** You can calculate the score by looking at 21 lines on seven points. The other 99 lines may have any colors allowed by the puzzle.
+**Ten wild lines work whenever the coloring has a start with a score of 39 or less.** A score of 40 can go either way for the chosen start. You can calculate the score by looking at 21 lines on seven points. The other 99 lines may have any colors allowed by the puzzle.
 
 ## Try the test
 
@@ -9,7 +9,7 @@ On sixteen points, pick seven points and mark one of them as the root. On fiftee
 1. Choose seven points containing the root. Discard this choice if any color has three pairs inside the seven.
 2. Split the other six points into two triples, A and B. Discard this split if one color pairs up all four points of either the root with A or the root with B.
 3. Look at each color having **two** pairs inside the seven. Count it toward $h$ if one of the pairs touches the root. Count it toward $j$ if its four endpoints include two points of A and two points of B.
-4. The score is $36+h+3j$. A score of 38 or less guarantees that this particular start can be finished. A higher score leaves this test inconclusive.
+4. The score is $36+h+3j$. A score of 39 or less guarantees that this particular start can be finished. A higher score leaves this test inconclusive.
 
 At least 1,540 choices through any specified root pass step 1. Existence of a choice passing all four steps is a separate question. [Seven-point counting proof](../../k16/seven-count.md)
 
@@ -43,6 +43,26 @@ If the score is at most 38, the individual matching checks also give the followi
 There are 84 triples on nine points and 280 ways to divide the points into three triples. A set obeying those five limits cannot hit every division. The Boolean formula asks for precisely such a set hitting them all. Its 36 relabeling conditions are valid because the lexicographically largest labeling of any putative example satisfies all of them. Lean accepts an LRAT certificate that this formula is impossible. [Formula generator](make_formula.py) · [Lean certificate theorem](CertifiedEndgame.lean)
 
 The reduction from the graph to blocked triples, the use of permutations to represent matching types, and the interpretation of the formula are written arguments. Lean checks the matching arithmetic and the exact generated formula. Run `./verification/replay.sh k15` from the repository root.
+
+## Why 39 also works
+
+The fifteen colors together have just 74 possible lists of pair types on the seven points at scores up to 39, after allowing A and B to exchange names. A pair type records how many edges of one color go from the root to A, from the root to B, inside A, between A and B, and inside B. Each of the five numbers is small because the start has at most two pairs per color.
+
+For each such list, twelve rules price the edges after dividing the remaining nine points into two or three groups. Lean checks each rule on an individual matching and on every relevant placement of those groups. Adding the prices across the fifteen colors bounds the number of blocked triples of each kind. The nine-point catalogue below has 43 candidate blockers of size at most 39. For every list of pair types, each of the 43 candidates exceeds at least one of the bounds. Hence every start scoring at most 39 finishes. [Lean case and price checks](Score39.lean) · [Catalogue checker](BlockCatalogue.lean)
+
+To enumerate the lists, choose how many colors of each two-pair type appear. A type can occur at most ten times because the seven points have 21 edges. The five category totals are 3, 3, 3, 9 and 3. After the two-pair colors are chosen, those totals force all the one-pair colors. The rest are absent. The Lean checker considers both orders of A and B. A matching of a given pair type can be put in the listed standard form by permuting within A, within B and on the other nine points. The proof checks the possible matching types and evaluates the integer inequalities directly. The graph-to-cut and relabeling arguments are written here.
+
+## A score of 40 that gets stuck
+
+Keep the first two triples as **{1, 2, 3}** and **{4, 5, 6}**. In the example below, all 28 possible triples containing point 15 among the remaining nine points are blocked. Every way of dividing those nine points into triples must use one of the 28. So all 280 ways to finish this start fail.
+
+Exchange points **3 and 4** between the starting triples. One full repair is then
+
+| First triple | Second triple | Third triple | Fourth triple | Fifth triple |
+| --- | --- | --- | --- | --- |
+| 1, 2, 4 | 3, 5, 6 | 7, 8, 9 | 10, 11, 14 | 12, 13, 15 |
+
+Draw the two consecutive lines in each table cell. Lean checks that all fifteen colors connect after these ten lines are made wild, both on all sixteen points and after deleting point 0. Across all choices of the two starting triples on the same seven points, 211 choices of a complete layout work. The example establishes the sharp cutoff of 39 for a guarantee based only on the score of a **fixed** start. [Complete coloring and results for each start](score40-trap.json) · [Lean checks](Sharp40.lean)
 
 ## A score of 40 that always works
 
