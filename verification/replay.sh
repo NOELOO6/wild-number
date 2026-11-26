@@ -35,7 +35,7 @@ if [[ $mode == k15 || $mode == all ]]; then
     "$lean_bin" -s 65536 "$build/CertifiedEndgame.lean"
     python3 "$root/cases/k15/endgame/make_formula.py" "$build/regenerated38.cnf"
     cmp "$build/regenerated38.cnf" "$build/end38.cnf"
-    for file in Cyclic15 Near15 Trade HardRepair LineTrap FourChanges Seven; do "$lean_bin" "$root/cases/k15/$file.lean"; done
+    for file in Five Cyclic15 Near15 Trade HardRepair LineTrap FourChanges Seven; do "$lean_bin" "$root/cases/k15/$file.lean"; done
     python3 "$root/cases/k15/verify_k15.py"
     python3 "$root/cases/k15/check_example.py"
     python3 "$root/cases/k15/check_four_changes.py"
