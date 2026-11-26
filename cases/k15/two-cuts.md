@@ -16,6 +16,8 @@ This test uses two numbers. Count a triple or split only once, even if several c
 | 74 | 86 |
 | 75 | 84 |
 
+A stronger general count now gives at least two survivors for every eligible start, including the starts outside this table. [Unrestricted one-split proof](counting/)
+
 ## Why a pair of bad splits is expensive
 
 Two different ways of splitting twelve points into halves can occur in the same four-triple grouping only if one side of the first meets one side of the second in three points. In that case their four intersections are exactly the four triples. A pair of such splits can therefore ruin at most one grouping. Write $B$ for the number of marked splits. The number of pairs meeting in this way is at most

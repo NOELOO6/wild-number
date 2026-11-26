@@ -1,6 +1,6 @@
 # Wild numbers of complete graphs
 
-How many lines in a colored graph need to work as **every** color? On 13 points the answer is **nine**. On 15 points, **ten or eleven** lines suffice. The question is whether ten always work.
+How many lines in a colored graph need to work as **every** color? On 13 points the answer is **nine**. On 15 or 16 points, the minimum is **ten or eleven** for every coloring. The question is whether ten always work.
 
 [Results by graph size](#results-by-graph-size) · [The last color on 15 points](cases/k15/) · [Replay the proofs](verification/) · [Read the reports](reports/)
 
@@ -24,6 +24,8 @@ The choice of wild lines can depend on the coloring. The conjecture asks for the
 | 16 | 10 | Every coloring needs 10 or 11. Ten work exactly when one vertex deletion works. | [Deletion theorem and catalogue](cases/k16/) |
 
 For other orders the prediction is $\lfloor 4\lceil n/2\rceil/3\rfloor$. An external project reports the conjecture for all orders at least 155. This repository does not independently verify that large-order result. [Public research record](https://github.com/1337isnot1337/solved-conjectures/issues/155)
+
+On fifteen points, any suitable first triple extends in at least two ways that leave only one split capable of disconnecting a color. [Counting proof](cases/k15/counting/)
 
 A seven-point test also certifies some colorings without a symmetry assumption. Its score uses just the 21 lines between the seven points. [Try the test](cases/k15/endgame/)
 
