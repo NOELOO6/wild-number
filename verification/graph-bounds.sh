@@ -35,3 +35,20 @@ done
 for name in UniformCuts CutRepair GraphLayouts ColorCoordinates LegalEdges Bounds; do
     "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/graph-bounds/$name.lean"
 done
+case ${1:-bounds} in
+  bounds) ;;
+  redraw)
+    source "$root/verification/native.sh"
+    redraw="$root/cases/k19/redraw"
+    for name in MenuProof MenuTable SevenMore; do
+      "$lean" --root="$redraw" -s 65536 -o "$build/$name.olean" "$redraw/$name.lean"
+    done
+    native_module "$redraw/LossTree.lean"
+    native_module "$redraw/RawMenu.lean" -lLossTree
+    for name in AllRoots TableLink EightBridge EightMore; do
+      "$lean" --root="$redraw" --plugin="$build/libRawMenu.$ext" -j3 -s 65536 \
+        -o "$build/$name.olean" "$redraw/$name.lean"
+    done
+    ;;
+  *) echo 'Use bounds or redraw.' >&2; exit 2 ;;
+esac

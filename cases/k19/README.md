@@ -1,11 +1,12 @@
 # Nineteen points
 
-**Every minimum proper coloring has wild number 13 or 14. For every coloring that repeats around a nineteen-point circle, the exact answer is 13.** The unrestricted question is whether a fourteenth line is ever necessary.
+**Every minimum proper coloring has wild number 13 or 14. For every coloring that repeats around a nineteen-point circle, the exact answer is 13. Thirteen also suffice after any eight colors in the standard round-robin drawing are redrawn.** The unrestricted question is whether a fourteenth line is ever necessary.
 
 | Coloring | Guaranteed result | Check |
 | --- | ---: | --- |
 | Every proper nineteen-color assignment | Thirteen lines leave at most one color in two pieces. Fourteen lines connect everything. | [End-to-end graph theorem](../../verification/graph-bounds/Bounds.lean) · [Placement argument](PlacementCertificate.lean) |
 | Every rotational assignment | Thirteen lines connect all nineteen colors. | [Exact graph theorem](ExactRotation.lean) · [Graph paths](EdgeWalk.lean) |
+| Every proper redraw of eight standard round-robin colors | Thirteen lines connect all nineteen colors. | [Eight-color proof and counts](redraw/) |
 
 ## Where the fourteenth line comes from
 

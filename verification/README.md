@@ -17,6 +17,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay als
 | Any eleven named colors on K15 or thirteen on K16 | `./verification/replay.sh prescribed` |
 | All standard-library checks above | `./verification/replay.sh` |
 | End-to-end graph bounds for arbitrary K15, K16 and K19 colorings | `./verification/graph-bounds.sh` |
+| Thirteen lines after eight round-robin colors on K19 change | `./verification/graph-bounds.sh redraw` |
 | Determine the answer for a supplied K15 coloring | `python3 verification/solve.py 15 examples/search-coloring.json` |
 | Count all groupings for a supplied K16 coloring | `python3 verification/solve.py 16 examples/search-coloring.json --count` |
 | Just the two-line repair example, using Python | `python3 cases/k15/check_example.py` |
