@@ -2,6 +2,8 @@
 
 **Keep any three points that no color cuts off by itself. There are at least 168 ways to group the other twelve points so that no single group gets cut off, and no pair of groups containing your chosen group gets cut off.** This applies to every coloring on fifteen points. On sixteen points it applies after any choice of the root. To get a ten-line solution from one of these arrangements, we still need one where the last three ways to split the four remaining groups in halves are also clear.
 
+A stronger count gives 1,824 completions and guarantees a choice clearing one more split. [Two-half argument](half-splits.md)
+
 There are at least 350 choices for your first triple $T$. Each of the fifteen colors can cut off at most seven of the 455 possible triples.
 
 ## The count on twelve points
