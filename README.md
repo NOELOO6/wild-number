@@ -19,7 +19,7 @@ The choice of wild lines can depend on the coloring. The conjecture asks for the
 | 7, 8 | 5 | Exact for every minimum proper coloring | [Original paper](https://arxiv.org/abs/2610.22142) |
 | 9, 10 | 6 | Exact for every minimum proper coloring | [Original paper](https://arxiv.org/abs/2610.22142) |
 | 11, 12 | 8 | Exact for every minimum proper coloring | [Original paper](https://arxiv.org/abs/2610.22142) |
-| 13, 14 | 9 | Computer-assisted case proof in this project | [Nine-point argument and checks](cases/k13/) |
+| 13, 14 | 9 | Computer-assisted case proof in this project | [Thirteen-point proof and checks](cases/k13/) |
 | 15 | 10 | Every coloring needs 10 or 11. Several families have exact value 10. | [Results and counterexample search](cases/k15/) |
 | 16 | 10 | Every coloring needs 10 or 11. Ten work exactly when one vertex deletion works. | [Deletion theorem and catalogue](cases/k16/) |
 
@@ -28,6 +28,8 @@ For other orders the prediction is $\lfloor 4\lceil n/2\rceil/3\rfloor$. An exte
 ## Start with an example
 
 On fifteen points, one coloring lets fourteen colors connect while color 6 is stuck. Changing **0–6** and **1–9** to **0–1** and **6–9** together fixes it. Lean checked that every single-line route from the same start must temporarily break one of the fourteen working colors. [Illustrated report](reports/last-color-k15-k16.pdf) · [Coloring and both sets of wild lines](cases/k15/line-trap.json)
+
+A different coloring needs **four** replacements from its starting arrangement. The table shows exactly which lines to erase and draw. [Four-change example](examples/four-changes.md)
 
 ## Sources and proof scope
 
