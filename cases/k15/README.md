@@ -5,6 +5,9 @@
 | Case or experiment | Conclusion | Evidence |
 | --- | --- | --- |
 | Every minimum proper coloring | Wild number 10 or 11 | [Written proof](../../reports/k15-wild-number.pdf) and [Lean counting lemma](Near15.lean) |
+| Protect any four colors | Ten lines connect at least fourteen colors including all four. A separate cycle test can guarantee all fifteen. | [General result and quick test](protected-colors/) |
+| Rearrange any two colors of a sevenfold-symmetric completion | Every possible deletion still admits ten lines, including asymmetric examples. | [Theorem and example](../k16/two-color-switch/) |
+| The K17 counting method on K15 | Even four aggregate failure totals can miss whether any grouping works. | [Exact comparison tables](moment-test/) |
 | Five specified colors | Every legal choice of the remaining ten colors admits ten wild lines. | [See the five colors](five-colors/) · [Lean](five-colors/Completion.lean) |
 | Cyclic colorings | Ten suffice for all 631 labeled starting patterns | [Lean](Cyclic15.lean) and [independent path checks](verify_k15.py) |
 | Colorings with a rotation of order five | Ten work in both possible cases, including three five-point rings | [Proof and tables](five.md) · [Lean](Five.lean) |

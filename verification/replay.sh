@@ -7,7 +7,7 @@ build=$(mktemp -d)
 trap 'rm -rf -- "$build"' EXIT
 export LEAN_PATH="$build${LEAN_PATH:+:$LEAN_PATH}"
 mode=${1:-all}
-case "$mode" in all|k13|k15|k16) ;; *) echo "Usage: $0 [all|k13|k15|k16]" >&2; exit 2;; esac
+case "$mode" in all|k13|k15|k16|k17|switches|protected) ;; *) echo "Usage: $0 [all|k13|k15|k16|k17|switches|protected]" >&2; exit 2;; esac
 "$lean_bin" --version
 if [[ $mode == k13 || $mode == all ]]; then
     cp "$root/cases/k13/CertifiedNine.lean" "$build/"
@@ -16,11 +16,11 @@ if [[ $mode == k13 || $mode == all ]]; then
     python3 "$root/cases/k13/make_k13_formula.py" "$build/regenerated.cnf"
     cmp "$build/regenerated.cnf" "$build/ninesym.cnf"
 fi
-if [[ $mode != k13 ]]; then
+if [[ $mode == k15 || $mode == k16 || $mode == all ]]; then
     "$lean_bin" -o "$build/Delete.olean" "$root/cases/k16/Delete.lean"
     "$lean_bin" -o "$build/Teams.olean" "$root/cases/k15/Teams.lean"
 fi
-if [[ $mode != k13 ]]; then
+if [[ $mode == k15 || $mode == k16 || $mode == all ]]; then
     "$lean_bin" -s 65536 -o "$build/ThreeExceptions.olean" "$root/cases/k16/three-exceptions/ThreeExceptions.lean"
     "$lean_bin" -s 65536 "$root/cases/k16/three-exceptions/EveryDeletion.lean"
 fi
@@ -45,7 +45,7 @@ if [[ $mode == k15 || $mode == all ]]; then
     python3 "$root/cases/k15/endgame/make_formula.py" "$build/regenerated38.cnf"
     cmp "$build/regenerated38.cnf" "$build/end38.cnf"
     "$lean_bin" -o "$build/HalfSplits.olean" "$root/cases/k15/HalfSplits.lean"
-    for file in TwoCuts FiveTeams ThreeTeams Five Cyclic15 Near15 Trade HardRepair LineTrap FourChanges Seven; do "$lean_bin" "$root/cases/k15/$file.lean"; done
+    for file in TwoCuts FiveTeams ThreeTeams Five Cyclic15 Near15 Trade HardRepair LineTrap FourChanges; do "$lean_bin" "$root/cases/k15/$file.lean"; done
     "$lean_bin" -s 65536 "$root/examples/SearchExample.lean"
     python3 "$root/cases/k15/verify_k15.py"
     python3 "$root/cases/k15/check_example.py"
@@ -58,4 +58,14 @@ if [[ $mode == k16 || $mode == all ]]; then
     "$lean_bin" "$root/cases/k16/Perfect16.lean"
     "$lean_bin" -s 65536 "$root/cases/k16/SevenSet.lean"
     "$lean_bin" -s 65536 "$root/cases/k16/SevenMoments.lean"
+fi
+
+if [[ $mode == k15 || $mode == k16 || $mode == switches || $mode == all ]]; then
+    "$root/verification/switches.sh" "$lean_bin" "$build"
+fi
+if [[ $mode == k17 || $mode == all ]]; then
+    "$root/verification/k17.sh" "$lean_bin" "$build"
+fi
+if [[ $mode == k15 || $mode == k16 || $mode == protected || $mode == all ]]; then
+    "$root/verification/protected.sh" "$lean_bin" "$build"
 fi

@@ -1,8 +1,8 @@
 # Wild numbers of complete graphs
 
-How many lines in a colored graph need to work as **every** color? On 13 points the answer is **nine**. On 15 or 16 points, the minimum is **ten or eleven** for every coloring. The question is whether ten always work.
+How many lines in a colored graph need to work as **every** color? On 13 and 14 points the answer is **nine**. On 17 and 18 points it is **twelve**. For 15 and 16 points every coloring needs **ten or eleven**, and the question is whether ten always work.
 
-[Results by graph size](#results-by-graph-size) · [The last color on 15 points](cases/k15/) · [Replay the proofs](verification/) · [Read the reports](reports/)
+[Twelve lines on seventeen points](cases/k17/) · [Results by graph size](#results-by-graph-size) · [The last color on 15 points](cases/k15/) · [Replay the proofs](verification/) · [Read the reports](reports/)
 
 ## The puzzle
 
@@ -22,8 +22,13 @@ The choice of wild lines can depend on the coloring. The conjecture asks for the
 | 13, 14 | 9 | Computer-assisted case proof in this project | [Thirteen-point proof and checks](cases/k13/) |
 | 15 | 10 | Every coloring needs 10 or 11. Several families have exact value 10. | [Results and counterexample search](cases/k15/) |
 | 16 | 10 | Every coloring needs 10 or 11. Ten work exactly when one vertex deletion works. | [Deletion theorem and catalogue](cases/k16/) |
+| 17, 18 | 12 | Exact for every minimum proper coloring. At least 403,637 twelve-line groupings work on K17. | [Proof, table and worked example](cases/k17/) |
 
 For other orders the prediction is $\lfloor 4\lceil n/2\rceil/3\rfloor$. An external project reports the conjecture for all orders at least 155. This repository does not independently verify that large-order result. [Public research record](https://github.com/1337isnot1337/solved-conjectures/issues/155)
+
+On fifteen and sixteen points, a sevenfold coloring can lose its symmetry completely when two colors are rearranged. Ten wild lines still work, with any specified point left untouched on K16. [Proof and concrete example](cases/k16/two-color-switch/)
+
+For every coloring, ten lines can connect fourteen colors including any four you name on K15 or any five you name on K16. Some colorings also pass a quick alternating-cycle test that guarantees all fifteen. [Protected colors and the full ten-line test](cases/k15/protected-colors/)
 
 On fifteen points, any suitable first triple extends in at least four ways that leave only one split capable of disconnecting a color. [Counting proof](cases/k15/counting/)
 

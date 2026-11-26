@@ -1,12 +1,15 @@
 # Check a result
 
-Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The Lean sources use its standard library. Run from the repository root.
+Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay also uses a C++20 compiler. The accelerated checks build shared modules with the Lean installation’s matching `leanc`. Linux was used for the recorded checks. The Lean sources use its standard library. Run from the repository root.
 
 | What to check | Command |
 | --- | --- |
 | The 13-point obstruction certificate and its regenerated formula | `./verification/replay.sh k13` |
 | The 15-point counts, examples and Python cross-checks | `./verification/replay.sh k15` |
 | The 16-point deletion theorem and catalogue witnesses | `./verification/replay.sh k16` |
+| The K17/K18 case proof, including independent C++ replay | `./verification/replay.sh k17` |
+| The two-color result for K15/K16, examples and moment test | `./verification/replay.sh switches` |
+| The unrestricted protected-color theorem and a sufficient test for ten | `./verification/replay.sh protected` |
 | All of the above | `./verification/replay.sh` |
 | Determine the answer for a supplied K15 coloring | `python3 verification/solve.py 15 examples/search-coloring.json` |
 | Count all groupings for a supplied K16 coloring | `python3 verification/solve.py 16 examples/search-coloring.json --count` |
