@@ -56,3 +56,5 @@ run_lean "$seven_build/ExteriorEligibility.lean" "--plugin=$build/libExteriorSta
 cp "$seven_src/WorkedStar.lean" "$seven_src/one-outside-change.txt" "$seven_build/"
 run_lean "$seven_build/WorkedStar.lean"
 run_lean "$seven_build/SevenOutside.lean"
+cp "$seven_src/ending-drawings.txt" "$seven_build/"
+run_lean "$seven_build/EndingChoice.lean" "--plugin=$build/libSixTrap.$ext"

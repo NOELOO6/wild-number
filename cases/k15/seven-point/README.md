@@ -38,6 +38,21 @@ The counts cover all 442,975 lists. A counterexample would have to stay below th
 
 For a small example, change just the missing color at outside point 10 from color 9 to color 2, keeping the missing colors at the other eight outside points. Use the outside triples **(6, 7, 11)**, **(8, 12, 13)** and **(9, 10, 14)**. The fifteen colors together can spoil at most nine of the ten ways to split the six marked points. This works for every proper completion of that prescription. [Concrete coloring](one-outside-change.txt) · [Lean proof](WorkedStar.lean)
 
+## Can the nine outside points be grouped in advance?
+
+**For the original outside missing colors, every redraw has a winner. Yet each of the 280 ways to group the outside nine can be defeated.** Pick any one of them before seeing the 69 redrawn lines. There is a proper redraw that keeps the same 36 outside lines and the same nine outside missing colors, obeys the seven-point rule, and defeats all ten ways to finish that choice. Each example has a winning grouping using different outside triples. [Lean theorem](EndingChoice.lean)
+
+Changing the missing color at exactly one outside point gives 13 lists that pass the matching checks. The other eight outside missing colors and all 36 outside lines stay fixed.
+
+| Outside point | New missing color | What happens if the outside triples are chosen in advance? |
+| --- | --- | --- |
+| 10 | 2 or 14 | The same choice of outside triples gives a failure bound of nine for both lists. At least one of the ten finishes wins. |
+| 9 | 3 or 5 | Every choice can be defeated. |
+| 11 | 2, 3, 6, 13 or 14 | Every choice can be defeated. |
+| 12 | 2, 3, 6 or 13 | Every choice can be defeated. |
+
+Lean used 207 drawings across the original list and the eleven one-change lists in the last three rows. For each list and each outside grouping, it checked all ten losses on a specific drawing. It also checked a winning grouping on every drawing. A proof for the eleven lists could still choose the outside triples after seeing the redrawn lines. [Witness drawings and their winning groupings](ending-drawings.txt) · [Verification](EndingChoice.lean)
+
 ## How Lean checked the 69-line result
 
 The proof assumes every allowed grouping loses. It assigns a value to each variable of a Boolean formula using the actual fifteen color matchings. Lean checks that a clause follows from a single color, from the requirement to color an edge, from two colors being unable to share that edge, or from a grouping losing. The formula has 123,493 clauses. CaDiCaL generated a contradiction, and Lean checked all 5,328,840 steps of the saved run and returned a proof of the graph statement. The six marked points can always be renamed by their missing colors. Lean also checks that this renaming carries winning groupings and their paths back to the original names. Replay generates the large certificate locally. [Finite checks](RedrawChecks.lean) · [Graph argument](RedrawSound.lean) · [Renaming proof](InsideNames.lean) · [Replay entry point](ReplayRedraw.lean)
