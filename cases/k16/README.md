@@ -12,3 +12,5 @@
 In a perfect one-factorization, each pair of colors forms a single loop through all sixteen points. Gill and Wanless supplied the complete list up to relabeling. The Lean theorem checks the supplied representatives and their witnesses. Completeness of the list comes from their published classification. [Authors’ data and format](https://users.monash.edu.au/~iwanless/data/P1F/newP1F.html) · [Classification paper](https://doi.org/10.1017/S0004972719000856)
 
 The source data are in [P1F16catalogue](P1F16catalogue). The corresponding [witnesses](P1F16witnesses) and [independent generator](p1f_witness.cpp) are included. [Verification instructions](../../verification/)
+
+If a fifteen-point deletion admits a rotation of order seven, the [sevenfold rotation theorem](../k15/seven.md) supplies ten lines for the original sixteen points.
