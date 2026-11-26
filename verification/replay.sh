@@ -21,7 +21,13 @@ if [[ $mode != k13 ]]; then
 fi
 if [[ $mode == k15 || $mode == all ]]; then
     "$lean_bin" -o "$build/CheckBase.olean" "$root/cases/k15/CheckBase.lean"
-    "$lean_bin" -s 65536 "$root/cases/k15/Endgame.lean"
+    "$lean_bin" -s 65536 -o "$build/Endgame.olean" "$root/cases/k15/Endgame.lean"
+    cp "$root/cases/k15/endgame/BlockCatalogue.lean" "$build/"
+    gzip -dc "$root/cases/k15/endgame/graphs8.txt.gz" > "$build/graphs8.txt"
+    gzip -dc "$root/cases/k15/endgame/cert43.tree.gz" > "$build/cert.tree"
+    gzip -dc "$root/cases/k15/endgame/cert43.blocks.gz" > "$build/cert.blocks"
+    "$lean_bin" -s 65536 -o "$build/BlockCatalogue.olean" "$build/BlockCatalogue.lean"
+    "$lean_bin" -s 65536 "$root/cases/k15/endgame/Completion.lean"
     cp "$root/cases/k15/endgame/CertifiedEndgame.lean" "$build/"
     for ext in cnf lrat; do gzip -dc "$root/cases/k15/endgame/end38.$ext.gz" > "$build/end38.$ext"; done
     "$lean_bin" -s 65536 "$build/CertifiedEndgame.lean"
@@ -37,4 +43,5 @@ if [[ $mode == k16 || $mode == all ]]; then
     "$lean_bin" "$root/cases/k16/Untouched16.lean"
     "$lean_bin" "$root/cases/k16/Perfect16.lean"
     "$lean_bin" -s 65536 "$root/cases/k16/SevenSet.lean"
+    "$lean_bin" -s 65536 "$root/cases/k16/SevenMoments.lean"
 fi

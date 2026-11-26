@@ -16,3 +16,5 @@ In a perfect one-factorization, each pair of colors forms a single loop through 
 The source data are in [P1F16catalogue](P1F16catalogue). The corresponding [witnesses](P1F16witnesses) and [independent generator](p1f_witness.cpp) are included. [Verification instructions](../../verification/)
 
 If a fifteen-point deletion admits a rotation of order seven, the [sevenfold rotation theorem](../k15/seven.md) supplies ten lines for the original sixteen points.
+
+At least 1,540 starts through any specified point pass the first seven-point test. The proof also guarantees at least 875 starts using thirteen or more colors. [Counting argument and table](seven-count.md)
