@@ -9,6 +9,7 @@ You can name any nine colors that must stay connected. At least 666 groupings co
 | Every minimum proper coloring | Wild number 10 or 11 | [Written proof](../../reports/k15-wild-number.pdf) and [Lean counting lemma](Near15.lean) · [End-to-end eleven-line bound](../../verification/graph-bounds/) |
 | Any eleven named colors in any coloring | At least 14,126 ten-line groupings connect all eleven. | [Proof and counts](prescribed/) |
 | A pattern of 32 specified lines on the completed graph | Any proper coloring of the other 88 lines leaves at least four successful ten-line choices. | [Concrete table and Lean checks](eight-points/) |
+| Redraw any six colors in the difficult search example | Ten connect all fifteen on the original fifteen points, for every proper redraw. | [Checked family](../k16/search-redraw/) |
 | Redraw any six colors of a round-robin completion | Ten lines connect all fifteen colors after any specified point is deleted. | [Proof and ten-line example](../k16/recoloring/) |
 | Eight pairs in the completed coloring | Exchanging all partners preserves the colors, and the eight pair lines have one color. Every deletion admits ten wild lines. | [Three cases and ticket counts](../k16/paired-colors/) |
 | Protect any four colors | Ten lines connect at least fourteen colors including all four. A separate cycle test can guarantee all fifteen. | [General result and quick test](protected-colors/) |

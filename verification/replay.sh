@@ -7,8 +7,11 @@ build=$(mktemp -d)
 trap 'rm -rf -- "$build"' EXIT
 export LEAN_PATH="$build${LEAN_PATH:+:$LEAN_PATH}"
 mode=${1:-all}
-case "$mode" in all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors) ;; *) echo "Usage: $0 [all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors]" >&2; exit 2;; esac
+case "$mode" in all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors|search-redraw) ;; *) echo "Usage: $0 [all|k13|k15|k16|k17|k19|paired|six|eight|switches|protected|prescribed|last-colors|search-redraw]" >&2; exit 2;; esac
 "$lean_bin" --version
+if [[ $mode == search-redraw || $mode == all ]]; then
+    "$root/verification/search-redraw.sh" "$lean_bin" "$build"
+fi
 if [[ $mode == last-colors || $mode == all ]]; then
     "$root/verification/last-colors.sh" "$lean_bin" "$build"
 fi

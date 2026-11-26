@@ -29,6 +29,8 @@ For other orders the prediction is $\lfloor 4\lceil n/2\rceil/3\rfloor$. An exte
 
 A 32-line pattern on sixteen points guarantees at least four successful ten-line choices, however the other 88 lines are colored. [See the pattern](cases/k15/eight-points/)
 
+Six colors can also be redrawn in the difficult example from the counterexample search. All 5,005 choices still admit ten wild lines, with point 15 untouched. [Search example and proof](cases/k16/search-redraw/)
+
 On fifteen and sixteen points, all six colors you name in the standard round-robin coloring may be redrawn together. Ten lines still work, with any specified point untouched. A second ten-line result applies when swapping the members of eight same-color pairs preserves every color. [Six-color theorem](cases/k16/recoloring/) · [Eight-pair theorem](cases/k16/paired-colors/)
 
 On fifteen and sixteen points, a sevenfold coloring can lose its symmetry completely when two colors are rearranged. Ten wild lines still work, with any specified point left untouched on K16. [Proof and concrete example](cases/k16/two-color-switch/)

@@ -7,6 +7,7 @@ For **any thirteen colors named in advance**, at least 449,107 ten-line grouping
 | Result | Scope |
 | --- | --- |
 | [32 specified lines](../k15/eight-points/) | At least four ten-line choices work for any proper coloring of the other 88 lines. |
+| [Redraw any six colors in the search example](search-redraw/) | Ten connect all colors and avoid point 15 for every proper redraw. |
 | [Redraw any six round-robin colors](recoloring/) | Ten work for every proper redraw, whichever point you leave untouched. |
 | [Eight pairs with a common color](paired-colors/) | Ten work whenever exchanging all partners preserves each color. |
 | [Protect any five colors](../k15/protected-colors/) | Ten lines connect at least fourteen colors including any five named in advance. Four can be protected if the untouched point is prescribed. |

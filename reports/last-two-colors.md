@@ -8,9 +8,11 @@
 
 On K16 there are fifteen possible lists of fourteen colors. At least fourteen of those lists have at least 4,264 groupings connecting the entire list.
 
-On K16, if eleven lines are ever necessary, at least fourteen different colors must each be able to appear as the **only** color that fails. Otherwise leave out two colors that can never fail alone. The new count gives a grouping where at least one of them connects and all thirteen named colors connect. That forces the other one to fail alone, a contradiction. The corresponding minimum on K15 is ten different possible sole failures.
+On K16, if eleven lines are ever necessary, at least fourteen different colors must each be able to appear as the **only** color that fails. Otherwise leave out two colors that can never fail alone. The new count gives a grouping where at least one of them connects and all thirteen named colors connect. That forces the other one to fail alone, a contradiction. A K16 counterexample would need at least 63,953 distinct groupings that each miss exactly one color. On K15 the corresponding minimum number of different possible sole failures is ten.
 
 One K16 example shows why the two outside colors deserve attention. They spoil 862,621 groupings that pass the thirteen named colors. The same coloring also has 1,731,000 full wins. On a K19 example, every single-line replacement fails from a particular start. Erasing 0–1 and 16–17 and drawing 0–17 and 1–16 connects all nineteen colors with thirteen lines.
+
+All 5,005 ways to choose six colors for redrawing in the K16 search example still admit ten wild lines for every legal redraw. The ten lines can avoid point 15, so they work on K15 as well. [Six-color redraw proof](../cases/k16/search-redraw/)
 
 The general counts combine written arguments with Lean-checked tables and arithmetic. Lean proves the K16 cut test and the concrete K19 example directly about paths in graphs. The exact worst-case values are still 10 or 11 on fifteen and sixteen points, and 13 or 14 on nineteen points.
 

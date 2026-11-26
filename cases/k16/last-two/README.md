@@ -9,7 +9,7 @@ Choose any thirteen colors in any minimum proper coloring of K16. Split the poin
 
 There are fifteen ways to specify a list of fourteen colors. For **at least fourteen of those lists**, at least **4,264** groupings connect the whole list. Otherwise two lists would each have at most 4,263, and their union could not account for 8,527. [Lean corollary](Fourteen.lean)
 
-The earlier guarantee was 120,835 for the first row. If eleven lines really are necessary somewhere, then for any pair of colors A and B there are at least 8,527 groupings where just A or just B fails. At most one color can never occur as the sole failure. The case in which A and B take turns preventing a full win is open.
+The earlier guarantee was 120,835 for the first row. If eleven lines really are necessary somewhere, then for any pair of colors A and B there are at least 8,527 groupings where just A or just B fails. At most one color can never occur as the sole failure. Such a counterexample must have at least **63,953 distinct groupings** that connect exactly fourteen colors. To see this, order the fifteen colors in a circle and apply the 8,527 bound to each neighboring pair. Each grouping with one failing color gets counted twice. The case in which A and B take turns preventing a full win is open.
 
 ## What happens in one actual coloring
 

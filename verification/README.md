@@ -15,6 +15,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay als
 | Every way to redraw six round-robin colors on K15/K16 | `./verification/replay.sh six` |
 | The K19 rotation proof, placement counts and repair lemma | `./verification/replay.sh k19` |
 | Any eleven or twelve named colors on K15 or thirteen on K16 | `./verification/replay.sh prescribed` |
+| Every proper redraw of six colors in the counterexample-search coloring | `./verification/replay.sh search-redraw` |
 | Latest K15/K16/K19 last-color counting tables and arithmetic | `./verification/replay.sh last-colors` |
 | K16 graph cut criterion and the K19 two-line obstruction and repair | `./verification/graph-bounds.sh last-colors` |
 | All standard-library checks above | `./verification/replay.sh` |
