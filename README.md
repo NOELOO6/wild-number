@@ -27,6 +27,8 @@ The choice of wild lines can depend on the coloring. The conjecture asks for the
 
 For other orders the prediction is $\lfloor 4\lceil n/2\rceil/3\rfloor$. An external project reports the conjecture for all orders at least 155. This repository does not independently verify that large-order result. [Public research record](https://github.com/1337isnot1337/solved-conjectures/issues/155)
 
+A 32-line pattern on sixteen points guarantees at least four successful ten-line choices, however the other 88 lines are colored. [See the pattern](cases/k15/eight-points/)
+
 On fifteen and sixteen points, all six colors you name in the standard round-robin coloring may be redrawn together. Ten lines still work, with any specified point untouched. A second ten-line result applies when swapping the members of eight same-color pairs preserves every color. [Six-color theorem](cases/k16/recoloring/) · [Eight-pair theorem](cases/k16/paired-colors/)
 
 On fifteen and sixteen points, a sevenfold coloring can lose its symmetry completely when two colors are rearranged. Ten wild lines still work, with any specified point left untouched on K16. [Proof and concrete example](cases/k16/two-color-switch/)

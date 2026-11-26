@@ -5,7 +5,7 @@
 | Coloring | Guaranteed result | Check |
 | --- | ---: | --- |
 | Every proper nineteen-color assignment | Thirteen lines leave at most one color in two pieces. Fourteen lines connect everything. | [Placement argument](PlacementCertificate.lean) · [Last line](Repair.lean) |
-| Every rotational assignment | Thirteen lines connect all nineteen colors. | [Starter theorem](CyclicCertificate.lean) · [Graph paths](EdgeWalk.lean) |
+| Every rotational assignment | Thirteen lines connect all nineteen colors. | [Exact graph theorem](ExactRotation.lean) · [Graph paths](EdgeWalk.lean) |
 
 ## Where the fourteenth line comes from
 
@@ -23,7 +23,7 @@ Randomly assign the nineteen ordinary points to the six groups. For a fixed colo
 
 The mean number of extra pieces **over all nineteen colors together** is $19\times68{,}681{,}925/654{,}729{,}075=2609/1309$. This is strictly below two. Some grouping therefore has at most one extra piece in total. If one remains, join its two sides with one ordinary wild edge. Every earlier path still works.
 
-Twelve wild lines cannot suffice. A lone point has a missing color. A wild component of just two points is isolated in the color of the line between them. Thus all wild components need at least three points. Nineteen points can make at most six such components, and joining points into six components takes at least thirteen lines. The general lower bound is Theorem 3.4 in the original paper. [Dawkins, Nappo, Tong and Zimbizi](https://arxiv.org/abs/2610.22142)
+Twelve wild lines cannot suffice. A lone point has a missing color. A wild component of just two points is isolated in the color of the line between them. Thus all wild components need at least three points. Nineteen points can make at most six such components, and joining points into six components takes at least thirteen lines. Lean also proves the lower bound directly for arbitrary nineteen-point colorings. In the checked count, a point with one wild neighbor contributes two tokens to its incident line, and every other point contributes one token per incident line. Each point contributes at least two. A line cannot have two endpoints of degree one, so each line gets at most three. Thirty-eight tokens require at least thirteen lines. The general lower bound is Theorem 3.4 in the original paper. [Lean lower bound](LowerBound.lean) [Dawkins, Nappo, Tong and Zimbizi](https://arxiv.org/abs/2610.22142)
 
 ## How to find the grouping
 

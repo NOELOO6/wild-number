@@ -25,14 +25,24 @@ if [[ $mode == six || $mode == combined ]]; then
     "$lean" "${rp[@]}" "$src/Coordinates.lean"
     "$lean" "${rp[@]}" "$src/Example.lean"
 fi
+if [[ $mode == eight || $mode == combined ]]; then
+    src="$root/cases/k15/eight-points"
+    native_module "$src/EightPoints.lean" -lEdgeWalk -lDelete
+    ep=( "${plugins[@]}" --plugin="$build/libEightPoints.$ext" )
+    "$lean" "${ep[@]}" -o "$build/EightCertificate.olean" "$src/EightCertificate.lean"
+    "$lean" "${ep[@]}" -o "$build/SparseEight.olean" "$src/SparseEight.lean"
+    "$lean" "${ep[@]}" "$src/Examples.lean"
+fi
 if [[ $mode == k19 || $mode == combined ]]; then
     src="$root/cases/k19"
     native_module "$src/Rotations.lean" -lEdgeWalk -lDelete
-    "$lean" "${plugins[@]}" --plugin="$build/libRotations.$ext" "$src/CyclicCertificate.lean"
+    "$lean" "${plugins[@]}" --plugin="$build/libRotations.$ext" -o "$build/CyclicCertificate.olean" "$src/CyclicCertificate.lean"
     native_module "$src/Placement.lean"
     "$lean" --plugin="$build/libPlacement.$ext" -o "$build/PlacementCertificate.olean" "$src/PlacementCertificate.lean"
     "$lean" -o "$build/SlotBridge.olean" "$src/SlotBridge.lean"
     "$lean" "$src/ComponentUpdate.lean"
+    "$lean" -o "$build/LowerBound.olean" "$src/LowerBound.lean"
+    "$lean" "${plugins[@]}" --plugin="$build/libRotations.$ext" "$src/ExactRotation.lean"
     "$lean" "$src/MatchingCount.lean"
     "$lean" "$src/Repair.lean"
     python3 "$src/construct.py" --lean-out "$build/SuppliedK19.lean"

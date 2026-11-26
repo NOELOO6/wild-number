@@ -11,6 +11,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay als
 | The two-color result for K15/K16, examples and moment test | `./verification/replay.sh switches` |
 | The unrestricted protected-color theorem and a sufficient test for ten | `./verification/replay.sh protected` |
 | The eight-pair K15/K16 family, with any point omitted | `./verification/replay.sh paired` |
+| Seventy candidate layouts and the 32-line local pattern | `./verification/replay.sh eight` |
 | Every way to redraw six round-robin colors on K15/K16 | `./verification/replay.sh six` |
 | The K19 rotation proof, placement counts and repair lemma | `./verification/replay.sh k19` |
 | All of the above | `./verification/replay.sh` |
