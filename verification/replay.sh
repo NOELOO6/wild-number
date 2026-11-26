@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -eu
 root=$(cd "$(dirname "$0")/.." && pwd)
-lean_bin=$(command -v "${LEAN:-lean}")
+lean_bin=$(realpath "$(command -v "${LEAN:-lean}")")
+cd "$root"
 build=$(mktemp -d)
 trap 'rm -rf -- "$build"' EXIT
 export LEAN_PATH="$build${LEAN_PATH:+:$LEAN_PATH}"
@@ -24,6 +25,7 @@ if [[ $mode != k13 ]]; then
     "$lean_bin" -s 65536 "$root/cases/k16/three-exceptions/EveryDeletion.lean"
 fi
 if [[ $mode == k15 || $mode == all ]]; then
+    "$lean_bin" -s 65536 "$root/cases/k15/five-colors/Completion.lean"
     "$lean_bin" -o "$build/CheckBase.olean" "$root/cases/k15/CheckBase.lean"
     "$lean_bin" -s 65536 -o "$build/Endgame.olean" "$root/cases/k15/Endgame.lean"
     "$lean_bin" -s 65536 -o "$build/Counting.olean" "$root/cases/k15/counting/Counting.lean"
@@ -32,7 +34,7 @@ if [[ $mode == k15 || $mode == all ]]; then
     gzip -dc "$root/cases/k15/endgame/graphs8.txt.gz" > "$build/graphs8.txt"
     gzip -dc "$root/cases/k15/endgame/cert43.tree.gz" > "$build/cert.tree"
     gzip -dc "$root/cases/k15/endgame/cert43.blocks.gz" > "$build/cert.blocks"
-    "$lean_bin" -s 65536 -o "$build/BlockCatalogue.olean" "$build/BlockCatalogue.lean"
+    "$lean_bin" --root="$build" -s 65536 -o "$build/BlockCatalogue.olean" "$build/BlockCatalogue.lean"
     "$lean_bin" -s 65536 "$root/cases/k15/FirstTriple.lean"
     for file in Completion Score39 Sharp40; do
         "$lean_bin" -s 65536 "$root/cases/k15/endgame/$file.lean"
@@ -50,6 +52,7 @@ if [[ $mode == k15 || $mode == all ]]; then
     python3 "$root/cases/k15/check_seven.py"
 fi
 if [[ $mode == k16 || $mode == all ]]; then
+    "$lean_bin" -s 65536 "$root/cases/k16/four-colors/FourColors.lean"
     "$lean_bin" "$root/cases/k16/Untouched16.lean"
     "$lean_bin" "$root/cases/k16/Perfect16.lean"
     "$lean_bin" -s 65536 "$root/cases/k16/SevenSet.lean"

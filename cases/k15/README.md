@@ -5,6 +5,7 @@
 | Case or experiment | Conclusion | Evidence |
 | --- | --- | --- |
 | Every minimum proper coloring | Wild number 10 or 11 | [Written proof](../../reports/k15-wild-number.pdf) and [Lean counting lemma](Near15.lean) |
+| Five specified colors | Every legal choice of the remaining ten colors admits ten wild lines. | [See the five colors](five-colors/) · [Lean](five-colors/Completion.lean) |
 | Cyclic colorings | Ten suffice for all 631 labeled starting patterns | [Lean](Cyclic15.lean) and [independent path checks](verify_k15.py) |
 | Colorings with a rotation of order five | Ten work in both possible cases, including three five-point rings | [Proof and tables](five.md) · [Lean](Five.lean) |
 | Colorings with a rotation of order seven | Ten work for all 797,448 compatible pairs of labeled starters | [Proof and explanation](seven.md) · [Lean](Seven.lean) |

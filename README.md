@@ -27,6 +27,8 @@ For other orders the prediction is $\lfloor 4\lceil n/2\rceil/3\rfloor$. An exte
 
 On fifteen points, any suitable first triple extends in at least two ways that leave only one split capable of disconnecting a color. [Counting proof](cases/k15/counting/)
 
+On sixteen points, four colors forming a four-dimensional cube guarantee a solution however the other eleven are drawn. A second four-color pattern works too. [Four-color patterns and counts](cases/k16/four-colors/)
+
 A seven-point test also certifies some colorings without a symmetry assumption. Its score uses just the 21 lines between the seven points. [Try the test](cases/k15/endgame/)
 
 ## Start with an example
