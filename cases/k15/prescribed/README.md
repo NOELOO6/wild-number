@@ -5,6 +5,7 @@ Pick the colors before seeing the wild lines. The coloring can be completely arb
 | Drawing | Colors you may name | Different groupings guaranteed to connect all those colors |
 | --- | ---: | ---: |
 | K15 | Any 11 of the 15 | At least 14,126 of the 1,401,400 groupings |
+| K15 | Any 12 of the 15 | At least 843 of the 1,401,400 groupings |
 | K16 | Any 13 of the 15 | At least 120,835 of the 22,422,400 groupings |
 
 In each case draw two lines inside each of five triples. On sixteen points the remaining point stays untouched. A grouping that works for the named colors may still fail for an unnamed one. In particular, any proposed K16 counterexample would have to cover all 120,835 or more candidates using just the two colors left out, whichever two you leave out.
@@ -26,7 +27,7 @@ Each row supplies signed prices on edges, two extra prices $b,d$, and a transfer
 $$2T\le \sum_{e\in m}p(e)+b+h_i(j,k),\qquad
 0\le \sum_{e\in m}p(e)+d.$$
 
-Use the first inequality when the third color is named and the second when it is omitted. The thirteen remaining colors use every uncharged edge exactly once. For $s$ named colors, subtract their total edge price, $(s-2)b$, and $(15-s)d$ from $10P_i$. The result in every pair account is at least 157,642 for K15 and at least 2,706,590 for K16. The three transfers on any named triple sum to at most zero. Thus $10S_2-6S_3$ is at least 55 times 157,642 for K15 or 78 times 2,706,590 for K16. Substitution and rounding up give the table.
+Use the first inequality when the third color is named and the second when it is omitted. The thirteen remaining colors use every uncharged edge exactly once. For $s$ named colors, subtract their total edge price, $(s-2)b$, and $(15-s)d$ from $10P_i$. The result in every pair account is at least 157,642 for K15 and at least 2,706,590 for K16. The three transfers on any named triple sum to at most zero. Thus $10S_2-6S_3$ is at least 55 times 157,642 for K15 or 78 times 2,706,590 for K16. Substitution and rounding up give the eleven-color and thirteen-color rows.
 
 | Check | Scope |
 | --- | --- |
@@ -37,3 +38,11 @@ Use the first inequality when the third color is named and the second when it is
 | [Fixed-root prices](fixed-prices.txt) · [Free-root prices](free-prices.txt) | The integer witnesses checked by Lean. |
 
 The reduction from arbitrary colorings to the representative cycle types and the correspondence of the numerical counts with the graph are the written steps above. The table and arithmetic checks use Lean's native evaluator. Run `./verification/replay.sh prescribed` from the repository root. The general eleven-line upper bound has its own [end-to-end graph theorem](../../../verification/graph-bounds/).
+
+## How the twelfth color fits on K15
+
+Consider a grouping where exactly $k$ named colors fail. If $k$ is positive, start its score at $1-k$. Return $2/k$ to each pair of failing colors. This restores its score to zero, since there are $k(k-1)/2$ such pairs. If no color fails, the grouping keeps its starting score of one. Summed over all groupings, the score counts the wins.
+
+We use a lower estimate for that refund. For two failing colors, the checker records how many triples contain an edge of each color, whether a closed cut uses the lone point, how many cuts each color closes, and how many they close together. Each resulting class gets integers $A,B$ with $kA≤2D+k(k-2)B$ for every $2≤k≤12$, where $D=1{,}000{,}000$. Thus a refund of $(A-(k-2)B)/D$ is affordable. Weight the two-color grouping counts by $A$ and their overlaps with each possible third matching by $B$. The edge prices and canceling transfers work as in the earlier count.
+
+After multiplying by $D$, each of the 66 named pairs contributes at least 13,652,153,205. Including the starting scores and rounding up leaves at least **843 winning groupings**. Lean checks every allowed third matching in each of eleven rows, the transfer cancellations, and the final counting inequality. The translation between graph groupings and those rows uses the written argument above. [Weighted enumeration](Twelve.lean) · [Eleven checks](TwelveRows.lean) · [Counting inequality](TwelveProof.lean) · [Integer witnesses](tangent-prices.txt)

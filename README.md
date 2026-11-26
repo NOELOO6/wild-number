@@ -2,7 +2,7 @@
 
 How many lines in a colored graph need to work as **every** color? On 13 and 14 points the answer is **nine**. On 17 and 18 points it is **twelve**. For 15 and 16 points every coloring needs **ten or eleven**, and the question is whether ten always work. On nineteen points every coloring needs thirteen or fourteen, and thirteen suffice for every rotational coloring and after any eight round-robin colors are redrawn.
 
-[Eight colors redrawn on K19](cases/k19/redraw/) · [Choose eleven or thirteen colors](cases/k15/prescribed/) · [End-to-end graph bounds](verification/graph-bounds/) · [Six colors redrawn](cases/k16/recoloring/) · [Nineteen points](cases/k19/) · [Twelve lines on seventeen points](cases/k17/) · [Results by graph size](#results-by-graph-size) · [The last color on 15 points](cases/k15/) · [Replay the proofs](verification/) · [Read the reports](reports/)
+[Thirteen lines on arbitrary K19](cases/k19/one-piece/) · [Eight colors redrawn on K19](cases/k19/redraw/) · [Choose twelve or thirteen colors](cases/k15/prescribed/) · [End-to-end graph bounds](verification/graph-bounds/) · [Six colors redrawn](cases/k16/recoloring/) · [Nineteen points](cases/k19/) · [Twelve lines on seventeen points](cases/k17/) · [Results by graph size](#results-by-graph-size) · [The last color on 15 points](cases/k15/) · [Replay the proofs](verification/) · [Read the reports](reports/)
 
 ## The puzzle
 
@@ -23,7 +23,7 @@ The choice of wild lines can depend on the coloring. The conjecture asks for the
 | 15 | 10 | Every coloring needs 10 or 11. Several families have exact value 10. | [Results and counterexample search](cases/k15/) |
 | 16 | 10 | Every coloring needs 10 or 11. Ten work exactly when one vertex deletion works. | [Deletion theorem and catalogue](cases/k16/) |
 | 17, 18 | 12 | Exact for every minimum proper coloring. At least 403,637 twelve-line groupings work on K17. | [Proof, table and worked example](cases/k17/) |
-| 19 | 13 | Every coloring needs 13 or 14. Thirteen suffice for every rotational coloring and after any eight round-robin colors are redrawn. | [Counts, proof scope and working solver](cases/k19/) |
+| 19 | 13 | Thirteen always connect at least eighteen colors and leave at most one extra piece. Thirteen suffice for every rotational coloring and after any eight round-robin colors are redrawn. | [Counts, proof scope and working solver](cases/k19/) |
 
 For other orders the prediction is $\lfloor 4\lceil n/2\rceil/3\rfloor$. An external project reports the conjecture for all orders at least 155. This repository does not independently verify that large-order result. [Public research record](https://github.com/1337isnot1337/solved-conjectures/issues/155)
 

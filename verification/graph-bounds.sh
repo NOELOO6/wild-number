@@ -16,12 +16,13 @@ if [[ "$revision" != c44e0c8ee63ca166450922a373c7409c5d26b00b ]]; then
     exit 1
 fi
 if [[ ! -f .lake/build/lib/lean/Mathlib/Algebra/BigOperators/Ring/Finset.olean ||
+      ! -f .lake/build/lib/lean/Mathlib/Algebra/BigOperators/Fin.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Data/Fintype/Perm.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Data/Fintype/BigOperators.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Data/Fintype/Powerset.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Algebra/Order/BigOperators/Group/Finset.olean ]]; then
     "$lake" exe cache get Mathlib/Algebra/BigOperators/Ring/Finset.lean \
-      Mathlib/Data/Fintype/Perm.lean Mathlib/Data/Fintype/BigOperators.lean \
+      Mathlib/Data/Fintype/Perm.lean Mathlib/Data/Fintype/BigOperators.lean Mathlib/Algebra/BigOperators/Fin.lean \
       Mathlib/Data/Fintype/Powerset.lean Mathlib/Algebra/Order/BigOperators/Group/Finset.lean
 fi
 build=$(mktemp -d)
@@ -50,5 +51,11 @@ case ${1:-bounds} in
         -o "$build/$name.olean" "$redraw/$name.lean"
     done
     ;;
-  *) echo 'Use bounds or redraw.' >&2; exit 2 ;;
+  pieces)
+    pieces="$root/cases/k19/one-piece"
+    for name in FiberMass BinMass GroupMerges PartitionCounts PieceTotals SmallAverage PieceBudget PiecePaths LastPiece; do
+      "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
+    done
+    ;;
+  *) echo 'Use bounds, redraw or pieces.' >&2; exit 2 ;;
 esac

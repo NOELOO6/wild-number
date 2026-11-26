@@ -14,9 +14,10 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay als
 | Seventy candidate layouts and the 32-line local pattern | `./verification/replay.sh eight` |
 | Every way to redraw six round-robin colors on K15/K16 | `./verification/replay.sh six` |
 | The K19 rotation proof, placement counts and repair lemma | `./verification/replay.sh k19` |
-| Any eleven named colors on K15 or thirteen on K16 | `./verification/replay.sh prescribed` |
+| Any eleven or twelve named colors on K15 or thirteen on K16 | `./verification/replay.sh prescribed` |
 | All standard-library checks above | `./verification/replay.sh` |
 | End-to-end graph bounds for arbitrary K15, K16 and K19 colorings | `./verification/graph-bounds.sh` |
+| Thirteen lines leaving at most one extra piece in an arbitrary K19 coloring | `./verification/graph-bounds.sh pieces` |
 | Thirteen lines after eight round-robin colors on K19 change | `./verification/graph-bounds.sh redraw` |
 | Determine the answer for a supplied K15 coloring | `python3 verification/solve.py 15 examples/search-coloring.json` |
 | Count all groupings for a supplied K16 coloring | `python3 verification/solve.py 16 examples/search-coloring.json --count` |

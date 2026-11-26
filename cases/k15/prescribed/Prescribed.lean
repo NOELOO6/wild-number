@@ -74,21 +74,23 @@ structure Counts where
 
 /-- Each two-block cut is recorded once. A three-component failure has three
 such cuts; record its three-pair partition once to correct the overcount. -/
-def deposit (gs : Array Nat) (v : Counts) : Counts := Id.run do
+def depositWeighted (gs : Array Nat) (ac bc : Nat) (v : Counts) : Counts := Id.run do
   let mut f := v.freq
   let mut p := v.paired
   for i in [1:6] do
     let q := gs[0]! ||| gs[i]!
-    f := f.modify q (·+1)
-    for j in [1:i] do f := f.modify (gs[j]! ||| gs[i]!) (·+1)
+    f := f.modify q (·+bc)
+    for j in [1:i] do f := f.modify (gs[j]! ||| gs[i]!) (·+bc)
     let mut first := 1
     if first == i then first := 2
     for j in [first+1:6] do
       if i != j then
         let s := gs[first]! ||| gs[j]!
         let t := 65535 ^^^ q ^^^ s
-        p := p.modify (qrank[q]!*8008+srank[min s t]!) (·+1)
-  return ⟨v.one,v.both+1,f,p⟩
+        p := p.modify (qrank[q]!*8008+srank[min s t]!) (·+bc)
+  return ⟨v.one,v.both+ac,f,p⟩
+
+def deposit (gs : Array Nat) (v : Counts) := depositWeighted gs 1 1 v
 
 def layouts (ca cb : Array Bool) (depth left : Nat) (gs : Array Nat)
     (badA badB : Bool) (v : Counts) : Counts := Id.run do
@@ -178,7 +180,7 @@ def keyTable (rows : Array Prices) := Id.run do
   return t
 
 def eachThird (fixed : Bool) (table : Array Nat) (row : Prices) (v : Counts) (a b : Matching)
-    (depth left : Nat) (m es : Array Nat) (charge : Int) : Nat := Id.run do
+    (depth left : Nat) (m es : Array Nat) (charge : Int) (multiplier : Nat := 2) : Nat := Id.run do
   match depth with
   | 0 =>
     let j := table[typeKey fixed a m]!
@@ -186,7 +188,7 @@ def eachThird (fixed : Bool) (table : Array Nat) (row : Prices) (v : Counts) (a 
     if j >= row.transfer.size || k >= row.transfer.size then return 1000000000
     if charge+row.omitted < 0 then return 1000000000
     let t := tripleCount v es
-    return if 2*(t : Int) ≤ charge+row.selected+row.transfer[j]![k]! then 1 else 1000000000
+    return if (multiplier : Int)*(t : Int) ≤ charge+row.selected+row.transfer[j]![k]! then 1 else 1000000000
   | d+1 =>
     let x := (low left).log2
     let mut ys := dropLow left
@@ -198,7 +200,7 @@ def eachThird (fixed : Bool) (table : Array Nat) (row : Prices) (v : Counts) (a 
       if a[x]! != y && b[x]! != y then
         let edge := bit x ||| bit y
         n := n + eachThird fixed table row v a b d (left ^^^ edge)
-          ((m.set! x y).set! y x) (es.push edge) (charge+row.edge[pairId x y]!)
+          ((m.set! x y).set! y x) (es.push edge) (charge+row.edge[pairId x y]!) multiplier
     return n
 
 def expected (fixed : Bool) := if fixed then

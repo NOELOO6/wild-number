@@ -4,7 +4,7 @@
 
 | Coloring | Guaranteed result | Check |
 | --- | ---: | --- |
-| Every proper nineteen-color assignment | Thirteen lines leave at most one color in two pieces. Fourteen lines connect everything. | [End-to-end graph theorem](../../verification/graph-bounds/Bounds.lean) · [Placement argument](PlacementCertificate.lean) |
+| Every proper nineteen-color assignment | Thirteen lines leave at most one color in two pieces. Fourteen lines connect everything. | [Thirteen-line graph theorem](one-piece/) · [Fourteen-line bound](../../verification/graph-bounds/Bounds.lean) |
 | Every rotational assignment | Thirteen lines connect all nineteen colors. | [Exact graph theorem](ExactRotation.lean) · [Graph paths](EdgeWalk.lean) |
 | Every proper redraw of eight standard round-robin colors | Thirteen lines connect all nineteen colors. | [Eight-color proof and counts](redraw/) |
 
@@ -53,4 +53,4 @@ For a concrete example, pair point $i$ with $19-i$ for $i=1,\ldots,9$ and rotate
 
 ## Verification scope
 
-Lean proves the path statement for every normalized rotational starter, the independent matching totals, the placement theorem for every game satisfying its slot rules, and the one-edge path repair. The stronger placement statement that thirteen lines can leave at most one extra piece still uses the written translation into the placement game. The unrestricted 13-or-14 bound has a separate, end-to-end Lean proof. It starts with an arbitrary colored graph, counts closed cuts, and constructs paths in each color after one repair. Its numerical checks run in the kernel. [Read the graph proof and replay it](../../verification/graph-bounds/). Run `./verification/replay.sh k19` for the rotation and placement checks.
+Lean proves the path statement for every normalized rotational starter, the independent matching totals, the placement theorem for every game satisfying its slot rules, and the one-edge path repair. A separate end-to-end Lean proof now shows that thirteen lines leave at most one extra piece in the original colored graph. It counts the ways to split six groups and turns the winning placement into paths. [Proof and exact counts](one-piece/) The unrestricted 13-or-14 bound has a separate, end-to-end Lean proof. It starts with an arbitrary colored graph, counts closed cuts, and constructs paths in each color after one repair. Its numerical checks run in the kernel. [Read the graph proof and replay it](../../verification/graph-bounds/). Run `./verification/replay.sh k19` for the rotation and placement checks.
