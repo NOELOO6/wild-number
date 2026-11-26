@@ -2,7 +2,7 @@
 
 **Split the sixteen points into two teams of eight. Ten wild lines suffice if at least twelve of the fifteen colors obey the teams.** A color obeys the teams when all its lines stay within teams or all its lines go across. The other three colors can mix these two kinds of lines freely.
 
-The proof chooses a point to leave untouched. Its choice may depend on the three exceptional colors. This proves the result on sixteen points and on the particular fifteen-point deletion supplied by the proof.
+The first check chooses a point to leave untouched. A second check covers every choice of that point, proving the result on sixteen points and every fifteen-point deletion.
 
 | Finite check | Number |
 | --- | ---: |
@@ -33,3 +33,13 @@ $$96t+120\bigl(u(0,a)+u(b,c)\bigr)+60(12-t)-60\bigl(u(0,b)+u(0,c)\bigr)+240\bigl
 For example, an ordinary within-team color costs 96, plus 120 if it uses $0a$ or $bc$. No surviving choice has both in one color. An ordinary cross-team color costs 60, minus 60 if line $0b$ or $0c$ belongs to it, plus 240 if line $ab$ or $ac$ belongs to it. Each available line occurs once across all ordinary colors. The checker adds the three known colors' costs by testing their cuts directly. The total stays strictly below 1,800 for every proposed $c$. At least one grouping therefore works for every color.
 
 Lean checks the orbit coverage, enumerates all decompositions, and checks the stated inequality on every supplied choice. The classification into cycles, the argument for discarding blue points, and the translation to graph connectivity are written above. The exact grouping costs come from the earlier Lean file. [Lean checker](ThreeExceptions.lean) · [Graph representatives](graphs.txt) · [Root and triple choices](choices.txt) · [Replay instructions](../../../verification/)
+
+## What if the deleted point is chosen in advance?
+
+**Ten lines also work after any one of the sixteen points is deleted.** This gives the fifteen-point result whenever its completed coloring has the stated two-team structure.
+
+Keep the desired root throughout the same 13,311 genuine three-exception cases. There are 212,976 choices of case and root. To tighten the price of the three exceptional colors, take the union of the groupings they spoil. This counts each lost grouping once.
+
+For 1,352 of those case-and-root choices the checker uses one further saving. Fix a proposed blue point $c$, and write $L$ for the groupings already spoiled by the exceptional colors. Choose a vertex $v$. For each available within-team line $vy$, check every within-team matching that could use it without sealing the chosen quartet. Record the smallest number of groupings in $L$ that such a matching spoils. Add these minima over the available partners $y$. Each actual ordinary within-team color uses exactly one of those lines. Its contribution to the old price included the groupings it spoiled in $L$, so the sum can be subtracted. This argument counts the union of all failures by charging the exceptional colors first and then charging only groupings outside $L$ to the ordinary colors.
+
+Lean constructs the sets of spoiled groupings from the 1,800 actual layouts and checks all 212,976 root choices. It verifies the ordinary-matching minima wherever a saving is used. [Lean checker for every deletion](EveryDeletion.lean) · [Fixed-root choices](fixed-roots.txt) · [Vertices used for the overlap count](overlap-choices.txt)

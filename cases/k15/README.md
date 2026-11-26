@@ -12,6 +12,7 @@
 | Five teams of three | At least 2,592 groupings work, or at least 1,152 if two colors ignore the teams | [Construction and proof](five-teams.md) · [Lean](FiveTeams.lean) |
 | Three teams of five | At least 2,400 different groupings work whenever every color pairs within one team and across the other two | [Construction and proof](three-teams.md) · [Lean](ThreeTeams.lean) |
 | Two teams with up to two exceptional colors | Ten work even if the two exceptional colors mix within-team and cross-team lines | [Counting proof](trade.md) · [Lean](Trade.lean) |
+| Two teams with three exceptional colors | Ten lines work after any specified deletion, including every one of the 212,976 genuine case-and-root choices. | [Proof](../k16/three-exceptions/#what-if-the-deleted-point-is-chosen-in-advance) · [Lean](../k16/three-exceptions/EveryDeletion.lean) |
 | Deletions of a perfect one-factorization | Ten suffice for all 3,155 catalogue entries, for every deleted point | [Catalogue verification](../k16/Perfect16.lean) |
 | Keeping a prescribed first triple | At least 1,824 completions clear the cuts involving that triple. At least twelve ways to split the rest also clear one more cut, leaving two. | [Counting proof](half-splits.md) · [Lean](HalfSplits.lean) |
 | Clearing two of the last three splits | A prescribed first triple leaves at most one split to check if at most 63 triples are forbidden, or at most 84 splits are marked. | [Table and proof](two-cuts.md) · [Lean](TwoCuts.lean) |

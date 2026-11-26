@@ -19,6 +19,10 @@ if [[ $mode != k13 ]]; then
     "$lean_bin" -o "$build/Delete.olean" "$root/cases/k16/Delete.lean"
     "$lean_bin" -o "$build/Teams.olean" "$root/cases/k15/Teams.lean"
 fi
+if [[ $mode != k13 ]]; then
+    "$lean_bin" -s 65536 -o "$build/ThreeExceptions.olean" "$root/cases/k16/three-exceptions/ThreeExceptions.lean"
+    "$lean_bin" -s 65536 "$root/cases/k16/three-exceptions/EveryDeletion.lean"
+fi
 if [[ $mode == k15 || $mode == all ]]; then
     "$lean_bin" -o "$build/CheckBase.olean" "$root/cases/k15/CheckBase.lean"
     "$lean_bin" -s 65536 -o "$build/Endgame.olean" "$root/cases/k15/Endgame.lean"
@@ -46,7 +50,6 @@ fi
 if [[ $mode == k16 || $mode == all ]]; then
     "$lean_bin" "$root/cases/k16/Untouched16.lean"
     "$lean_bin" "$root/cases/k16/Perfect16.lean"
-    "$lean_bin" -s 65536 "$root/cases/k16/three-exceptions/ThreeExceptions.lean"
     "$lean_bin" -s 65536 "$root/cases/k16/SevenSet.lean"
     "$lean_bin" -s 65536 "$root/cases/k16/SevenMoments.lean"
 fi
