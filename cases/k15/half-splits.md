@@ -60,3 +60,5 @@ In each row the expression is at most the denominator times the indicated reward
 Summing a row uses just the four identities above. For each $40\le m\le75$, a row for the first reward gives a sum at least 5,470, and a row for the second gives a sum strictly above 107. When $m<40$, each forbidden triple blocks at most 280 of the 15,400 four-group partitions. A half with no usable pairing contains at least ten forbidden triples, giving at most $\lfloor84m/10\rfloor$ unusable splits. These bounds give the same conclusions. Dividing 5,470 by three and rounding up gives **1,824**. [Lean verification of all six inequalities and all numerical bounds](HalfSplits.lean)
 
 The counting identities and their application to color connectivity are written proofs. Lean checks the finite tables and arithmetic. This argument clears one of the three remaining splits in at least twelve distinct ways. Clearing the other two at the same time is still open.
+
+A further count clears two of the final three splits for every start meeting the thresholds in the [two-cut table](two-cuts.md).

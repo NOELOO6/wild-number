@@ -14,6 +14,7 @@
 | Two teams with up to two exceptional colors | Ten work even if the two exceptional colors mix within-team and cross-team lines | [Counting proof](trade.md) · [Lean](Trade.lean) |
 | Deletions of a perfect one-factorization | Ten suffice for all 3,155 catalogue entries, for every deleted point | [Catalogue verification](../k16/Perfect16.lean) |
 | Keeping a prescribed first triple | At least 1,824 completions clear the cuts involving that triple. At least twelve ways to split the rest also clear one more cut, leaving two. | [Counting proof](half-splits.md) · [Lean](HalfSplits.lean) |
+| Clearing two of the last three splits | A prescribed first triple leaves at most one split to check if at most 63 triples are forbidden, or at most 84 splits are marked. | [Table and proof](two-cuts.md) · [Lean](TwoCuts.lean) |
 | A local test on seven points | A score at most 39 guarantees a completion for every legal coloring of the other 99 lines | [Test and verification](endgame/) |
 | A specific seven-point start scoring 40 | Any legal coloring of the other 99 lines admits a completion with ten wild lines | [21-edge table](endgame/#a-score-of-40-that-always-works) · [Lean check](endgame/Completion.lean) |
 | The next score can fail | One score-40 start fails all 280 completions. Exchanging points 3 and 4 gives ten successful wild lines. | [Walkthrough](endgame/#a-score-of-40-that-gets-stuck) · [Lean](endgame/Sharp40.lean) |
