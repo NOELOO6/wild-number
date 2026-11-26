@@ -1,30 +1,37 @@
 # The Wild Number Conjecture for Minimum Proper Edge Colorings of Complete Graphs
 
-For an edge coloring $\\rho$ of $K_n$, let $E_c$ be the set of edges of color $c$. The **wild number** $\\operatorname{wld}_\\rho(K_n)$ is the minimum size of a set $W\\subseteq E(K_n)$ such that $(V(K_n),E_c\\cup W)$ is connected for every color $c$.
+Let ρ be an edge coloring of the complete graph K<sub>n</sub>, and let E<sub>c</sub> be the edges of color c. The **wild number** of ρ is the minimum size of a set W of edges such that the spanning graph with edge set E<sub>c</sub> ∪ W is connected for every color c.
 
-Dawkins, Nappo, Tong, and Zimbizi conjecture that for every $n\\ge 3$ and every proper edge coloring $\\rho$ using the minimum number of colors,
+Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring using the minimum number of colors has the following wild number for n ≥ 3. [Original paper, §6](https://arxiv.org/html/2610.22142v1#S6)
 
-$$
-\\operatorname{wld}_\\rho(K_n)=\\left\\lfloor\\frac{4\\lceil n/2\\rceil}{3}\\right\\rfloor.
-$$
-
-They proved the lower bound for every $n$ and equality for $3\\le n\\le12$. [Original paper, §§3.3 and 6](https://arxiv.org/html/2610.22142v1#S3.SS3)
+> **wld<sub>ρ</sub>(K<sub>n</sub>) = ⌊4⌈n/2⌉/3⌋**
 
 ## Results by graph size
 
+### Results proved in this repository
+
 | Complete graph | Conjectured | Status | Proof or bounds |
 | --- | ---: | --- | --- |
-| $K_3$, $K_4$ | 2 | ✅ Solved | [Dawkins et al., Thm. 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
-| $K_5$, $K_6$ | 4 | ✅ Solved | [Thm. 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
-| $K_7$, $K_8$ | 5 | ✅ Solved | [Thm. 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
-| $K_9$, $K_{10}$ | 6 | ✅ Solved | [Thm. 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
-| $K_{11}$, $K_{12}$ | 8 | ✅ Solved | [Thm. 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
-| $K_{13}$, $K_{14}$ | 9 | ✅ Solved | [Computer-assisted proof](cases/k13/) |
-| $K_{15}$, $K_{16}$ | 10 | Partial | 10–11 · [K15](cases/k15/) · [K16](cases/k16/) |
-| $K_{17}$, $K_{18}$ | 12 | ✅ Solved | [Counting proof](cases/k17/) |
-| $K_{19}$ | 13 | Partial | 13–14 · [Bounds and solved families](cases/k19/) |
-| $K_n$, $n\\ge155$ | As above | Reported solved | [External proof and verification record](https://github.com/1337isnot1337/solved-conjectures/issues/155) |
+| K₁₃, K₁₄ | 9 | ✅ Solved | [Computer-assisted proof](cases/k13/) |
+| K₁₅, K₁₆ | 10 | Partial | 10–11 · [K15](cases/k15/) · [K16](cases/k16/) |
+| K₁₇, K₁₈ | 12 | ✅ Solved | [Counting proof](cases/k17/) |
+| K₁₉ | 13 | Partial | 13–14 · [Bounds and solved families](cases/k19/) |
+
+The K₁₃ proof builds on an earlier nine-point reduction. The case report credits that work and distinguishes the written graph argument from the finite certificate checked by Lean. [K13 proof and credits](cases/k13/)
+
+### Results from other sources
+
+| Complete graph | Wild number | Status | Source |
+| --- | ---: | --- | --- |
+| K₃, K₄ | 2 | ✅ Solved | [Dawkins et al., Theorem 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
+| K₅, K₆ | 4 | ✅ Solved | [Theorem 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
+| K₇, K₈ | 5 | ✅ Solved | [Theorem 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
+| K₉, K₁₀ | 6 | ✅ Solved | [Theorem 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
+| K₁₁, K₁₂ | 8 | ✅ Solved | [Theorem 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
+| All n ≥ 155 | ⌊4⌈n/2⌉/3⌋ | Reported solved | [External proof and verification record](https://github.com/1337isnot1337/solved-conjectures/issues/155) |
+
+Dawkins et al. also proved the conjectured expression is a lower bound for every n ≥ 3. [Theorem 3.4](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS1)
 
 ## Verification
 
-The case directories document the proofs and their dependencies. For $K_{13}$, the graph reduction is a written proof and Lean checks the resulting finite certificate. The verification guide gives the commands for replaying each result and identifies checks that use Lean’s native evaluator. [Proof replay](verification/) · [Research reports](reports/) · [K15 coloring solver](examples/search.md)
+The verification guide lists the commands and dependencies for each proof, including checks that use Lean’s native evaluator. [Proof replay](verification/) · [Research reports](reports/) · [K15 coloring solver](examples/search.md)
