@@ -14,10 +14,12 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | --- | ---: | --- | --- |
 | K₁₃, K₁₄ | 9 | ✅ Solved | [Computer-assisted proof](cases/k13/) |
 | K₁₅, K₁₆ | 10 | Partial | 10–11 · [K15](cases/k15/) · [K16](cases/k16/) |
-| K₁₇, K₁₈ | 12 | ✅ Solved | [Counting proof](cases/k17/) |
+| K₁₇, K₁₈ | 12 | ✅ Solved | [Written proof with Lean-checked counts](cases/k17/) |
 | K₁₉ | 13 | Partial | 13–14 · [Bounds and solved families](cases/k19/) |
 
 The K₁₃ proof builds on an earlier nine-point reduction. The case report credits that work and distinguishes the written graph argument from the finite certificate checked by Lean. [K13 proof and credits](cases/k13/)
+
+For K₁₇ and K₁₈, the universal statement has a computer-assisted written proof. Lean verifies the K₁₇ cut criterion, finite certificate, and counting implication. The reduction from arbitrary colorings to the enumerated cases is written. K₁₈ follows by vertex deletion. [Formalization scope](cases/k17/#reproduce-the-result)
 
 ### Results from other sources
 
