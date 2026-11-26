@@ -25,6 +25,8 @@ The choice of wild lines can depend on the coloring. The conjecture asks for the
 
 For other orders the prediction is $\lfloor 4\lceil n/2\rceil/3\rfloor$. An external project reports the conjecture for all orders at least 155. This repository does not independently verify that large-order result. [Public research record](https://github.com/1337isnot1337/solved-conjectures/issues/155)
 
+A seven-point test also certifies some colorings without a symmetry assumption. Its score uses just the 21 lines between the seven points. [Try the test](cases/k15/endgame/)
+
 ## Start with an example
 
 On fifteen points, one coloring lets fourteen colors connect while color 6 is stuck. Changing **0–6** and **1–9** to **0–1** and **6–9** together fixes it. Lean checked that every single-line route from the same start must temporarily break one of the fourteen working colors. [Illustrated report](reports/last-color-k15-k16.pdf) · [Coloring and both sets of wild lines](cases/k15/line-trap.json)
