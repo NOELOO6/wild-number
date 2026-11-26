@@ -25,11 +25,15 @@ The choice of wild lines can depend on the coloring. The conjecture asks for the
 
 For other orders the prediction is $\lfloor 4\lceil n/2\rceil/3\rfloor$. An external project reports the conjecture for all orders at least 155. This repository does not independently verify that large-order result. [Public research record](https://github.com/1337isnot1337/solved-conjectures/issues/155)
 
-On fifteen points, any suitable first triple extends in at least two ways that leave only one split capable of disconnecting a color. [Counting proof](cases/k15/counting/)
+On fifteen points, any suitable first triple extends in at least four ways that leave only one split capable of disconnecting a color. [Counting proof](cases/k15/counting/)
 
 On sixteen points, four colors forming a four-dimensional cube guarantee a solution however the other eleven are drawn. A second four-color pattern works too. [Four-color patterns and counts](cases/k16/four-colors/)
 
 A seven-point test also certifies some colorings without a symmetry assumption. Its score uses just the 21 lines between the seven points. [Try the test](cases/k15/endgame/)
+
+## Check a coloring yourself
+
+The repository includes a solver that takes a coloring, finds ten working lines if they exist, and checks the answer by following paths in every color. On the example from the counterexample search, 85,250 groupings work on fifteen points. [Try the solver and see the counts](examples/search.md)
 
 ## Start with an example
 

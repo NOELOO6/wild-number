@@ -38,6 +38,27 @@ theorem small_mark_set : pairLimit 84 = 1802 ∧
 theorem pair_budget : pairLimit 96 = 2299 ∧
     (List.range 97).all (fun b => pairLimit b ≤ 2299) = true := by native_decide
 
+/-- The two nonnegative quadratic forms are integers on a set indicator.
+    At 96 marks, attaining 2299 would force 84*u + 198*v = 60. -/
+theorem integer_pair_limit (b e u v : Nat) (hb : b ≤ 96)
+    (he : e ≤ pairLimit b)
+    (identity : (2310 : Int)*(8*(b : Int)-2*(e : Int))+960*(b : Int)^2 =
+      84*(u : Int)+198*(v : Int)) : e ≤ 2298 := by
+  have small : (List.range 96).all (fun z => pairLimit z ≤ 2298) = true := by native_decide
+  by_cases h : b < 96
+  · have bound := List.all_eq_true.mp small b (List.mem_range.mpr h)
+    exact Nat.le_trans he (of_decide_eq_true bound)
+  · have h96 : b = 96 := by omega
+    subst b
+    have top : pairLimit 96 = 2299 := by decide
+    rw [top] at he
+    by_cases hsmall : e ≤ 2298
+    · exact hsmall
+    · have eq : e = 2299 := by omega
+      subst e
+      change 60 = 84*(u : Int)+198*(v : Int) at identity
+      omega
+
 /-- Pack the remaining losses into bins of capacity c to maximize their squares. -/
 def lossSquares (h : Nat) := ((List.range (min 27 h+1)).map fun z =>
   let c := min z (h+9-z)
@@ -57,6 +78,7 @@ theorem thresholds : ([⟨64,94⟩,⟨65,93⟩,⟨66,91⟩,⟨67,91⟩,⟨68,91�
     (fun (m,b) => decide (pairLimit b < guaranteed m)) = true := by native_decide
 theorem survivors (all spoiled : Nat) (a : 1824 ≤ all) (b : spoiled ≤ 1802) :
     22 ≤ all-spoiled := by omega
+#print axioms integer_pair_limit
 #print axioms two_gram_matrices
 #print axioms decomposition
 #print axioms repeated_triples

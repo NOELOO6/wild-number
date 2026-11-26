@@ -16,7 +16,7 @@ This test uses two numbers. Count a triple or split only once, even if several c
 | 74 | 86 |
 | 75 | 84 |
 
-A stronger general count now gives at least two survivors for every eligible start, including the starts outside this table. [Unrestricted one-split proof](counting/)
+A stronger general count now gives at least four survivors for every eligible start, including the starts outside this table. [Unrestricted one-split proof](counting/)
 
 ## Why a pair of bad splits is expensive
 
@@ -24,7 +24,7 @@ Two different ways of splitting twelve points into halves can occur in the same 
 
 $$\left\lfloor\frac{192B^2/462+8B}{2}\right\rfloor.$$
 
-For $B=84$ this is 1,802. There are at least 1,824 groupings clearing the first checks, leaving at least 22 with at most one marked split. Even at $B=96$ the upper bound is just 2,299.
+For $B=84$ this is 1,802. There are at least 1,824 groupings clearing the first checks, leaving at least 22 with at most one marked split. At $B=96$ the displayed floor is 2,299. Integrality improves it to **2,298**. If there were exactly 2,299 pairs, the matrix identity below, applied to the indicator of the marked splits, would give $84u+198v=60$. Both $u$ and $v$ are nonnegative integers, so the equality is impossible. For $B<96$ the original floor is already at most 2,298. Lean verifies this arithmetic in `integer_pair_limit`.
 
 To verify the bound, index a matrix $A$ by the 462 splits and give it a 1 wherever two splits meet in threes. Let $J$ be the all-ones matrix. The matrix $8I-A+(192/462)J$ has a nonnegative quadratic form. Indeed, define symmetric integer matrices $U,V$ by the table. The distance counts the smaller of the two possible intersection sizes of a side from each split.
 

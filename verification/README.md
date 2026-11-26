@@ -8,6 +8,8 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The Lean sources u
 | The 15-point counts, examples and Python cross-checks | `./verification/replay.sh k15` |
 | The 16-point deletion theorem and catalogue witnesses | `./verification/replay.sh k16` |
 | All of the above | `./verification/replay.sh` |
+| Determine the answer for a supplied K15 coloring | `python3 verification/solve.py 15 examples/search-coloring.json` |
+| Count all groupings for a supplied K16 coloring | `python3 verification/solve.py 16 examples/search-coloring.json --count` |
 | Just the two-line repair example, using Python | `python3 cases/k15/check_example.py` |
 
 To use a separate Lean installation, set `LEAN` to its executable. The script creates compiled modules and uncompressed proof data in a temporary directory.

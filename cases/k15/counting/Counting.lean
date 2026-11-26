@@ -104,7 +104,7 @@ def lowerBound (m : Nat) : Int := Id.run do
         for i in [:a.size] do c := c.modify i (fun x => x-lam*a[i]!)
   for i in [:c.size] do v := v+(min 0 c[i]!)*(if i<graphs.size then 1 else 12)
   return v
-theorem twelve_bounds : ((List.range' 64 12).all (fun m => decide (2300*denom < lowerBound m))) = true := by
+theorem twelve_bounds : ((List.range' 64 12).all (fun m => decide (2301*denom < lowerBound m))) = true := by
   native_decide
 #print axioms pattern_coverage
 #print axioms twelve_bounds

@@ -1,23 +1,25 @@
 # Every starting triple can get down to one possible bad split
 
-**In every coloring on fifteen points, keep any eligible starting triple. At least two groupings of the remaining points pass every connectivity check except possibly one split.** The statement holds on sixteen points after any prescribed choice of the isolated root. It still allows a color to be disconnected across the last split.
+**In every coloring on fifteen points, keep any eligible starting triple. At least four groupings of the remaining points pass every connectivity check except possibly one split.** The statement holds on sixteen points after any prescribed choice of the isolated root. It still allows a color to be disconnected across the last split.
 
 | Count on the remaining twelve points | Guaranteed number |
 | --- | ---: |
 | Groupings into four triples | 15,400 in total |
-| Groupings that clear the cuts involving the first triple and all single-group cuts | At least 2,301 |
-| Groupings that can contain two or more marked splits | At most 2,299 |
-| Groupings passing both tests | At least 2 |
+| Groupings that clear the cuts involving the first triple and all single-group cuts | At least 2,302 |
+| Groupings that can contain two or more marked splits | At most 2,298 |
+| Groupings passing both tests | At least 4 |
 
-A **marked split** divides the twelve points into two halves, one of which a color pairs entirely inside itself. Each grouping into four triples has three such divisions to check. Two different divisions determine all four triples if their sides meet in threes. This limits the number of groupings that have two marked splits to 2,299, as shown in the [pair-count proof](../two-cuts.md).
+A **marked split** divides the twelve points into two halves, one of which a color pairs entirely inside itself. Each grouping into four triples has three such divisions to check. Two different divisions determine all four triples if their sides meet in threes. This limits the number of groupings that have two marked splits to 2,298, as shown in the [pair-count proof](../two-cuts.md).
 
-The lower bound of 2,301 is the new part. It also means you can rule out any 23 particular splits in advance and still have at least one grouping clearing the first checks. Each particular split occurs in just 100 groupings.
+The lower bound of 2,302 is the new part. It also means you can rule out any 23 particular splits in advance and still have at least one grouping clearing the first checks. Each particular split occurs in just 100 groupings.
+
+There are at least 350 eligible choices for the starting triple. This gives at least 1,400 pairs consisting of a starting triple and a grouping. A grouping has five possible starting triples, so these account for at least **280 distinct groupings**. If a coloring defeated every ten-line choice, then each of these groupings would have a bad pair of triples. Neither member of that pair could serve as the starting triple. Such a coloring would therefore have at least **467 distinct groupings** reaching this stage. [Starting-triple count](../first-triple.md)
 
 ## What Lean checked
 
 A **forbidden triple** is one that a color seals together with the root or together with the chosen first triple. Write $F$ for their set and $m$ for its size. There are 75 occurrences before repetitions are removed. At a point $v$ the original number is $18+3k_v$, where the twelve integers $k_v$ are nonnegative and sum to three. Removing repeat occurrences lowers a point's degree by at most $75-m$. [Derivation from the matching colors](../first-triple.md)
 
-We count partitions into four triples that avoid $F$. For $m\le63$, the earlier two-price calculation already gives at least 2,316. For each of the remaining twelve values of $m$, a finite certificate proves the count is strictly greater than 2,300. Lean rebuilds the 83 patterns used in the count, verifies the integer square expansions, and checks the final inequalities. These are exact integer computations. The counting argument connecting those computations to the graph is given below. [Pattern and price checker](Counting.lean) · [Square checker](Squares.lean)
+We count partitions into four triples that avoid $F$. For $m\le63$, the earlier two-price calculation already gives at least 2,316. For each of the remaining twelve values of $m$, a finite certificate proves the count is strictly greater than 2,301. Lean rebuilds the 83 patterns used in the count, verifies the integer square expansions, and checks the final inequalities. These are exact integer computations. The counting argument connecting those computations to the graph is given below. [Pattern and price checker](Counting.lean) · [Square checker](Squares.lean)
 
 ## How a count can cover every coloring
 
@@ -36,4 +38,4 @@ To verify pattern identity, record for each point which pattern triples contain 
 
 For the square checks, the type of a one-triple pattern records its two marked-set intersection sizes. For two triples it records the size of their intersection and the marked-set counts on their common points and on each separate part. The checker enumerates the placements of the marked sets. For each union pattern $H$, it counts every ordered pair of its subpatterns of size at most two whose union is $H$. Multiplying their two integer weights and the number of labeled copies reconstructs the coefficient of $p_H$. Lean checks all 248 supplied square expansions by this procedure.
 
-The price checker takes a signed linear combination of the identities and nonnegative inequalities. It checks the allowed sign of each multiplier. It charges any negative remaining coefficient at the largest possible value of its variable, either one for $p_H$ or twelve for $n_{k,d}$. Even after this charge, the resulting lower bound exceeds $2300\times10^{44}$, with $10^{44}$ the common denominator. Finding the prices used numerical optimization. Replaying them requires only Lean and the supplied integer data. [Replay instructions](../../../verification/)
+The price checker takes a signed linear combination of the identities and nonnegative inequalities. It checks the allowed sign of each multiplier. It charges any negative remaining coefficient at the largest possible value of its variable, either one for $p_H$ or twelve for $n_{k,d}$. Even after this charge, the resulting lower bound exceeds $2301\times10^{44}$, with $10^{44}$ the common denominator. Finding the prices used numerical optimization. Replaying them requires only Lean and the supplied integer data. [Replay instructions](../../../verification/)
