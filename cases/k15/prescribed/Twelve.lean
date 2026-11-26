@@ -12,25 +12,27 @@ structure Tangent where
   weighted : Nat
   deriving Inhabited
 
-def readRows : Array Tangent := Id.run do
-  let lines := (((include_str "tangent-prices.txt").trim.splitOn "\n").toArray.map
+def parseRows (text : String) (n named : Nat) : Array Tangent := Id.run do
+  let lines := ((text.trim.splitOn "\n").toArray.map
     (fun line => (line.splitOn " ").toArray.map String.toInt!))
-  return (Array.range 11).map fun i => Id.run do
-    let pos := i*17
+  return (Array.range n).map fun i => Id.run do
+    let pos := i*(n+6)
     let h := lines[pos+1]!
-    let r : Prices := ⟨lines[pos]!.map Int.toNat,0,h[0]!,h[1]!,h[2]!,lines[pos+2]!,lines.extract (pos+3) (pos+14)⟩
-    let keys := lines[pos+14]!
+    let r : Prices := ⟨lines[pos]!.map Int.toNat,0,h[0]!,h[1]!,h[2]!,lines[pos+2]!,lines.extract (pos+3) (pos+n+3)⟩
+    let keys := lines[pos+n+3]!
     let mut aa := Array.replicate 6000 0
     let mut bb := aa
     let mut ok := true
     for j in [:keys.size] do
-      let a := lines[pos+15]![j]!.toNat
-      let b := lines[pos+16]![j]!.toNat
-      for m in [2:13] do
+      let a := lines[pos+n+4]![j]!.toNat
+      let b := lines[pos+n+5]![j]!.toNat
+      for m in [2:named+1] do
         if m*a > 2*scale + m*(m-2)*b then ok := false
       aa := aa.set! keys[j]!.toNat a
       bb := bb.set! keys[j]!.toNat b
     return ⟨r,aa,bb,ok,h[3]!.toNat⟩
+
+def readRows := parseRows (include_str "tangent-prices.txt") 11 12
 
 def internal (m : Matching) := (Array.range 65536).map fun s => Id.run do
   for x in [:16] do

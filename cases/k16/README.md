@@ -1,6 +1,6 @@
 # Sixteen points
 
-For **any thirteen colors named in advance**, at least 120,835 ten-line groupings connect all thirteen. This holds for every coloring. [Counting proof](../k15/prescribed/)
+For **any thirteen colors named in advance**, at least 449,107 ten-line groupings connect all thirteen. At least 8,527 of them also connect one or both remaining colors. This holds for every coloring. [Counting proof and exact example](last-two/)
 
 **Ten wild edges connect all colors exactly when ten work on at least one of the sixteen graphs obtained by deleting a vertex.** Any successful set of ten leaves some vertex untouched. That vertex is a leaf when viewing any single color, so it can be removed and restored. [Lean theorem for arbitrary matchings](Untouched16.lean) · [Illustrated explanation](../../reports/last-color-k15-k16.pdf)
 

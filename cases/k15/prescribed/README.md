@@ -1,5 +1,7 @@
 # Ten lines for colors named in advance
 
+The updated K16 count is 449,107 groupings for the thirteen named colors. At least 8,527 also connect at least one of the two others. [Updated proof](../../k16/last-two/)
+
 Pick the colors before seeing the wild lines. The coloring can be completely arbitrary.
 
 | Drawing | Colors you may name | Different groupings guaranteed to connect all those colors |

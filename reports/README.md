@@ -2,6 +2,7 @@
 
 | Question | Report |
 | --- | --- |
+| What can the last two colors block? | [New general bounds and a two-line K19 repair](last-two-colors.md) |
 | What settles K17 and K18, and which new K15 and K16 colorings work? | [Twelve lines and two-color rearrangements](seventeen-and-two-color-switches.md) |
 | What did the five-hour K15 and K16 search establish? | [Results, examples, and remaining gap](five-hour-search.md) |
 | Why do nine lines always suffice on 13 and 14 points? | [Nine wild edges for K₁₃](k13-wild-number.pdf) |

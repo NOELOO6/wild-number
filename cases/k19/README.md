@@ -1,5 +1,7 @@
 # Nineteen points
 
+Thirteen lines can keep any two named colors connected and leave at most one other color in two pieces. In a concrete example a two-line move joins those pieces while every single-line replacement fails. [General count](named/) · [Two-line repair](two-moves/)
+
 **Every minimum proper coloring has wild number 13 or 14. For every coloring that repeats around a nineteen-point circle, the exact answer is 13. Thirteen also suffice after any eight colors in the standard round-robin drawing are redrawn.** The unrestricted question is whether a fourteenth line is ever necessary.
 
 | Coloring | Guaranteed result | Check |

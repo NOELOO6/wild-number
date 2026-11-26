@@ -1,5 +1,7 @@
 # Choose which colors must stay connected
 
+Subsequent counting arguments raise the guaranteed numbers of named colors to nine on K15 and thirteen on K16, while still connecting at least fourteen in total. The cycle test below remains a sufficient condition for all fifteen. [K15](../nine-named/) · [K16](../../k16/last-two/)
+
 Ten wild lines can connect at least fourteen of the fifteen colors in **every** coloring on fifteen or sixteen points. You can also insist in advance that certain colors are among those fourteen.
 
 | Graph | Colors you can name in advance | Additional choice |

@@ -1,5 +1,7 @@
 # Fifteen points
 
+You can name any nine colors that must stay connected. At least 666 groupings connect those nine and at least five of the other six. [New counting proof](nine-named/)
+
 **Ten wild lines always connect at least fourteen colors.** If a color remains disconnected, it has exactly two pieces. One extra wild line joins them. The open question is whether every coloring already has a choice of ten that connects all fifteen.
 
 | Case or experiment | Conclusion | Evidence |

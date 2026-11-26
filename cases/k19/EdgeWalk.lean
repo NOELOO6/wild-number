@@ -67,6 +67,15 @@ private theorem run_sound {n} {es : List (Edge n)} {root s} (hs : Sound es root 
     · exact hs
     · exact ih (sweep_sound hs es (fun _ h => h))
 
+/-- A set bit in the computed search supplies a walk from the starting point. -/
+theorem walk_of_seen {n} (root v : Fin n) (es : List (Edge n))
+    (h : (run es n (2^root.val)).testBit v.val = true) : Walk (Adj es) root v := by
+  apply run_sound (root:=root) _ n v h
+  intro x hx
+  have same : root = x := Fin.ext (by simpa [Nat.testBit_two_pow] using hx)
+  subst x
+  exact .stay _
+
 theorem connected_of_passes {n} (root : Fin n) (es : List (Edge n))
     (h : passes root es = true) : Connected (Adj es) := by
   have start : Sound es root (2^root.val) := by

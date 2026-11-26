@@ -38,6 +38,13 @@ for name in UniformCuts CutRepair GraphLayouts ColorCoordinates LegalEdges Bound
 done
 case ${1:-bounds} in
   bounds) ;;
+  last-colors)
+    "$lean" --root="$root" -o "$build/GraphCuts.olean" "$root/cases/k16/last-two/GraphCuts.lean"
+    "$lean" --root="$root" -o "$build/Fourteen.olean" "$root/cases/k16/last-two/Fourteen.lean"
+    for name in Example19 TwoMoves; do
+      "$lean" --root="$root" -o "$build/$name.olean" "$root/cases/k19/two-moves/$name.lean"
+    done
+    ;;
   redraw)
     source "$root/verification/native.sh"
     redraw="$root/cases/k19/redraw"
@@ -57,5 +64,5 @@ case ${1:-bounds} in
       "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
     done
     ;;
-  *) echo 'Use bounds, redraw or pieces.' >&2; exit 2 ;;
+  *) echo 'Use bounds, redraw, pieces or last-colors.' >&2; exit 2 ;;
 esac
