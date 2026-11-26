@@ -4,6 +4,7 @@
 
 | Result | Scope |
 | --- | --- |
+| [Seven-point reduction](seven-set.md) | Every coloring has at least 3,040 choices of seven points containing at most two lines of each color. At least 1,330 choices contain any specified point. |
 | [Leaf deletion](Delete.lean) | Adding or removing a leaf preserves path connectivity. |
 | [Ten-edge equivalence](Untouched16.lean) | A proof for all relevant colorings on sixteen vertices and every list of at most ten wild edges. |
 | [Perfect one-factorizations](Perfect16.lean) | Checks 3,155 representatives at each of 16 deletions, totaling 50,480 ten-edge witnesses. |
