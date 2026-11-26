@@ -41,13 +41,18 @@ private theorem count_eq (s : Nat) (j : Fin 280) :
   change bits10[digit s j]! = _
   simpa only [b] using val
 
-/-- If the total number of starts that the fifteen colors can spoil is
-less than ten for some exterior ending, one of its ten starts connects
-every color. The 36 exterior lines are the only ordinary edges prescribed. -/
-theorem price_winner (f : C→V→V) (inv : ∀ c x, f c (f c x)=x) (ne : ∀ c x, f c x≠x)
+/-- Count the actual disconnected color graphs for one of the ten starts. -/
+noncomputable def failures (f : C→V→V) (j : Fin 280) (i : Fin 10) : Nat := by
+  classical
+  exact Teams.total colors (fun c => if Connected (Adj (wild (layout j i) ++ actualEdges (f c))) then 0 else 1)
+
+/-- Multiple colors can fail on the same grouping. Each failure beyond the
+first gives back one unit of the budget for this exterior ending. -/
+theorem overlap_winner (f : C→V→V) (inv : ∀ c x, f c (f c x)=x) (ne : ∀ c x, f c x≠x)
     (proper : ∀ c d, c≠d → ∀ x, f c x≠f d x)
     (agree : ∀ c x, BoundaryOptions.fixedAt lock c x=true → f c x=SixBoundary.ref c x)
-    (j : Fin 280) (cheap : budget (fun c => key (f c 15)) j < 10) :
+    (j : Fin 280) (cheap : budget (fun c => key (f c 15)) j <
+      10 + Teams.total groups (fun i => failures f j i - 1)) :
     ∃ g ∈ FixedSix.all, (trial g).length=10 ∧ (trial g).Nodup ∧
       ∀ c, Connected (Adj (trial g++actualEdges (f c))) := by
   classical
@@ -72,15 +77,30 @@ theorem price_winner (f : C→V→V) (inv : ∀ c x, f c (f c x)=x) (ne : ∀ c 
     have h := List.all_eq_true.mp (Bool.and_eq_true_iff.mp (verified c)).2 j
       ((by decide : ∀ j : Fin 280, j∈ends) _)
     simpa [count_eq,mate,fail] using h
-  have total : Teams.total groups (fun i => Teams.total colors (fail i)) < 10 := by
+  have total : Teams.total groups (fun i => Teams.total colors (fail i)) ≤ budget (fun c => key (f c 15)) j := by
     rw [Teams.transpose]
-    exact Nat.lt_of_le_of_lt (Teams.total_mono _ _ _ (fun c _ => budgeted c)) cheap
+    exact Teams.total_mono _ _ _ (fun c _ => budgeted c)
+  have path (c i) (off : (shadow (row c)).testBit (index j i)=false) :
+      Connected (Adj (wild (layout j i)++actualEdges (f c))) := by
+    have complete := (Bool.and_eq_true_iff.mp (Bool.and_eq_true_iff.mp (verified c)).1).1
+    exact path_of_unblocked _ (shapes j i).1 _ (by simpa using complete) _ (inv c) (ne c) (spec c).2 (clear _ _ off)
+  have actual (i : Fin 10) : failures f j i ≤ Teams.total colors (fail i) := by
+    unfold failures
+    apply Teams.total_mono
+    intro c _
+    cases e : (shadow (row c)).testBit (index j i) with
+    | false => simp [path c i e,fail,e]
+    | true => split <;> simp [fail,e]
   have existsZero : ∃ i ∈ groups, Teams.total colors (fail i)=0 := by
     apply Classical.byContradiction
     intro no
-    have atLeast := Teams.total_mono groups (fun _ => 1) (fun i => Teams.total colors (fail i))
-      (fun i hi => Nat.zero_lt_of_ne_zero (fun e => no ⟨i,hi,e⟩))
-    have n : Teams.total groups (fun _ => 1)=10 := by decide
+    have point (i) (mem : i∈groups) : 1+(failures f j i-1)≤Teams.total colors (fail i) := by
+      have pos : Teams.total colors (fail i)≠0 := fun e => no ⟨i,mem,e⟩
+      have le := actual i
+      omega
+    have bound := Teams.total_mono groups (fun i => (1:Nat)+(failures f j i-1)) _ point
+    rw [Teams.total_add groups (fun _ => 1) (fun i => failures f j i-1),
+        show Teams.total groups (fun _ => 1)=10 by decide] at bound
     omega
   obtain ⟨i,_,none⟩ := existsZero
   have geom := shapes j i
@@ -99,7 +119,18 @@ theorem price_winner (f : C→V→V) (inv : ∀ c x, f c (f c x)=x) (ne : ∀ c 
   rw [none] at only
   have off : (shadow (row c)).testBit (index j i)=false := by
     cases e : (shadow (row c)).testBit (index j i) <;> simp_all [fail]
-  have complete := (Bool.and_eq_true_iff.mp (Bool.and_eq_true_iff.mp (verified c)).1).1
-  exact path_of_unblocked _ geom.1 _ (by simpa using complete) _ (inv c) (ne c) (spec c).2 (clear _ _ off)
+  exact path c i off
+
+/-- If the total number of starts that the fifteen colors can spoil is
+less than ten for some exterior ending, one of its ten starts connects
+every color. The 36 exterior lines are the only ordinary edges prescribed. -/
+theorem price_winner (f : C→V→V) (inv : ∀ c x, f c (f c x)=x) (ne : ∀ c x, f c x≠x)
+    (proper : ∀ c d, c≠d → ∀ x, f c x≠f d x)
+    (agree : ∀ c x, BoundaryOptions.fixedAt lock c x=true → f c x=SixBoundary.ref c x)
+    (j : Fin 280) (cheap : budget (fun c => key (f c 15)) j < 10) :
+    ∃ g ∈ FixedSix.all, (trial g).length=10 ∧ (trial g).Nodup ∧
+      ∀ c, Connected (Adj (trial g++actualEdges (f c))) :=
+  overlap_winner f inv ne proper agree j (by omega)
+#print axioms overlap_winner
 #print axioms price_winner
 end ExteriorRows

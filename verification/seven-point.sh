@@ -6,6 +6,10 @@ native_module "$trap_src/BoundaryOptions.lean" -lSixBoundary -lSixTrap -lFixedSi
 native_module "$trap_src/CrossBoundary.lean" -lBoundaryOptions -lSixBoundary -lSixTrap -lFixedSix "${deps[@]}"
 run_lean "$trap_src/CrossCheck.lean" "--plugin=$build/libCrossBoundary.$ext"
 run_lean "$trap_src/CrossResult.lean"
+native_module "$trap_src/KeepTwoScan.lean" -lCrossBoundary -lBoundaryOptions -lSixBoundary -lSixTrap -lFixedSix "${deps[@]}"
+run_lean "$trap_src/KeepTwoCheck.lean" "--plugin=$build/libKeepTwoScan.$ext"
+run_lean "$trap_src/KeepTwo.lean"
+run_lean "$trap_src/Replacement.lean" "--plugin=$build/libSixTrap.$ext"
 run_lean "$trap_src/FifteenRecord.lean" "--plugin=$build/libSixTrap.$ext"
 run_lean "$trap_src/SparseRecord.lean" "--plugin=$build/libSixTrap.$ext"
 
@@ -51,3 +55,4 @@ run_lean "$seven_build/ExteriorStarCheck.lean" "--plugin=$build/libExteriorStars
 run_lean "$seven_build/ExteriorEligibility.lean" "--plugin=$build/libExteriorStars.$ext"
 cp "$seven_src/WorkedStar.lean" "$seven_src/one-outside-change.txt" "$seven_build/"
 run_lean "$seven_build/WorkedStar.lean"
+run_lean "$seven_build/SevenOutside.lean"

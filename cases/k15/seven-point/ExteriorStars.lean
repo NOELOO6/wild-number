@@ -11,6 +11,9 @@ def hints := ((include_str "exterior-repairs.txt").trim.splitOn "\n").toArray.ma
 structure Stats where
   visited : Nat := 0
   rescued : Nat := 0
+  atTen : Nat := 0
+  atEleven : Nat := 0
+  atTwelve : Nat := 0
   errors : Nat := 0
   lastCode : Nat := 0
   deriving Repr, DecidableEq, Inhabited
@@ -21,10 +24,12 @@ def scan : List V → Nat → Array Nat → Nat → Stats → Stats
   | [], used, t, code, s =>
     if required.all (fun c => used.testBit c.val) then
       let witness := hints[s.visited]?.getD 281
-      let good := witness>0 && witness≤280 &&
-        budget (fun c => t[c.val]!) (Fin.ofNat' 280 (witness-1)) < 10
-      ⟨s.visited+1,s.rescued+(if good then 1 else 0),
-        s.errors+(if s.lastCode<code+1 && (witness==0 || good) then 0 else 1),code+1⟩
+      let cost := if witness>0 && witness≤280 then
+        budget (fun c => t[c.val]!) (Fin.ofNat' 280 (witness-1)) else 13
+      ⟨s.visited+1,s.rescued+(if cost<10 then 1 else 0),
+        s.atTen+(if cost=10 then 1 else 0),s.atEleven+(if cost=11 then 1 else 0),
+        s.atTwelve+(if cost=12 then 1 else 0),
+        s.errors+(if s.lastCode<code+1 && cost≤12 then 0 else 1),code+1⟩
     else s
   | x::xs, used, t, code, s => (pricesAt x).foldl (fun a c =>
     if used.testBit c.val then a else

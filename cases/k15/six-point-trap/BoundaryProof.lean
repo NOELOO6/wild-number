@@ -175,14 +175,15 @@ private theorem remaining_bit (rs : List Row) (alive i : Nat)
 
 /-- Each listed index gives its own grouping of the fixed six and the outside
 nine. All fifteen ordinary graphs have paths after its ten wild edges are added. -/
-theorem nineteen_of_options (unfixed : R) (opts : C → List R) (seq : List C)
+theorem wins_of_choices (k seed : Nat) (unfixed : R) (opts : C → List R) (seq : List C)
     (distinct : seq.Nodup) (covers : ∀ c : C, c ∈ seq)
-    (verified : (scan (seq.map fun c => (opts c).map (encodeWith unfixed)) 0 initial).belowNineteen=0)
+    (verified : ∀ rs : List Row, Choices rs (seq.map fun c => (opts c).map (encodeWith unfixed)) →
+      compatible 0 rs → enough k (remaining seed rs)=true)
     (f : C→V→V) (inv : ∀ c x,f c (f c x)=x)
     (proper : ∀ c d,c≠d → ∀ x,f c x≠f d x)
     (selected : ∀ c, ∃ m ∈ opts c, respects (f c) m) :
-    ∃ is : List Nat,is.Nodup ∧ is.length=19 ∧ ∀ i∈is,
-      ∃ g, FixedSix.all[i]?=some g ∧ ∀ c,Connected (Adj (trial g++actualEdges (f c))) := by
+    ∃ is : List Nat,is.Nodup ∧ is.length=k ∧ ∀ i∈is,
+      seed.testBit i=true ∧ ∃ g, FixedSix.all[i]?=some g ∧ ∀ c,Connected (Adj (trial g++actualEdges (f c))) := by
   classical
   let m (c : C) := Classical.choose (selected c)
   have spec (c : C) : m c∈opts c ∧ respects (f c) (m c) :=
@@ -195,9 +196,10 @@ theorem nineteen_of_options (unfixed : R) (opts : C → List R) (seq : List C)
     | cons c cs ih => exact .cons (List.mem_map.mpr ⟨m c,(spec c).1,rfl⟩) ih
   have legal := compatible_of_pairwise pick seq 0 distinct (by simp) (fun c d diff =>
     hidden_disjoint unfixed (inv c) (inv d) (spec c).2 (spec d).2 (proper c d diff))
-  obtain ⟨is,nd,len,ok⟩ := positions_of_enough (scan_branch _ _ _ _ (choices seq) legal verified)
+  obtain ⟨is,nd,len,ok⟩ := positions_of_enough (verified _ (choices seq) legal)
   refine ⟨is,nd,len,?_⟩
   intro i hi
+  refine ⟨(remaining_bit _ _ i (ok i hi)).1,?_⟩
   have yes (c : C) := (remaining_bit _ _ i (ok i hi)).2 (pick c)
     (List.mem_map.mpr ⟨c,covers c,rfl⟩)
   have graph (c : C) : ((FixedSix.all[i]?).map (fun g => passes 0 (trial g ++ erase (m c)))).getD false = true := by
@@ -217,6 +219,19 @@ theorem nineteen_of_options (unfixed : R) (opts : C → List R) (seq : List C)
         exact ⟨p,List.mem_map.mpr ⟨p.1,(by decide : ∀ x : V,x∈points) _,Prod.ext rfl ((spec c).2 p inc)⟩,image⟩
     exact Walk.mapInto id (fun _ _ edge => Walk.step (.stay _) (edge.imp sub sub))
       (connected_of_passes 0 _ h a b)
+
+theorem nineteen_of_options (unfixed : R) (opts : C → List R) (seq : List C)
+    (distinct : seq.Nodup) (covers : ∀ c : C, c ∈ seq)
+    (verified : (scan (seq.map fun c => (opts c).map (encodeWith unfixed)) 0 initial).belowNineteen=0)
+    (f : C→V→V) (inv : ∀ c x,f c (f c x)=x)
+    (proper : ∀ c d,c≠d → ∀ x,f c x≠f d x)
+    (selected : ∀ c, ∃ m ∈ opts c, respects (f c) m) :
+    ∃ is : List Nat,is.Nodup ∧ is.length=19 ∧ ∀ i∈is,
+      ∃ g, FixedSix.all[i]?=some g ∧ ∀ c,Connected (Adj (trial g++actualEdges (f c))) := by
+  obtain ⟨is,nd,len,each⟩ := wins_of_choices 19 initial unfixed opts seq distinct covers
+    (fun rs chosen legal => scan_branch _ rs _ _ chosen legal verified) f inv proper selected
+  exact ⟨is,nd,len,fun i hi => (each i hi).2⟩
+
 theorem nineteen_of_census (verified : (scan (pools order) 0 initial).belowNineteen=0)
     (f : C→V→V) (inv : ∀ c x,f c (f c x)=x) (ne : ∀ c x,f c x≠x)
     (proper : ∀ c d,c≠d → ∀ x,f c x≠f d x)
