@@ -27,6 +27,7 @@ if [[ $mode == k15 || $mode == all ]]; then
     gzip -dc "$root/cases/k15/endgame/cert43.tree.gz" > "$build/cert.tree"
     gzip -dc "$root/cases/k15/endgame/cert43.blocks.gz" > "$build/cert.blocks"
     "$lean_bin" -s 65536 -o "$build/BlockCatalogue.olean" "$build/BlockCatalogue.lean"
+    "$lean_bin" -s 65536 "$root/cases/k15/FirstTriple.lean"
     for file in Completion Score39 Sharp40; do
         "$lean_bin" -s 65536 "$root/cases/k15/endgame/$file.lean"
     done
