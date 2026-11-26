@@ -9,6 +9,7 @@
 | [Ten-edge equivalence](Untouched16.lean) | A proof for all relevant colorings on sixteen vertices and every list of at most ten wild edges. |
 | [Perfect one-factorizations](Perfect16.lean) | Checks 3,155 representatives at each of 16 deletions, totaling 50,480 ten-edge witnesses. |
 | [Two exceptional colors](../k15/trade.md) | If thirteen colors obey a two-team split, every possible deletion admits ten wild lines. |
+| [Three teams of five](../k15/three-teams.md) | Ten lines work if one deletion has this three-team structure. |
 | [Two teams of eight](../k15/Teams.lean) | The counting theorem on fifteen points applies at any deletion and lifts back to sixteen. |
 
 In a perfect one-factorization, each pair of colors forms a single loop through all sixteen points. Gill and Wanless supplied the complete list up to relabeling. The Lean theorem checks the supplied representatives and their witnesses. Completeness of the list comes from their published classification. [Authors’ data and format](https://users.monash.edu.au/~iwanless/data/P1F/newP1F.html) · [Classification paper](https://doi.org/10.1017/S0004972719000856)

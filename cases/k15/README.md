@@ -9,6 +9,7 @@
 | Colorings with a rotation of order five | Ten work in both possible cases, including three five-point rings | [Proof and tables](five.md) · [Lean](Five.lean) |
 | Colorings with a rotation of order seven | Ten work for all 797,448 compatible pairs of labeled starters | [Proof and explanation](seven.md) · [Lean](Seven.lean) |
 | Colorings from two teams of eight | At least 48 of 1,800 tested arrangements work for every admissible initial choice | [Proof, page 2](../../reports/last-color-k15-k16.pdf) and [Lean counts](Teams.lean) |
+| Three teams of five | At least 2,400 different groupings work whenever every color pairs within one team and across the other two | [Construction and proof](three-teams.md) · [Lean](ThreeTeams.lean) |
 | Two teams with up to two exceptional colors | Ten work even if the two exceptional colors mix within-team and cross-team lines | [Counting proof](trade.md) · [Lean](Trade.lean) |
 | Deletions of a perfect one-factorization | Ten suffice for all 3,155 catalogue entries, for every deleted point | [Catalogue verification](../k16/Perfect16.lean) |
 | A local test on seven points | A score at most 39 guarantees a completion for every legal coloring of the other 99 lines | [Test and verification](endgame/) |
