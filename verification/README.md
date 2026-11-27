@@ -11,7 +11,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The independent K1
 | K15 seven-point rule, partitions of the other nine and a ten-edge sufficient condition | `./verification/graph-bounds.sh exterior` |
 | K15 packing test, example coloring and prescribed-pair theorem | `./verification/graph-bounds.sh anchor-packing` |
 | At most one edge above the conjectured value for every K15 through K82 | `./verification/graph-bounds.sh one-extra` |
-| Round-robin theorem for every order from three upward, common-half selection, K15/K21 repairs, K16 quartet obstruction and K21 upper bound | `./verification/graph-bounds.sh regrouping` |
+| Round-robin theorem for every order from three upward, common-half selection, single-swap criteria, K9/K15/K21 examples, K16 quartet obstruction and K21 upper bound | `./verification/graph-bounds.sh regrouping` |
 | Four exhaustive K15 counts, the redraw of the original 19 and all six-point completions | `./verification/replay.sh six-point-trap` |
 | The 13-point obstruction certificate and its regenerated formula | `./verification/replay.sh k13` |
 | Three-point and four-point K15 families, the two-swap repair and the 2,800-grouping search | `./verification/replay.sh stars` |

@@ -29,6 +29,10 @@ In each color, every connected piece contains an even number of groups. Pair up 
 
 A balanced choice can still fail on K15. In the sparse example, start with {0,2,3}, {1,4,5}, {6,7,9}, {8,10,12}, {11,13,14}. Color 10 has two pieces. The last three triples meet each piece in exactly half its groups. Merging those triples connects every color. All 280 subsequent splits of those nine vertices fail. A different choice works by exchanging 5 and 7 between the second and third triples. [Checked cuts and paths](HalfTrap.lean)
 
+## Swapping two points
+
+When one color has exactly two pieces, choose a point in each piece and temporarily remove their two matching edges. The exchange connects that color precisely when at least one removed edge still has a path between its endpoints. A second path test determines whether each previously connected color survives the same exchange. Both criteria apply at odd and even orders. The new K15 example has 36 exchanges that repair the target color and none that preserve all the others. [Swap criteria, proof and examples](single-swaps.md)
+
 ## What a redraw can repair
 
 Remove the wild edges inside two chosen groups. Keep all other wild edges and one color. A proposed split of those points into two nonempty groups connects that color exactly when both conditions below hold.

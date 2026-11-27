@@ -4,7 +4,7 @@ namespace WildExact.Regroup
 open WildDeletion EdgeWalk
 set_option maxRecDepth 10000
 
-private def swapPoints {n} (x y : Fin n) (g : List (List Nat)) :=
+def swapPoints {n} (x y : Fin n) (g : List (List Nat)) :=
   g.map fun t => t.map fun v => if v=x.val then y.val else if v=y.val then x.val else v
 
 private def colors {n k} (g : Coloring n k) (c : Fin k) :=

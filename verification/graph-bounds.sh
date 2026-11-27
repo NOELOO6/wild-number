@@ -106,7 +106,8 @@ case ${1:-bounds} in
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
     done
     "$lean" --root="$root" -o "$build/StarDraw.olean" "$root/cases/sieve/StarDraw.lean"
-    for name in Periodic RoundRobin Reflection CyclicOrders TwoGroups CommonHalf MergeColors SwapExamples HalfTrap Bounds21; do
+    "$lean" --root="$root" -o "$build/MatchingCuts.olean" "$root/cases/sieve/MatchingCuts.lean"
+    for name in Periodic RoundRobin Reflection CyclicOrders TwoGroups CommonHalf MergeColors SwapExamples HalfTrap Bounds21 BridgeSwitch PartnerSwitch GraphSwitch OddSwitch DetourCount ChoosePoints SwitchCases; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/regrouping/$name.lean"
     done
     for name in QuartetTrap QuartetCount; do
