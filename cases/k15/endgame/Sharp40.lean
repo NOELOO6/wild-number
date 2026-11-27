@@ -60,6 +60,20 @@ def connects (omitRoot : Bool) (m : Teams.Matching) :=
   flood lines 16 2 == keep
 theorem ten_wild_edges_connect : wild.length = 10 ∧ wild.Nodup ∧
     matchings.all (fun m => connects true m && connects false m) = true := by native_decide
+private def color (x y : Nat) := matchings.findIdx (fun m => m.contains (edge x y))
+private def crossColors := [1,2,3].flatMap (fun x => [4,5,6].map (color x))
+private def insideA := [color 1 2,color 1 3,color 2 3]
+private def insideB := [color 4 5,color 4 6,color 5 6]
+
+/-- All nine cross edges have different colors, the two inside palettes are
+disjoint, and the six edges in each root quartet are distinct. Even this
+start loses every completion. -/
+theorem rainbow_start_fails : proper=true ∧ crossColors.Nodup ∧
+    (insideA++insideB).Nodup ∧ (insideA++[color 0 1,color 0 2,color 0 3]).Nodup ∧
+    (insideB++[color 0 4,color 0 5,color 0 6]).Nodup ∧ wins startA=0 := by
+  refine ⟨legal,?_,?_,?_,?_,outcomes.2.1⟩ <;> native_decide
+
+#print axioms rainbow_start_fails
 #print axioms point_fifteen
 #print axioms ten_wild_edges_connect
 end Sharp40

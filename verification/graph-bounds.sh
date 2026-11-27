@@ -84,6 +84,9 @@ case ${1:-bounds} in
       for name in AnchorPacking AnchorExample PackingColoring; do
         "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/k15/half-packing/$name.lean"
       done
+      for name in ColumnCount SevenSets RowPalettes BarrierRows RectangleRule RectangleGraph; do
+        "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/k15/rainbow-rectangle/$name.lean"
+      done
       exit 0
     fi
     for name in KernelTables ExactRange TrimmedEvents InnerCuts TrimmedScopes LocalSeals PairRegions RootRegions RegionBudget MatchingRegions TrimmedLayout ExactTrimmed SplitLayout ExactSplit JointDegrees JointScopes ExactJoint ExactInterval EvenTriples EvenOrders; do
