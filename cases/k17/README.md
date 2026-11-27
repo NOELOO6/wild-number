@@ -83,10 +83,14 @@ Deleting any point from a minimum proper coloring of K18 leaves a minimum proper
 
 ## Reproduce the result
 
-From the repository root run `./verification/replay.sh k17` with Lean 4.19.0 and a C++20 compiler. The two implementations check **173,837,682** possible third matchings across the fifteen pair representatives. Each uses the committed integer prices. An optimizer helped find them. The proof checks the integers directly.
+From the repository root run `./verification/graph-bounds.sh exact-k17` with Lean 4.19.0 to replay the theorem for K17 and K18. The proof starts with an arbitrary minimum proper coloring and verifies the integer prices in this directory. Its exhaustive checks use Lean’s native evaluator. The independent replay, `./verification/replay.sh k17`, checks **173,837,682** possible third matchings across the fifteen representatives using Lean and C++20. [Verification guide](../../verification/)
 
 | What is checked | Implementation |
 | --- | --- |
+| Exact upper and lower bounds for an arbitrary coloring of K17 or K18 | [Final Lean theorem](../../verification/exact/K17K18.lean) |
+| At least 403,637 distinct groupings work for each K17 coloring | [Global count](../../verification/exact/GlobalCount.lean) · [Distinct groupings](../../verification/exact/LayoutIdentity.lean) |
+| Why the integer prices bound triple failures for an arbitrary coloring | [Third-color bound](../../verification/exact/PairAccount.lean) · [Sum over colors](../../verification/exact/ColorAccounts.lean) |
+| Why a surviving grouping supplies twelve legal wild edges | [Graph construction](../../verification/exact/LayoutPaths.lean) |
 | Why every ordered pair of colors in any K17 coloring has one of the fifteen representative forms | [Lean normalization theorem](../../verification/exact/K17Pairs.lean) |
 | Why the fifteen cut tests suffice for arbitrary matching and connected blocks | [Lean connectivity theorem](Connectivity.lean) |
 | Why counting by layout or color subset gives the same number, and each edge price is charged once | [Lean double-counting identities](Incidence.lean) |
@@ -95,8 +99,6 @@ From the repository root run `./verification/replay.sh k17` with Lean 4.19.0 and
 | Verify pair types, price totals, transfer cancellation, the cubic inequality and final count | [Lean counting theorems](Certificate.lean) |
 | Independently enumerate the layouts and matchings and recompute the guarantee | [C++ checker](check.cpp) · [Integer certificate](prices.txt) |
 | Follow all seventeen colors for a specific set of twelve lines | [Lean example](Example.lean) |
-
-The universal graph argument is the written proof above. The normalization of arbitrary color pairs to the fifteen types is now formalized. Run `./verification/graph-bounds.sh exact-k17-pairs` to check it. The identification of the enumerated layout and third-color counts with arbitrary graph inputs still uses written arguments. Lean proves the cut criterion, the double-counting identities for arbitrary incidence relations, the finite checks, and the counting implication. The written proof applies these results to the given coloring. An end-to-end formal theorem starting with a properly colored graph remains open in this repository. The finite Lean checks use `native_decide`, which trusts Lean's native evaluator.
 
 ### Certificate format
 

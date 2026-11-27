@@ -14,10 +14,10 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | --- | ---: | --- | --- |
 | K₁₃, K₁₄ | 9 | ✅ Solved in Lean | [End-to-end theorem](verification/exact/K13K14.lean) · [Proof and credits](cases/k13/) |
 | K₁₅, K₁₆ | 10 | Partial | 10–11 · [K15](cases/k15/) · [K16](cases/k16/) |
-| K₁₇, K₁₈ | 12 | Solved in writing · Lean partial | [Written proof with Lean-checked counts](cases/k17/) |
+| K₁₇, K₁₈ | 12 | ✅ Solved in Lean | [End-to-end theorem](verification/exact/K17K18.lean) · [Counting proof](cases/k17/) |
 | K₁₉ | 13 | Partial | 13–14 · [Bounds and solved families](cases/k19/) |
 
-The K₁₃/K₁₄ theorem starts with an arbitrary minimum proper coloring and proves both bounds. Its finite checks use Lean’s native evaluator. The K₁₇/K₁₈ written proof uses exhaustive counts that can also be replayed in Lean. [Verification guide](verification/)
+Both exact theorems start with an arbitrary minimum proper coloring and prove the upper and lower bounds. Run `./verification/graph-bounds.sh exact` to replay all four cases. The finite checks use Lean’s native evaluator. [Verification guide](verification/)
 
 ### Results from other sources
 

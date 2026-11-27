@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 root=$(cd "$(dirname "$0")/.." && pwd)
+if [[ ${1:-bounds} == exact ]]; then
+    "$root/verification/graph-bounds.sh" exact-k13
+    "$root/verification/graph-bounds.sh" exact-k17
+    exit 0
+fi
 lean=$(realpath "$(command -v "${LEAN:-lean}")")
 lake="$(dirname "$lean")/lake"
 export PATH="$(dirname "$lean"):$PATH"
@@ -15,13 +20,14 @@ if [[ "$revision" != c44e0c8ee63ca166450922a373c7409c5d26b00b ]]; then
     echo 'Use the mathlib checkout at tag v4.19.0.' >&2
     exit 1
 fi
-if [[ ! -f .lake/build/lib/lean/Mathlib/Algebra/BigOperators/Ring/Finset.olean ||
+if [[ ! -f .lake/build/lib/lean/Mathlib/GroupTheory/Perm/Sign.olean ||
+      ! -f .lake/build/lib/lean/Mathlib/Algebra/BigOperators/Ring/Finset.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Algebra/BigOperators/Fin.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Data/Fintype/Perm.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Data/Fintype/BigOperators.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Data/Fintype/Powerset.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Algebra/Order/BigOperators/Group/Finset.olean ]]; then
-    "$lake" exe cache get Mathlib/Algebra/BigOperators/Ring/Finset.lean \
+    "$lake" exe cache get Mathlib/GroupTheory/Perm/Sign.lean Mathlib/Algebra/BigOperators/Ring/Finset.lean \
       Mathlib/Data/Fintype/Perm.lean Mathlib/Data/Fintype/BigOperators.lean Mathlib/Algebra/BigOperators/Fin.lean \
       Mathlib/Data/Fintype/Powerset.lean Mathlib/Algebra/Order/BigOperators/Group/Finset.lean
 fi
@@ -29,11 +35,11 @@ build=$(mktemp -d)
 trap 'rm -rf -- "$build"' EXIT
 export LEAN_PATH="$build:$("$lake" env printenv LEAN_PATH)"
 "$lean" --version
-if [[ ${1:-bounds} == exact || ${1:-bounds} == exact-k13 ]]; then
+if [[ ${1:-bounds} == exact-k13 ]]; then
     source "$root/verification/exact-k13.sh"
     exit 0
 fi
-if [[ ${1:-bounds} == exact-k17-pairs ]]; then
+if [[ ${1:-bounds} == exact-k17 || ${1:-bounds} == exact-k17-pairs ]]; then
     source "$root/verification/exact-k17.sh"
     exit 0
 fi
@@ -72,5 +78,5 @@ case ${1:-bounds} in
       "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
     done
     ;;
-  *) echo 'Use exact-k13, exact-k17-pairs, bounds, redraw, pieces or last-colors.' >&2; exit 2 ;;
+  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, redraw, pieces or last-colors.' >&2; exit 2 ;;
 esac
