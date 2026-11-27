@@ -46,10 +46,10 @@ theorem placement_near (i : Nat) (small : i<34) (m : Fin (order i) → List (Edg
   apply graph_bound (k:=n/2) (base:=(2*n+2)/3) b (Fin.last t) m complete proper rfl line _ stars
   exact lt_of_le_of_lt (Nat.mul_le_mul_left n (compressed b (pairs n) tr (endPair i) d)) num
 
-private noncomputable def colorList {n : Nat} (g : Coloring n n) (c : Fin n) :=
+noncomputable def colorList {n : Nat} (g : Coloring n n) (c : Fin n) :=
   ((univ : Finset (Fin n × Fin n)).filter (fun e => e.1<e.2 ∧ g.paint e.1 e.2=c)).toList
 
-private theorem list_color {n : Nat} (g : Coloring n n) (c x y : Fin n) :
+theorem list_color {n : Nat} (g : Coloring n n) (c x y : Fin n) :
     Adj (colorList g c) x y ↔ x≠y ∧ g.paint x y=c := by
   simp only [Adj,colorList,Finset.mem_toList,mem_filter,mem_univ,true_and]
   rw [g.symm y x]
@@ -61,6 +61,28 @@ private theorem list_color {n : Nat} (g : Coloring n n) (c x y : Fin n) :
     rcases lt_or_gt_of_ne ne with a|a
     · exact Or.inl ⟨a,h⟩
     · exact Or.inr ⟨a,h⟩
+
+/-- A concrete placement for an ordinary coloring, retaining the two endpoints
+of the extra edge so that their groups can subsequently be redrawn. -/
+theorem repaired_layout (i : Nat) (small : i<34) (g : Coloring (order i) (order i)) :
+    ∃ (p : Equiv.Perm (Fin (order i))) (a z : Fin (order i)), a≠z ∧
+      ∀ c, Connected (Adj (((a,z)::wild (template i) p) ++ colorList g c)) := by
+  let n := order i
+  have check := List.all_eq_true.mp checked i (List.mem_range.mpr small)
+  simp only [passesOrder,Id.run,pure,Bool.and_eq_true,decide_eq_true_eq] at check
+  obtain ⟨⟨⟨⟨tr,d⟩,line⟩,num⟩,_⟩ := check
+  have complete (x y : Fin n) (ne : x≠y) : ∃ c,Adj (colorList g c) x y :=
+    ⟨g.paint x y,(list_color g _ x y).mpr ⟨ne,rfl⟩⟩
+  have proper (c : Fin n) (x y z : Fin n) (xy : Adj (colorList g c) x y)
+      (xz : Adj (colorList g c) x z) : y=z := by
+    obtain ⟨ny,ey⟩ := (list_color _ _ _ _).mp xy
+    obtain ⟨nz,ez⟩ := (list_color _ _ _ _).mp xz
+    exact g.proper x y z ny nz (ey.trans ez.symm)
+  obtain ⟨q,hq⟩ := Classical.axiomOfChoice
+    (coordinates (k:=n/2) rfl (by simpa using line) (colorList g) complete proper)
+  haveI : Nontrivial (Fin (order i)) := Fin.nontrivial_iff_two_le.mpr (by dsimp [order]; omega)
+  apply layout_and_repair (template i) (pairs n) (Fin.last (regular i)) (colorList g) q hq
+  simpa using lt_of_le_of_lt (Nat.mul_le_mul_left n (compressed (template i) (pairs n) tr (endPair i) d)) num
 
 private theorem convert {n b : Nat} (g : Coloring n n) (h : Solution (colorList g) b) : Upper g b := by
   obtain ⟨w,_,legal,size,works⟩ := h

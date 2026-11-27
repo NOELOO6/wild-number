@@ -8,7 +8,7 @@ namespace OneExtra
 def width {n : Nat} {G : Type} [DecidableEq G] (b : Blocks (Fin n) G) (i : G) :=
   (univ.filter (fun v => b.tag v=i)).card
 
-private theorem side_count {n : Nat} {G : Type} [Fintype G] [DecidableEq G]
+theorem side_count {n : Nat} {G : Type} [Fintype G] [DecidableEq G]
     (b : Blocks (Fin n) G) (U : Finset G) : (side b U).card=∑ i∈U,width b i := by
   let S := side b U
   have count := card_eq_sum_card_fiberwise (s:=S) (t:=U) (f:=b.tag)

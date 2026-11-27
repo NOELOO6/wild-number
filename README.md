@@ -16,15 +16,17 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | K₁₅, K₁₆ | 10 | Partial | 10–11 · [K15](cases/k15/) · [K16](cases/k16/) |
 | K₁₇, K₁₈ | 12 | ✅ Solved in Lean | [End-to-end theorem](verification/exact/K17K18.lean) · [Counting proof](cases/k17/) |
 | K₁₉, K₂₀ | 13 | Partial | 13–14 · [K19 families](cases/k19/) · [General bound](cases/one-extra/) |
-| K₂₁, K₂₂ | 14 | Partial | 14–15 · [Graph bounds](cases/one-extra/) |
+| K₂₁, K₂₂ | 14 | Partial | 14–15 · [Graph bounds and K21 obstructions](cases/one-extra/) |
 | K₆ₘ for every m ≥ 7 | 4m | ✅ Solved in Lean | [Infinite-family theorem](cases/sieve/InfiniteEven.lean) · [First values](cases/sieve/#orders-divisible-by-six) |
-| Other K₂₃ through K₇₆ | ⌊4⌈n/2⌉/3⌋ | Partial | Conjectured value or one more · [End-to-end theorem](cases/one-extra/NearRange.lean) |
+| Other K₂₃ through K₇₆ | ⌊4⌈n/2⌉/3⌋ | Partial | Conjectured value or one more · [General bound](cases/one-extra/NearRange.lean) · [K24, K30 and K36 families](cases/anchored/) |
 | K₇₇, K₇₈ | 52 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactTrimmed.lean) |
 | K₇₉, K₈₀ | 53 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactSplit.lean) |
 | K₈₁, K₈₂ | 54 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactJoint.lean) |
 | K₈₃ through K₁₅₄ | ⌊4⌈n/2⌉/3⌋ | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactRange.lean) · [Counting argument](cases/sieve/) |
 
 The exact theorems start with an arbitrary minimum proper coloring and prove both bounds. Run `./verification/graph-bounds.sh exact` to replay them. K13–K14 and K17–K18 include native finite checks. Lean’s ordinary kernel checks the infinite family K₆ₘ for m ≥ 7 and the full K77–K154 interval, including the arithmetic. [Full interval theorem](cases/sieve/ExactInterval.lean) · [Verification guide](verification/)
+
+Every coloring from K15 through K82 admits a common exterior that leaves six to eight vertices to regroup within the conjectured budget. Whether one split works for every color remains open at the partial orders. [Reduction and checked examples](cases/one-extra/#the-remaining-six-to-eight-vertices)
 
 The standard round-robin coloring attains the conjectured value for every order n ≥ 3. [Uniform constructions in Lean](cases/regrouping/CyclicOrders.lean)
 

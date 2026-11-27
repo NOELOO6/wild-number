@@ -24,13 +24,15 @@ fi
 if [[ ! -f .lake/build/lib/lean/Mathlib/GroupTheory/Perm/Sign.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Algebra/BigOperators/Ring/Finset.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Algebra/BigOperators/Fin.olean ||
+      ! -f .lake/build/lib/lean/Mathlib/Algebra/BigOperators/Group/Finset/Powerset.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Data/Fintype/Perm.olean ||
+      ! -f .lake/build/lib/lean/Mathlib/Data/Fintype/Prod.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Data/Fintype/BigOperators.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Data/Fintype/Powerset.olean ||
       ! -f .lake/build/lib/lean/Mathlib/Algebra/Order/BigOperators/Group/Finset.olean ]]; then
     "$lake" exe cache get Mathlib/GroupTheory/Perm/Sign.lean Mathlib/Algebra/BigOperators/Ring/Finset.lean \
-      Mathlib/Data/Fintype/Perm.lean Mathlib/Data/Fintype/BigOperators.lean Mathlib/Algebra/BigOperators/Fin.lean \
-      Mathlib/Data/Fintype/Powerset.lean Mathlib/Algebra/Order/BigOperators/Group/Finset.lean
+      Mathlib/Data/Fintype/Perm.lean Mathlib/Data/Fintype/Prod.lean Mathlib/Data/Fintype/BigOperators.lean Mathlib/Algebra/BigOperators/Fin.lean \
+      Mathlib/Data/Fintype/Powerset.lean Mathlib/Algebra/BigOperators/Group/Finset/Powerset.lean Mathlib/Algebra/Order/BigOperators/Group/Finset.lean
 fi
 if [[ ${1:-bounds} == regrouping || ${1:-bounds} == sieve || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior || ${1:-bounds} == palette19 ]]; then
     extras=(Mathlib/Combinatorics/Hall/Finite Mathlib/Data/ZMod/Basic Mathlib/Data/Fintype/Prod Mathlib/Data/List/Dedup Mathlib/Data/Int/GCD Mathlib/Tactic/Ring)
@@ -65,11 +67,19 @@ for name in UniformCuts CutRepair GraphLayouts ColorCoordinates LegalEdges Bound
 done
 case ${1:-bounds} in
   bounds) ;;
-  one-extra)
+  one-extra|anchored)
     for name in ExactModel UniversalLower; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
     done
-    for name in NearCharge NearRange; do
+    "$lean" --root="$root" -s 65536 -o "$build/StarDraw.olean" "$root/cases/sieve/StarDraw.lean"
+    if [[ ${1:-bounds} == anchored ]]; then
+      for name in PairFibers PairPlacement AnchoredGraph PairTable CycleTemplates MaskSum CycleLists Anchor24 Anchor30 Anchor36; do
+        "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/anchored/$name.lean"
+      done
+      exit 0
+    fi
+    "$lean" --root="$root" -s 65536 -o "$build/MatchingModel.olean" "$root/verification/exact/MatchingModel.lean"
+    for name in NearCharge NearRange ThreeGroups CoreSplit TwoGroupCore CoreRange CoreBudget CoreProfiles TwoCoreCheck Core21Data Core21Trap TwoCore19 TwoCore21 TwoCore23 CoreTransfer; do
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
     done
     ;;
@@ -147,5 +157,5 @@ case ${1:-bounds} in
       "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
     done
     ;;
-  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, exterior, palette19, anchor-packing, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
+  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, anchored, exterior, palette19, anchor-packing, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
 esac
