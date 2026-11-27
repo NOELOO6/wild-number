@@ -65,6 +65,14 @@ for name in UniformCuts CutRepair GraphLayouts ColorCoordinates LegalEdges Bound
 done
 case ${1:-bounds} in
   bounds) ;;
+  one-extra)
+    for name in ExactModel UniversalLower; do
+      "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
+    done
+    for name in NearCharge NearRange; do
+      "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
+    done
+    ;;
   sieve)
     for name in ExactModel UniversalLower MatchingModel; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
@@ -108,5 +116,5 @@ case ${1:-bounds} in
       "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
     done
     ;;
-  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
+  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
 esac
