@@ -12,6 +12,8 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The independent K1
 | K15 packing test, example coloring and prescribed-pair theorem | `./verification/graph-bounds.sh anchor-packing` |
 | Exact K24, K30 and K36 families defined by alternating-cycle counts | `./verification/graph-bounds.sh anchored` |
 | One-extra bound, six-to-eight-point reduction for K15 through K82, and K19/K21/K23 obstructions and repairs | `./verification/graph-bounds.sh one-extra` |
+| Reassignment rule at every order, closed-form color bound, sharp three- and four-point obstructions, and five-point examples | `./verification/graph-bounds.sh slots` |
+| All 1,401,400 groupings of the five-point K15 obstruction | `./verification/graph-bounds.sh slots --count-k15` |
 | Round-robin theorem for every order from three upward, common-half selection, single-swap criteria, K9/K15/K21 examples, K16 quartet obstruction and K21 upper bound | `./verification/graph-bounds.sh regrouping` |
 | Four exhaustive K15 counts, the redraw of the original 19 and all six-point completions | `./verification/replay.sh six-point-trap` |
 | The 13-point obstruction certificate and its regenerated formula | `./verification/replay.sh k13` |

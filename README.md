@@ -28,6 +28,8 @@ The exact theorems start with an arbitrary minimum proper coloring and prove bot
 
 Every coloring from K15 through K82 admits a common exterior that leaves six to eight vertices to regroup within the conjectured budget. Whether one split works for every color remains open at the partial orders. [Reduction and checked examples](cases/one-extra/#the-remaining-six-to-eight-vertices)
 
+For a fixed choice of points to rearrange, the repository gives a general bound on how many colors can block every move. The sharp bounds are four colors for three points and thirteen for four. With five chosen points, every proper subset of the palette can work while the full palette fails, even on K15. [Theorems, examples and repairs](cases/regrouping/slots/)
+
 The standard round-robin coloring attains the conjectured value for every order n ≥ 3. [Uniform constructions in Lean](cases/regrouping/CyclicOrders.lean)
 
 ### Results from other sources

@@ -34,10 +34,13 @@ if [[ ! -f .lake/build/lib/lean/Mathlib/GroupTheory/Perm/Sign.olean ||
       Mathlib/Data/Fintype/Perm.lean Mathlib/Data/Fintype/Prod.lean Mathlib/Data/Fintype/BigOperators.lean Mathlib/Algebra/BigOperators/Fin.lean \
       Mathlib/Data/Fintype/Powerset.lean Mathlib/Algebra/BigOperators/Group/Finset/Powerset.lean Mathlib/Algebra/Order/BigOperators/Group/Finset.lean
 fi
-if [[ ${1:-bounds} == regrouping || ${1:-bounds} == sieve || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior || ${1:-bounds} == palette19 ]]; then
+if [[ ${1:-bounds} == slots || ${1:-bounds} == regrouping || ${1:-bounds} == sieve || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior || ${1:-bounds} == palette19 ]]; then
     extras=(Mathlib/Combinatorics/Hall/Finite Mathlib/Data/ZMod/Basic Mathlib/Data/Fintype/Prod Mathlib/Data/List/Dedup Mathlib/Data/Int/GCD Mathlib/Tactic/Ring)
     if [[ ${1:-bounds} == sieve || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior || ${1:-bounds} == palette19 ]]; then
         extras=(Mathlib/Tactic/Linarith Mathlib/Tactic/FieldSimp)
+    fi
+    if [[ ${1:-bounds} == slots ]]; then
+        extras=(Mathlib/LinearAlgebra/Dimension/Constructions Mathlib/LinearAlgebra/Dimension/Finite Mathlib/Combinatorics/Enumerative/DyckWord Mathlib/Order/PiLex Mathlib/Logic/Equiv/Fintype Mathlib/Data/Fintype/Sum Mathlib/Tactic/Ring)
     fi
     for module in "${extras[@]}"; do
         if [[ ! -f .lake/build/lib/lean/"$module".olean ]]; then
@@ -67,7 +70,7 @@ for name in UniformCuts CutRepair GraphLayouts ColorCoordinates LegalEdges Bound
 done
 case ${1:-bounds} in
   bounds) ;;
-  one-extra|anchored)
+  one-extra|anchored|slots)
     for name in ExactModel UniversalLower; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
     done
@@ -76,6 +79,18 @@ case ${1:-bounds} in
       for name in PairFibers PairPlacement AnchoredGraph PairTable CycleTemplates MaskSum CycleLists Anchor24 Anchor30 Anchor36; do
         "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/anchored/$name.lean"
       done
+      exit 0
+    fi
+    if [[ ${1:-bounds} == slots ]]; then
+      for name in NearCharge NearRange ThreeGroups CoreSplit TwoGroupCore CoreRange TwoCoreCheck TwoCore19 TwoCore23 Exchange21Data; do
+        "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
+      done
+      for name in SlotCuts SmallSides ThreeSlots FourColors PaletteBound CutRank DecreasingTriples PaletteSizes CatalanBound SlotExamples SlotCases ReassignmentCheck QuartetCases QuintetCases OneReplacement; do
+        "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/regrouping/slots/$name.lean"
+      done
+      if [[ ${2:-} == --count-k15 ]]; then
+        "$root/verification/vertex-redraw.sh" "$lean" "$build" slot-count
+      fi
       exit 0
     fi
     "$lean" --root="$root" -s 65536 -o "$build/MatchingModel.olean" "$root/verification/exact/MatchingModel.lean"
@@ -157,5 +172,5 @@ case ${1:-bounds} in
       "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
     done
     ;;
-  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, anchored, exterior, palette19, anchor-packing, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
+  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, slots, anchored, exterior, palette19, anchor-packing, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
 esac

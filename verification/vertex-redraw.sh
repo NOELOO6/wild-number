@@ -29,6 +29,10 @@ if [[ ${3:-stars} != stars ]]; then
     deps=(-lRepair -lOutside -lFourStars -lSearchExample -lVertexRedraw "${core[@]}")
     native_module "$four/FixedSix.lean" "${deps[@]}"
     native_module "$trap_src/SixTrap.lean" -lFixedSix "${deps[@]}"
+    if [[ ${3:-} == slot-count ]]; then
+        run_lean "$root/cases/regrouping/slots/Count15.lean" "--plugin=$build/libSixTrap.$ext"
+        exit 0
+    fi
     if [[ ${3:-} == seven-point ]]; then
         native_module "$trap_src/SixBoundary.lean" -lSixTrap -lFixedSix "${deps[@]}"
         run_lean "$trap_src/BoundaryProof.lean" "--plugin=$build/libSixBoundary.$ext"
