@@ -1,9 +1,10 @@
-# Exact wild numbers for K77–K154
+# Exact wild numbers from finite partition counts
 
-At each of these 78 orders, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [Exact interval theorem](ExactInterval.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
+At each order from K77 through K154 and at K48, K54, K60, K66 and K72, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The interval proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [Exact interval theorem](ExactInterval.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
 
 | Orders | Wild number |
 | --- | ---: |
+| K48, K54, K60, K66, K72 | 32, 36, 40, 44, 48 |
 | K77, K78 | 52 |
 | K79, K80 | 53 |
 | K81, K82 | 54 |
@@ -21,6 +22,10 @@ The proof first counts partitions avoiding every such cut involving one or two f
 
 The proof uses the matching and random-partition approach of the separate large-order project. The finite comparison sequence and its order-by-order certificates are developed here. [Large-order proof](https://github.com/1337isnot1337/solved-conjectures/blob/main/results/wild-number-complete-graphs/IMPROVEMENT.md)
 
+## Five smaller even orders
+
+At K48, K54, K60, K66 and K72 all vertices can be divided into triples. A color pairs up every vertex. A closed union of triples must therefore contain an even number of triples. The first possible obstruction has six vertices. When a cut divides the vertices equally, its two sides describe the same failure, so the count keeps the side avoiding one fixed point. The resulting inequalities leave a working grouping at all five orders. [Graph proof](EvenTriples.lean) · [Exact values](EvenOrders.lean)
+
 ## K77 and K78
 
 Both orders have wild number 52. The sharper count discards subdivisions that would already have failed a smaller cut test. In a nine-point cut the partner of the temporary root can join any of four matching pairs to make a forbidden triple. Exactly 40 of the 280 subdivisions contain one of these four triples. In a twelve-point cut, divide the six matching pairs into two sets of three. The two sides have ten subdivisions each, excluding at least 100 of 15,400. These deductions suffice in the same rational inequality at K77. The even-order transfer gives K78. [Counting lemmas](InnerCuts.lean) · [Matching argument](TrimmedScopes.lean) · [Final theorem](ExactTrimmed.lean)
@@ -35,4 +40,4 @@ Both orders have wild number 54. Fix one vertex and consider cuts that contain i
 
 ## Verification
 
-Run `./verification/graph-bounds.sh sieve` from the repository root with Lean 4.19.0. The checker constructs the comparison sequence from integers and tests its inequalities exactly. Lean’s ordinary kernel checks the graph argument and all 39 numerical certificates. The tables are generated during elaboration and every inequality is checked again by kernel reduction. [Kernel certificates](KernelTables.lean) [Arithmetic checker](Numeric.lean) · [Verification guide](../../verification/)
+Run `./verification/graph-bounds.sh sieve` from the repository root with Lean 4.19.0. The checker constructs the comparison sequence from integers and tests its inequalities exactly. Lean’s ordinary kernel checks the graph argument and all 44 numerical certificates. The tables are generated during elaboration and every inequality is checked again by kernel reduction. [Kernel certificates](KernelTables.lean) [Arithmetic checker](Numeric.lean) · [Verification guide](../../verification/)
