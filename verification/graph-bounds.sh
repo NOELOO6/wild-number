@@ -32,9 +32,9 @@ if [[ ! -f .lake/build/lib/lean/Mathlib/GroupTheory/Perm/Sign.olean ||
       Mathlib/Data/Fintype/Perm.lean Mathlib/Data/Fintype/BigOperators.lean Mathlib/Algebra/BigOperators/Fin.lean \
       Mathlib/Data/Fintype/Powerset.lean Mathlib/Algebra/Order/BigOperators/Group/Finset.lean
 fi
-if [[ ${1:-bounds} == regrouping || ${1:-bounds} == sieve || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior ]]; then
+if [[ ${1:-bounds} == regrouping || ${1:-bounds} == sieve || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior || ${1:-bounds} == palette19 ]]; then
     extras=(Mathlib/Combinatorics/Hall/Finite Mathlib/Data/ZMod/Basic Mathlib/Data/Fintype/Prod Mathlib/Data/List/Dedup Mathlib/Data/Int/GCD Mathlib/Tactic/Ring)
-    if [[ ${1:-bounds} == sieve || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior ]]; then
+    if [[ ${1:-bounds} == sieve || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior || ${1:-bounds} == palette19 ]]; then
         extras=(Mathlib/Tactic/Linarith Mathlib/Tactic/FieldSimp)
     fi
     for module in "${extras[@]}"; do
@@ -73,13 +73,20 @@ case ${1:-bounds} in
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
     done
     ;;
-  sieve|anchor-packing|exterior)
+  sieve|anchor-packing|exterior|palette19)
     for name in ExactModel UniversalLower MatchingModel; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
     done
     for name in FiniteSieve Avoidance TripleParts TripleCounts Coupling Relabel TripleCoupling ClosedEvents SizeBounds MatchingCuts Factors Rainbow FrozenStats FrozenRows RowTotals DegreeChord FrozenLayout PlantedCuts StarDraw Numeric GraphSieve; do
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/sieve/$name.lean"
     done
+    if [[ ${1:-bounds} == palette19 ]]; then
+      "$lean" --root="$root" -o "$build/Example19.olean" "$root/cases/k19/two-moves/Example19.lean"
+      for name in PaletteData PaletteChecks PaletteGraph OrdinaryRedraw; do
+        "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/k19/four-colors/$name.lean"
+      done
+      exit 0
+    fi
     if [[ ${1:-bounds} == exterior ]]; then
       source "$root/verification/nine-points.sh"
       for name in ExteriorData ExteriorPrices ExteriorTotals ExteriorPorts ExteriorAccounts ExteriorCuts ExteriorNine ExteriorGraph FiveTriples ExteriorSplit ResidualCuts ExteriorRepair; do
@@ -140,5 +147,5 @@ case ${1:-bounds} in
       "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
     done
     ;;
-  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, exterior, anchor-packing, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
+  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, exterior, palette19, anchor-packing, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
 esac

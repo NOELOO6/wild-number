@@ -33,6 +33,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The independent K1
 | All standard-library checks above | `./verification/replay.sh` |
 | End-to-end graph bounds for arbitrary K15, K16 and K19 colorings | `./verification/graph-bounds.sh` |
 | Thirteen lines leaving at most one extra piece in an arbitrary K19 coloring | `./verification/graph-bounds.sh pieces` |
+| Thirteen fixed lines for any four-color redraw of the supplied K19/K20 coloring | `./verification/graph-bounds.sh palette19` |
 | Thirteen lines after eight round-robin colors on K19 change | `./verification/graph-bounds.sh redraw` |
 | Determine the answer for a supplied K15 coloring | `python3 verification/solve.py 15 examples/search-coloring.json` |
 | Count all groupings for a supplied K16 coloring | `python3 verification/solve.py 16 examples/search-coloring.json --count` |

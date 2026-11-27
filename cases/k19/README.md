@@ -10,6 +10,8 @@ Thirteen lines can keep any two named colors connected and leave at most one oth
 | Every rotational assignment | Thirteen lines connect all nineteen colors. | [Exact graph theorem](ExactRotation.lean) · [Graph paths](EdgeWalk.lean) |
 | Every proper redraw of eight standard round-robin colors | Thirteen lines connect all nineteen colors. | [Eight-color proof and counts](redraw/) |
 
+In the two-line repair example, choose any four of the nineteen colors. A single choice of thirteen wild edges works for every proper redraw of those four colors. The theorem covers all 3,876 choices and the completed K20 coloring. [Theorem and witness lookup](four-colors/)
+
 ## Where the fourteenth line comes from
 
 Set aside one group of four points and five groups of three. Connect the points in each group in a chain. This uses three lines in the big group and two in each small group, for thirteen in total. For each color, count how many extra pieces remain. A connected graph scores zero. A graph in two pieces scores one.
