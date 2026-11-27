@@ -1,9 +1,10 @@
 # Exact wild numbers from finite partition counts
 
-At each order from K77 through K154 and every multiple of six from 48 upward, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The interval proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [Exact interval theorem](ExactInterval.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
+At each order from K77 through K154 and every multiple of six from 42 upward, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The interval proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [Exact interval theorem](ExactInterval.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
 
 | Orders | Wild number |
 | --- | ---: |
+| K42 | 28 |
 | K48, K54, K60, K66, K72 | 32, 36, 40, 44, 48 |
 | K77, K78 | 52 |
 | K79, K80 | 53 |
@@ -26,7 +27,18 @@ The proof uses the matching and random-partition approach of the separate large-
 
 At K48, K54, K60, K66 and K72 all vertices can be divided into triples. A color pairs up every vertex. A closed union of triples must therefore contain an even number of triples. The first possible obstruction has six vertices. When a cut divides the vertices equally, its two sides describe the same failure, so the count keeps the side avoiding one fixed point. The resulting inequalities leave a working grouping at all five orders. [Graph proof](EvenTriples.lean) · [Exact values](EvenOrders.lean)
 
-The same construction proves that **K₆ₘ has wild number 4m for every m ≥ 8**, with no upper limit on m. Each of the 2m triples uses two wild edges. To show that at least one partition works, count the fraction of partitions lost to closed sets of each size. At m ≥ 14 their sum is less than one. Lean checks the integer inequalities for 14 ≤ m < 70. For all m ≥ 70 a recurrence bounds the sum by a decreasing sequence, starting with a term of size 5m/(6m−5). The smaller cases use the stronger local count or the K78 theorem. At orders of 155 and above, this gives an independent Lean proof for one of the classes covered by the external large-order result. [Term recurrence](EvenRatios.lean) · [Uniform estimate](EvenSeries.lean) · [End-to-end theorem](InfiniteEven.lean)
+The same construction proves that **K₆ₘ has wild number 4m for every m ≥ 7**, with no upper limit on m. Each of the 2m triples uses two wild edges. To show that at least one partition works, count the fraction of partitions lost to closed sets of each size. At m ≥ 14 their sum is less than one. Lean checks the integer inequalities for 14 ≤ m < 70. For all m ≥ 70 a recurrence bounds the sum by a decreasing sequence, starting with a term of size 5m/(6m−5). The small cases use the K42 overlap count, the stronger local count or the K78 theorem. At orders of 155 and above, this gives an independent Lean proof for one of the classes covered by the external large-order result. [Term recurrence](EvenRatios.lean) · [Uniform estimate](EvenSeries.lean) · [End-to-end theorem](InfiniteEven.lean)
+
+### Why 28 works on K42
+
+Divide the 42 vertices into fourteen triples and choose two wild edges per triple. A color can disconnect this grouping only by closing a set of 6, 12 or 18 vertices on the smaller side. The proof counts the partitions lost to six-point sets first. Different closed sets can spoil the same partition, and counting that overlap is essential at this order.
+
+| Possible loss | Fraction of all partitions |
+| --- | ---: |
+| At least one closed six-point set | At most 72.3% |
+| A closed 12- or 18-point set among partitions surviving the first test | Less than 27.7% |
+
+There are at most 54,530 distinct six-point sets that a color can close. The argument pairs disjoint sets and bounds how many partitions also realize a third one. For the larger cuts, the subdivisions on both sides must avoid every smaller closed set. The two losses together leave a winning partition. The general lower bound gives 28. All fractions are exact rational inequalities checked by Lean's ordinary kernel. [Overlap inequality](OverlapCredit.lean) · [Six-point bound](ShortCredit42.lean) · [Larger cuts](LongCredit.lean) · [End-to-end K42 theorem](Exact42.lean)
 
 ## K77 and K78
 

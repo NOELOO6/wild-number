@@ -1,6 +1,7 @@
 import EvenSeries
 import EvenOrders
 import ExactTrimmed
+import Exact42
 
 namespace WildSieve.EvenTriples
 open Finset WildExact
@@ -47,10 +48,13 @@ private theorem exact_from_sum (n m : Nat) (lo : 3≤n+1) (size : n+1=6*m)
   have b := even_lower lo g le works
   omega
 
-/-- For every m ≥ 8 and every minimum proper edge coloring of K_(6m),
+/-- For every m ≥ 7 and every minimum proper edge coloring of K_(6m),
 exactly 4m wild edges are necessary and sufficient. -/
-theorem exact_multiples_of_six (m : Nat) (lo : 8≤m) :
+theorem exact_multiples_of_six (m : Nat) (lo : 7≤m) :
     ∀ g : Coloring (6*m) (6*m-1),Exact g (4*m) := by
+  by_cases first : m=7
+  · subst m
+    exact FortyTwo.exact_K42
   by_cases high : 14≤m
   · have sum := if big : 70≤m then large_sum m big else middle_sum m high (by omega)
     generalize eq : 6*m=n at *
