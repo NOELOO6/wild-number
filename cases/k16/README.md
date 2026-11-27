@@ -16,6 +16,7 @@ For **any thirteen colors named in advance**, at least 449,107 ten-line grouping
 | [Any two-color switch in a sevenfold coloring](two-color-switch/) | Ten work while avoiding any prescribed point, for every recoloring of the chosen two colors. |
 | [Four specified colors](four-colors/) | Four colors in the cube or two-halves pattern suffice for every legal choice of the other eleven. |
 | [Seven-point reduction](seven-set.md) | Every coloring has at least 3,040 choices of seven points containing at most two lines of each color. At least 1,330 choices contain any specified point. |
+| [Eight-point split and quartet redraw](quartets/) | Every coloring has a balanced split. One explicit coloring defeats all 1,024 redraws of a connected quartet grouping. |
 | [Leaf deletion](Delete.lean) | Adding or removing a leaf preserves path connectivity. |
 | [Ten-edge equivalence](Untouched16.lean) | A proof for all relevant colorings on sixteen vertices and every list of at most ten wild edges. |
 | [Perfect one-factorizations](Perfect16.lean) | Checks 3,155 representatives at each of 16 deletions, totaling 50,480 ten-edge witnesses. |

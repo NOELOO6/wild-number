@@ -77,9 +77,10 @@ case ${1:-bounds} in
     for name in ExactModel UniversalLower MatchingModel; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
     done
-    for name in FiniteSieve Avoidance TripleParts TripleCounts Coupling Relabel TripleCoupling ClosedEvents SizeBounds MatchingCuts Factors Rainbow FrozenStats FrozenRows RowTotals DegreeChord FrozenLayout PlantedCuts StarDraw Numeric GraphSieve KernelTables ExactRange; do
+    for name in FiniteSieve Avoidance TripleParts TripleCounts Coupling Relabel TripleCoupling ClosedEvents SizeBounds MatchingCuts Factors Rainbow FrozenStats FrozenRows RowTotals DegreeChord FrozenLayout PlantedCuts StarDraw Numeric GraphSieve KernelTables ExactRange TrimmedEvents InnerCuts TrimmedScopes TrimmedLayout ExactTrimmed SplitLayout ExactSplit; do
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/sieve/$name.lean"
     done
+    "$lean" --root="$root" -s 65536 -o "$build/HalfMoment.olean" "$root/cases/k16/quartets/HalfMoment.lean"
     ;;
   regrouping)
     for name in ExactModel UniversalLower GraphSearch MatchingModel; do
@@ -88,6 +89,9 @@ case ${1:-bounds} in
     "$lean" --root="$root" -o "$build/StarDraw.olean" "$root/cases/sieve/StarDraw.lean"
     for name in Periodic RoundRobin Reflection CyclicOrders TwoGroups CommonHalf MergeColors SwapExamples HalfTrap Bounds21; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/regrouping/$name.lean"
+    done
+    for name in QuartetTrap QuartetCount; do
+      "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/k16/quartets/$name.lean"
     done
     ;;
   last-colors)

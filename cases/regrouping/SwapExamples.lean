@@ -7,10 +7,30 @@ set_option maxRecDepth 10000
 private def swapPoints {n} (x y : Fin n) (g : List (List Nat)) :=
   g.map fun t => t.map fun v => if v=x.val then y.val else if v=y.val then x.val else v
 
-private def colors {n} (g : Coloring n n) (c : Fin n) :=
+private def colors {n k} (g : Coloring n k) (c : Fin k) :=
   (List.finRange n).flatMap fun x => ((List.finRange n).filter (fun y => x<y && g.paint x y==c)).map (x,·)
 
-def layoutEdges {n} [NeZero n] (g : Coloring n n) (t : List (List Nat)) (c : Fin n) := chains t ++ colors g c
+def layoutEdges {n k} [NeZero n] (g : Coloring n k) (t : List (List Nat)) (c : Fin k) := chains t ++ colors g c
+
+theorem works_of_layout {n k} [NeZero n] (g : Coloring n k) (t : List (List Nat))
+    (passed : ∀ c,passes 0 (layoutEdges g t c)=true) : Works g (chains t).toFinset := by
+  intro c x y
+  have walk := connected_of_passes 0 _ (passed c) x y
+  have forward (a b : Fin n) (e : (a,b)∈layoutEdges g t c) : Joined g (chains t).toFinset c a b := by
+    rcases List.mem_append.mp e with wild|color
+    · exact Or.inl (Or.inl (List.mem_toFinset.mpr wild))
+    obtain ⟨u,_,he⟩ := List.mem_flatMap.mp color
+    obtain ⟨v,hv,eq⟩ := List.mem_map.mp he
+    cases eq
+    have h := Bool.and_eq_true_iff.mp (List.mem_filter.mp hv).2
+    exact Or.inr ⟨(of_decide_eq_true h.1).ne,eq_of_beq h.2⟩
+  induction walk with
+  | stay => exact .stay _
+  | step _ e ih =>
+    apply Walk.step ih
+    rcases e with direct|reverse
+    · exact forward _ _ direct
+    · exact joined_symm g (forward _ _ reverse)
 
 def loses {n} [NeZero n] (es : List (Edge n)) :=
   let s := run es n 1

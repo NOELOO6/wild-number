@@ -61,7 +61,7 @@ theorem pull_mem {F : Factor A C} {B D : Finset A} {s : Nat} {X : Finset (Free B
   simp only [pullSides,mem_filter,mem_powersetCard,subset_univ,true_and]
 
 omit [Fintype A] in
-private theorem choices_sub (B : Finset A) (root : A) (hr : root∈B) (f t j) :
+theorem choices_sub (B : Finset A) (root : A) (hr : root∈B) (f t j) :
     ∀ D ∈ choices B root f t j,D⊆B := by
   classical
   intro D hd
@@ -76,11 +76,11 @@ private theorem choices_sub (B : Finset A) (root : A) (hr : root∈B) (f t j) :
     · exact singleton_subset_iff.mpr hr
 
 omit [Fintype A] in
-private theorem width_eq (B : Finset A) (root : A) (hr : root∈B) (f t j) (sz : B.card=f+1) :
+theorem width_eq (B : Finset A) (root : A) (hr : root∈B) (f t j) (sz : B.card=f+1) :
     (choices B root f t j).map Finset.card=widths f t j := by
   by_cases eq : 0<f ∧ 2*j<t <;> simp [choices,widths,eq,card_erase_of_mem hr,sz]
 
-private theorem pull_total (F : Factor A C) (B D : Finset A) (s : Nat)
+theorem pull_total (F : Factor A C) (B D : Finset A) (s : Nat)
     (rain : Rainbow F B) (db : D⊆B) : (pullSides F B D s).card ≤
     totalFor (Fintype.card C) Bᶜ.card B.card D.card s Bᶜ.card := by
   apply le_trans _ (sides_total F B D Bᶜ s rain db Subset.rfl)
@@ -89,7 +89,7 @@ private theorem pull_total (F : Factor A C) (B D : Finset A) (s : Nat)
   obtain ⟨sz,c,cl⟩ := pull_mem.mp hx
   exact side_mem.mpr ⟨c,candidate_mem.mpr ⟨map_free _ _,by simpa using sz,cl⟩⟩
 
-private theorem pull_degree (F : Factor A C) (B D : Finset A) (s : Nat) (U : Finset (Free B))
+theorem pull_degree (F : Factor A C) (B D : Finset A) (s : Nat) (U : Finset (Free B))
     (z : Free B) (hz : z∈U) (rain : Rainbow F B) (db : D⊆B) :
     (active (pullSides F B D s) U z).card ≤ improvedDegree (Fintype.card C) Bᶜ.card B.card D.card s U.card := by
   have mem : (emb B) z∈U.map (emb B) := mem_map.mpr ⟨z,hz,rfl⟩
@@ -105,6 +105,24 @@ private theorem pull_degree (F : Factor A C) (B D : Finset A) (s : Nat) (U : Fin
 
 noncomputable def badScopes (F : Factor A C) (B : Finset A) (root : A) (f t j : Nat) :=
   gather (fun D => pullSides F B D (3*j)) (choices B root f t j)
+
+theorem bad_scope_degree (F : Factor A C) (B : Finset A) (root : A) (f t : Nat)
+    (hr : root∈B) (bs : B.card=f+1) (ws : Bᶜ.card=3*t) (rain : Rainbow F B)
+    (U : Finset (Free B)) (z : Free B) (zu : z∈U) (j : Nat) :
+    (active (badScopes F B root f t j) U z).card ≤ degBound (Fintype.card C) f t U.card j := by
+  let L := choices B root f t j
+  let funD (D) := active (pullSides F B D (3*j)) U z
+  have sub : active (badScopes F B root f t j) U z ⊆ gather funD L := by
+    intro X hx
+    obtain ⟨xb,xu⟩ := mem_filter.mp hx
+    obtain ⟨D,dl,xd⟩ := (mem_gather _ _ X).mp xb
+    exact (mem_gather _ _ _).mpr ⟨D,dl,mem_filter.mpr ⟨xd,xu⟩⟩
+  have b := bound_gather funD L (fun D => improvedDegree (Fintype.card C) Bᶜ.card B.card D.card (3*j) U.card)
+    (fun D hd => pull_degree F B D _ U z zu rain (choices_sub B root hr f t j D hd))
+  apply (card_le_card sub).trans
+  unfold degBound
+  rw [← width_eq B root hr f t j bs,List.map_map]
+  simpa [L,ws,bs,Function.comp_def] using b
 
 /-- A passing numerical certificate supplies a layout for every factorization
 with the indicated rainbow frozen set. -/
@@ -123,20 +141,7 @@ theorem frozen_layout (F : Factor A C) (B : Finset A) (root : A) (f t : Nat)
   · intro j hj
     simp [shortLevels] at hj
     omega
-  · intro U z zu j _
-    let L := choices B root f t j
-    let funD (D) := active (pullSides F B D (3*j)) U z
-    have sub : active (bad j) U z ⊆ gather funD L := by
-      intro X hx
-      obtain ⟨xb,xu⟩ := mem_filter.mp hx
-      obtain ⟨D,dl,xd⟩ := (mem_gather _ _ X).mp xb
-      exact (mem_gather _ _ _).mpr ⟨D,dl,mem_filter.mpr ⟨xd,xu⟩⟩
-    have b := bound_gather funD L (fun D => improvedDegree (Fintype.card C) Bᶜ.card B.card D.card (3*j) U.card)
-      (fun D hd => pull_degree F B D _ U z zu rain (choices_sub B root hr f t j D hd))
-    apply (card_le_card sub).trans
-    unfold degBound
-    rw [← width_eq B root hr f t j bs,List.map_map]
-    simpa [L,ws,bs,Function.comp_def] using b
+  · exact fun U z zu j _ => bad_scope_degree F B root f t hr bs ws rain U z zu j
   · intro j _
     have b := bound_gather (fun D => pullSides F B D (3*j)) (choices B root f t j)
       (fun D => totalFor (Fintype.card C) Bᶜ.card B.card D.card (3*j) Bᶜ.card)

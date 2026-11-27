@@ -4,9 +4,12 @@ namespace WildSieve
 local instance (priority := 2000) {m : Nat} : DecidableEq (Fin m) :=
   (inferInstance : LinearOrder (Fin m)).toDecidableEq
 open Finset WildExact
-/-- An arithmetic certificate gives the exact wild number at both orders. -/
-theorem exact_from_cert (n : Nat) (large : 55≤n) (odd : n%2=1)
-    (checked : ∃ h,Cert n (fixedSize n) (levels n) h) :
+/-- Any rule that supplies a cut-free triple partition gives exact wild numbers at both orders. -/
+theorem exact_from_rule (n : Nat) (large : 55≤n) (odd : n%2=1)
+    (rule : ∀ (F : Factor (Fin (n+1)) (Fin n)) (B : Finset (Fin (n+1))) (r : Fin (n+1)),
+      r∈B → B.card=fixedSize n+1 → Bᶜ.card=3*levels n → Rainbow F B →
+      ∃ L : Layout (univ : Finset (Free B)),∀ j∈shortLevels∪longLevels (levels n),
+        ∀ X∈badScopes F B r (fixedSize n) (levels n) j,L∉sealEvent X) :
     (∀ g : Coloring n n, Exact g ((2*n+2)/3)) ∧
     (∀ g : Coloring (n+1) n, Exact g ((2*n+2)/3)) := by
   classical
@@ -29,10 +32,18 @@ theorem exact_from_cert (n : Nat) (large : 55≤n) (odd : n%2=1)
     omega
   obtain ⟨B,rb,bs,rain⟩ := rainbow_at_root F (Fin.last n) f room
   have ws : Bᶜ.card=3*t := by rw [card_compl,Fintype.card_fin,bs]; omega
-  obtain ⟨h,cert⟩ := checked
-  obtain ⟨L,wins⟩ := frozen_layout F B (Fin.last n) f t rb bs ws rain h (by simpa only [Fintype.card_fin] using cert)
+  obtain ⟨L,wins⟩ := rule F B (Fin.last n) rb bs ws rain
   rw [← data.2.2]
   exact upper_from_layout g odd B f t rb bs ws rain (by omega) L wins
+
+/-- An arithmetic certificate gives the exact wild number at both orders. -/
+theorem exact_from_cert (n : Nat) (large : 55≤n) (odd : n%2=1)
+    (checked : ∃ h,Cert n (fixedSize n) (levels n) h) :
+    (∀ g : Coloring n n, Exact g ((2*n+2)/3)) ∧
+    (∀ g : Coloring (n+1) n, Exact g ((2*n+2)/3)) := by
+  obtain ⟨h,cert⟩ := checked
+  exact exact_from_rule n large odd fun F B r rb bs ws rain =>
+    frozen_layout F B r _ _ rb bs ws rain h (by simpa only [Fintype.card_fin] using cert)
 
 theorem exact_from_sieve (n : Nat) (large : 55≤n) (odd : n%2=1) (yes : accepts n=true) :
     (∀ g : Coloring n n, Exact g ((2*n+2)/3)) ∧
