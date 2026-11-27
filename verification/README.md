@@ -11,6 +11,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay als
 | The seven-point rule, all 69 touching lines, and 243,143 missing-color lists | `./verification/replay.sh seven-point` |
 | The 15-point counts, examples and Python cross-checks | `./verification/replay.sh k15` |
 | The 16-point deletion theorem and catalogue witnesses | `./verification/replay.sh k16` |
+| Every pair of colors in an arbitrary K17 coloring reduces to a certificate representative | `./verification/graph-bounds.sh exact-k17-pairs` |
 | The K17/K18 case proof, including independent C++ replay | `./verification/replay.sh k17` |
 | The two-color result for K15/K16, examples and moment test | `./verification/replay.sh switches` |
 | The unrestricted protected-color theorem and a sufficient test for ten | `./verification/replay.sh protected` |

@@ -33,6 +33,10 @@ if [[ ${1:-bounds} == exact || ${1:-bounds} == exact-k13 ]]; then
     source "$root/verification/exact-k13.sh"
     exit 0
 fi
+if [[ ${1:-bounds} == exact-k17-pairs ]]; then
+    source "$root/verification/exact-k17.sh"
+    exit 0
+fi
 for file in "$root/cases/k16/Delete.lean" "$root/cases/k19/EdgeWalk.lean"; do
     "$lean" --root="$root" -o "$build/$(basename "$file" .lean).olean" "$file"
 done
@@ -68,5 +72,5 @@ case ${1:-bounds} in
       "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
     done
     ;;
-  *) echo 'Use exact, bounds, redraw, pieces or last-colors.' >&2; exit 2 ;;
+  *) echo 'Use exact-k13, exact-k17-pairs, bounds, redraw, pieces or last-colors.' >&2; exit 2 ;;
 esac

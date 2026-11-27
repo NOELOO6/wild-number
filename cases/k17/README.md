@@ -87,6 +87,7 @@ From the repository root run `./verification/replay.sh k17` with Lean 4.19.0 and
 
 | What is checked | Implementation |
 | --- | --- |
+| Why every ordered pair of colors in any K17 coloring has one of the fifteen representative forms | [Lean normalization theorem](../../verification/exact/K17Pairs.lean) |
 | Why the fifteen cut tests suffice for arbitrary matching and connected blocks | [Lean connectivity theorem](Connectivity.lean) |
 | Why counting by layout or color subset gives the same number, and each edge price is charged once | [Lean double-counting identities](Incidence.lean) |
 | Build the four-triple partitions, both-color counts and cut frequencies | [Lean grouping enumeration](Groupings.lean) |
@@ -95,7 +96,7 @@ From the repository root run `./verification/replay.sh k17` with Lean 4.19.0 and
 | Independently enumerate the layouts and matchings and recompute the guarantee | [C++ checker](check.cpp) · [Integer certificate](prices.txt) |
 | Follow all seventeen colors for a specific set of twelve lines | [Lean example](Example.lean) |
 
-The universal graph argument is the written proof above. The normalization to fifteen types and the identification of the enumerators with arbitrary graph inputs use written arguments. Lean proves the cut criterion, the double-counting identities for arbitrary incidence relations, the finite checks, and the counting implication. The written proof applies these results to the given coloring. An end-to-end formal theorem starting with a properly colored graph remains open in this repository. The finite Lean checks use `native_decide`, which trusts Lean's native evaluator.
+The universal graph argument is the written proof above. The normalization of arbitrary color pairs to the fifteen types is now formalized. Run `./verification/graph-bounds.sh exact-k17-pairs` to check it. The identification of the enumerated layout and third-color counts with arbitrary graph inputs still uses written arguments. Lean proves the cut criterion, the double-counting identities for arbitrary incidence relations, the finite checks, and the counting implication. The written proof applies these results to the given coloring. An end-to-end formal theorem starting with a properly colored graph remains open in this repository. The finite Lean checks use `native_decide`, which trusts Lean's native evaluator.
 
 ### Certificate format
 
