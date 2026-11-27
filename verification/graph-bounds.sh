@@ -4,6 +4,7 @@ root=$(cd "$(dirname "$0")/.." && pwd)
 if [[ ${1:-bounds} == exact ]]; then
     "$root/verification/graph-bounds.sh" exact-k13
     "$root/verification/graph-bounds.sh" exact-k17
+    "$root/verification/graph-bounds.sh" sieve
     exit 0
 fi
 lean=$(realpath "$(command -v "${LEAN:-lean}")")
@@ -31,8 +32,11 @@ if [[ ! -f .lake/build/lib/lean/Mathlib/GroupTheory/Perm/Sign.olean ||
       Mathlib/Data/Fintype/Perm.lean Mathlib/Data/Fintype/BigOperators.lean Mathlib/Algebra/BigOperators/Fin.lean \
       Mathlib/Data/Fintype/Powerset.lean Mathlib/Algebra/Order/BigOperators/Group/Finset.lean
 fi
-if [[ ${1:-bounds} == regrouping ]]; then
-    extras=(Mathlib/Data/ZMod/Basic Mathlib/Data/Fintype/Prod Mathlib/Data/List/Dedup Mathlib/Data/Int/GCD Mathlib/Tactic/Ring)
+if [[ ${1:-bounds} == regrouping || ${1:-bounds} == sieve ]]; then
+    extras=(Mathlib/Combinatorics/Hall/Finite Mathlib/Data/ZMod/Basic Mathlib/Data/Fintype/Prod Mathlib/Data/List/Dedup Mathlib/Data/Int/GCD Mathlib/Tactic/Ring)
+    if [[ ${1:-bounds} == sieve ]]; then
+        extras=(Mathlib/Tactic/Linarith Mathlib/Tactic/FieldSimp)
+    fi
     for module in "${extras[@]}"; do
         if [[ ! -f .lake/build/lib/lean/"$module".olean ]]; then
             "$lake" exe cache get "${extras[@]/%/.lean}"
@@ -61,11 +65,20 @@ for name in UniformCuts CutRepair GraphLayouts ColorCoordinates LegalEdges Bound
 done
 case ${1:-bounds} in
   bounds) ;;
-  regrouping)
-    for name in ExactModel UniversalLower GraphSearch; do
+  sieve)
+    for name in ExactModel UniversalLower MatchingModel; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
     done
-    for name in Periodic RoundRobin TwoGroups SwapExamples Bounds21; do
+    for name in FiniteSieve Avoidance TripleParts TripleCounts Coupling Relabel TripleCoupling ClosedEvents SizeBounds MatchingCuts Factors Rainbow FrozenStats FrozenRows RowTotals DegreeChord FrozenLayout PlantedCuts StarDraw Numeric GraphSieve KernelTables ExactRange; do
+      "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/sieve/$name.lean"
+    done
+    ;;
+  regrouping)
+    for name in ExactModel UniversalLower GraphSearch MatchingModel; do
+      "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
+    done
+    "$lean" --root="$root" -o "$build/StarDraw.olean" "$root/cases/sieve/StarDraw.lean"
+    for name in Periodic RoundRobin Reflection CyclicOrders TwoGroups CommonHalf MergeColors SwapExamples HalfTrap Bounds21; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/regrouping/$name.lean"
     done
     ;;
@@ -95,5 +108,5 @@ case ${1:-bounds} in
       "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
     done
     ;;
-  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
+  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
 esac

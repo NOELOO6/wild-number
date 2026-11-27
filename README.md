@@ -17,10 +17,11 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | K₁₇, K₁₈ | 12 | ✅ Solved in Lean | [End-to-end theorem](verification/exact/K17K18.lean) · [Counting proof](cases/k17/) |
 | K₁₉ | 13 | Partial | 13–14 · [Bounds and solved families](cases/k19/) |
 | K₂₁ | 14 | Partial | 14–15 · [Upper bound and round-robin construction](cases/regrouping/) |
+| K₈₃ through K₁₅₄ | ⌊4⌈n/2⌉/3⌋ | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactRange.lean) · [Counting argument](cases/sieve/) |
 
-Both exact theorems start with an arbitrary minimum proper coloring and prove the upper and lower bounds. Run `./verification/graph-bounds.sh exact` to replay all four cases. The finite checks use Lean’s native evaluator. [Verification guide](verification/)
+The exact theorems start with an arbitrary minimum proper coloring and prove both bounds. Run `./verification/graph-bounds.sh exact` to replay them. K13–K14 and K17–K18 include native finite checks. Lean’s ordinary kernel checks the full K83–K154 proof, including its arithmetic. [Verification guide](verification/)
 
-For the standard round-robin coloring of every odd multiple of three, two wild edges per triple attain the conjectured value. [Uniform construction in Lean](cases/regrouping/RoundRobin.lean)
+The standard round-robin coloring attains the conjectured value for every odd order n ≥ 3. [Uniform constructions in Lean](cases/regrouping/CyclicOrders.lean)
 
 ### Results from other sources
 

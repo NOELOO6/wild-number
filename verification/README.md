@@ -4,10 +4,11 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The independent K1
 
 | What to check | Command |
 | --- | --- |
-| All four exact results proved in this repository | `./verification/graph-bounds.sh exact` |
+| All exact results proved in this repository | `./verification/graph-bounds.sh exact` |
 | Exact wild number 9 for every minimum proper coloring of K13 and K14 | `./verification/graph-bounds.sh exact-k13` |
 | Exact wild number 12 for every minimum proper coloring of K17 and K18 | `./verification/graph-bounds.sh exact-k17` |
-| Round-robin theorem for all odd multiples of three, general two-group criterion, K15/K21 swap examples and K21 upper bound | `./verification/graph-bounds.sh regrouping` |
+| Exact wild numbers for every K83 through K154 | `./verification/graph-bounds.sh sieve` |
+| Round-robin theorem for all odd orders, common-half selection, K15/K21 repairs and K21 upper bound | `./verification/graph-bounds.sh regrouping` |
 | Four exhaustive K15 counts, the redraw of the original 19 and all six-point completions | `./verification/replay.sh six-point-trap` |
 | The 13-point obstruction certificate and its regenerated formula | `./verification/replay.sh k13` |
 | Three-point and four-point K15 families, the two-swap repair and the 2,800-grouping search | `./verification/replay.sh stars` |
@@ -36,7 +37,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The independent K1
 
 To use a separate Lean installation, set `LEAN` to its executable. The script creates compiled modules and uncompressed proof data in a temporary directory.
 
-The ordinary Lean kernel checks the cyclic starter proof and the sixteen-point deletion argument. Several larger finite enumerations use `native_decide`, which also trusts Lean’s native evaluator. The source files print the axioms of their main results. The standalone K13 LRAT replay checks the original symmetry-reduced formula. The end-to-end K13/K14 replay builds a second formula, proves its meaning in Lean and generates an LRAT proof using the CaDiCaL executable bundled with Lean 4.19.0. It checks all 127,584 clauses and the matching-to-path implications. Allow several gigabytes of temporary disk space in addition to the pinned mathlib cache.
+The ordinary Lean kernel checks every arithmetic inequality for K83 through K154, the cyclic starter proof and the sixteen-point deletion argument. Several larger finite enumerations use `native_decide`, which also trusts Lean’s native evaluator. The source files print the axioms of their main results. The standalone K13 LRAT replay checks the original symmetry-reduced formula. The end-to-end K13/K14 replay builds a second formula, proves its meaning in Lean and generates an LRAT proof using the CaDiCaL executable bundled with Lean 4.19.0. It checks all 127,584 clauses and the matching-to-path implications. Allow several gigabytes of temporary disk space in addition to the pinned mathlib cache.
 
 The end-to-end K17/K18 replay reads the checked-in integer prices, verifies all fifteen pair types, and proves that at least 403,637 distinct groupings work for each K17 coloring. It constructs twelve wild edges and proves the matching lower bound for both orders. [Exact theorem](exact/K17K18.lean) · [Counting theorem](exact/GlobalCount.lean) · [Distinct groupings](exact/LayoutIdentity.lean)
 
