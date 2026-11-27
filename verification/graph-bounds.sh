@@ -89,7 +89,7 @@ case ${1:-bounds} in
       done
       exit 0
     fi
-    for name in KernelTables ExactRange TrimmedEvents InnerCuts TrimmedScopes LocalSeals PairRegions RootRegions RegionBudget MatchingRegions TrimmedLayout ExactTrimmed SplitLayout ExactSplit JointDegrees JointScopes ExactJoint ExactInterval EvenTriples EvenOrders; do
+    for name in KernelTables ExactRange TrimmedEvents InnerCuts TrimmedScopes LocalSeals PairRegions RootRegions RegionBudget MatchingRegions TrimmedLayout ExactTrimmed SplitLayout ExactSplit JointDegrees JointScopes ExactJoint ExactInterval EvenTriples EvenOrders EvenRatios EvenSeries InfiniteEven; do
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/sieve/$name.lean"
     done
     "$lean" --root="$root" -s 65536 -o "$build/HalfMoment.olean" "$root/cases/k16/quartets/HalfMoment.lean"

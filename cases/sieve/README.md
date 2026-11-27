@@ -1,6 +1,6 @@
 # Exact wild numbers from finite partition counts
 
-At each order from K77 through K154 and at K48, K54, K60, K66 and K72, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The interval proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [Exact interval theorem](ExactInterval.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
+At each order from K77 through K154 and every multiple of six from 48 upward, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The interval proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [Exact interval theorem](ExactInterval.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
 
 | Orders | Wild number |
 | --- | ---: |
@@ -22,9 +22,11 @@ The proof first counts partitions avoiding every such cut involving one or two f
 
 The proof uses the matching and random-partition approach of the separate large-order project. The finite comparison sequence and its order-by-order certificates are developed here. [Large-order proof](https://github.com/1337isnot1337/solved-conjectures/blob/main/results/wild-number-complete-graphs/IMPROVEMENT.md)
 
-## Five smaller even orders
+## Orders divisible by six
 
 At K48, K54, K60, K66 and K72 all vertices can be divided into triples. A color pairs up every vertex. A closed union of triples must therefore contain an even number of triples. The first possible obstruction has six vertices. When a cut divides the vertices equally, its two sides describe the same failure, so the count keeps the side avoiding one fixed point. The resulting inequalities leave a working grouping at all five orders. [Graph proof](EvenTriples.lean) · [Exact values](EvenOrders.lean)
+
+The same construction proves that **K₆ₘ has wild number 4m for every m ≥ 8**, with no upper limit on m. Each of the 2m triples uses two wild edges. To show that at least one partition works, count the fraction of partitions lost to closed sets of each size. At m ≥ 14 their sum is less than one. Lean checks the integer inequalities for 14 ≤ m < 70. For all m ≥ 70 a recurrence bounds the sum by a decreasing sequence, starting with a term of size 5m/(6m−5). The smaller cases use the stronger local count or the K78 theorem. At orders of 155 and above, this gives an independent Lean proof for one of the classes covered by the external large-order result. [Term recurrence](EvenRatios.lean) · [Uniform estimate](EvenSeries.lean) · [End-to-end theorem](InfiniteEven.lean)
 
 ## K77 and K78
 
