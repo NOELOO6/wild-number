@@ -2,7 +2,7 @@ import MatchingSixes
 namespace WildSieve
 open Finset
 variable {A C : Type} [LinearOrder A]
-theorem mixed_six_color (F : Factor A C) (c : C) (S W : Finset A) 
+theorem mixed_six_color (F : Factor A C) (c : C) (S W : Finset A)
     (six : S.card=6) (H : Finset (Finset A))
     (valid : ∀ Q∈H,Q⊆S∪W ∧ Q.card=6 ∧ (Q∩S).card=3 ∧ Closed (F.f c) Q) :
     H.card≤(6-2*Inside F c S).choose 3 + Inside F c S*(6-2*Inside F c S)*Inside F c W := by
