@@ -13,6 +13,8 @@ Each point touches fourteen ordinary lines of different colors, so one of the fi
 
 The full question remains open. The best strict example here has **15 winners**. It changes some of the 36 outside lines. Seven of its ten initial splits lose every time. The other three give 3, 6 and 6 winners. An earlier example has 16 winners, and the original has 19. Lean followed paths for each win and checked a separating set for each loss. [15-winner coloring](../six-point-trap/sparse-fifteen.txt) · [15-win check](../six-point-trap/FifteenRecord.lean) · [16-win check](../six-point-trap/SparseRecord.lean) · [Original drawing](../vertex-redraw/FixedSix.lean)
 
+For an arbitrary coloring satisfying the seven-point rule, two partitions of the nine outside points share no triple and pass all cuts independent of the split of the fixed six. Four extra exterior triples can also be forbidden. [General exterior theorem](../exterior/)
+
 ## What happens to the original 19?
 
 Changing only the 54 lines between the six and the nine always keeps at least **two of the original winners**. One redraw realizes that limit and has 36 winners in total. [Universal proof](../six-point-trap/KeepTwo.lean) · [Sharp example](../six-point-trap/two-originals-left.txt)

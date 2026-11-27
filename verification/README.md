@@ -8,6 +8,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The independent K1
 | Exact wild number 9 for every minimum proper coloring of K13 and K14 | `./verification/graph-bounds.sh exact-k13` |
 | Exact wild number 12 for every minimum proper coloring of K17 and K18 | `./verification/graph-bounds.sh exact-k17` |
 | Exact wild numbers for every multiple of six from 42 upward and every K77 through K154 | `./verification/graph-bounds.sh sieve` |
+| K15 seven-point rule, partitions of the other nine and a ten-edge sufficient condition | `./verification/graph-bounds.sh exterior` |
 | K15 packing test, example coloring and prescribed-pair theorem | `./verification/graph-bounds.sh anchor-packing` |
 | At most one edge above the conjectured value for every K15 through K82 | `./verification/graph-bounds.sh one-extra` |
 | Round-robin theorem for every order from three upward, common-half selection, K15/K21 repairs, K16 quartet obstruction and K21 upper bound | `./verification/graph-bounds.sh regrouping` |

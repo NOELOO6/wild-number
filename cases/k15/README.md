@@ -6,6 +6,7 @@ You can name any nine colors that must stay connected. At least 666 groupings co
 
 | Case or experiment | Conclusion | Evidence |
 | --- | --- | --- |
+| Every choice of six passing the seven-point rule | Two partitions of the other nine share no triple and pass both common cut tests. Keeping the six in one tree always works with eleven edges. | [Theorems and proof](exterior/) |
 | Any two prescribed points | Both can be included in one triple, with nine different colors between it and a second triple. A specified start can still lose all 280 completions. | [Universal theorem and obstruction](rainbow-rectangle/) |
 | A fixed first triple and 140 candidate layouts | Up to seven of 142 other triples may fail the two local tests. Ten edges still work. | [Test, example and end-to-end proof](half-packing/) |
 | All 69 lines touching the chosen six | With the original outside lines and nine outside missing colors fixed, at least one of the 2,800 wins. A separate test adds 243,143 other missing-color lists. | [Seven-point results and proofs](seven-point/) |

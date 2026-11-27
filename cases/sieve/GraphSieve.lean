@@ -41,6 +41,34 @@ private theorem matching_projection (g : Coloring n n) (odd : n%2=1) (c : Fin n)
   rw [← augment_paint odd g,hy]
   exact (mate_spec (augment odd g) c x.castSucc).2
 
+/-- When a color cannot connect two ordinary points, the augmented matching
+has a nontrivial closed side. Every group joined by wild spokes stays wholly
+on one side. -/
+theorem closed_side_of_failure (g : Coloring n n) (odd : n%2=1) (w : Lines n) (c : Fin n)
+    (x y : Fin n) (lost : ¬Walk (Joined g w c) x y) :
+    ∃ S : Finset (Fin (n+1)), S.Nonempty ∧ (∃ v,v∉S) ∧
+      Closed ((coloringFactor (augment odd g)).f c) S ∧
+      ∀ T : Finset (Fin (n+1)), Fin.last n∉T → spokes (oldPart T)⊆w → Cohesive T S := by
+  classical
+  let root := Fin.last n
+  obtain ⟨q,qo,colorPath⟩ := matching_projection g odd c w
+  let S := univ.filter fun v => Walk (Joined g w c) x (q v)
+  have inS (v : Fin (n+1)) : v∈S ↔ Walk (Joined g w c) x (q v) := by simp [S]
+  have within (T : Finset (Fin (n+1))) (nr : root∉T) (draw : spokes (oldPart T)⊆w) : Cohesive T S := by
+    intro a ha b hb sa
+    obtain ⟨a,rfl⟩ := before_root a (fun ar => nr (by simpa only [root,ar] using ha))
+    obtain ⟨b,rfl⟩ := before_root b (fun br => nr (by simpa only [root,br] using hb))
+    have old := (inS _).mp sa
+    apply (inS _).mpr
+    apply old.join
+    rw [qo,qo]
+    exact Walk.mapInto (E:=Touch w) id (fun _ _ h => .step (.stay _) (Or.inl h))
+      (in_star draw (old_mem.mpr ha) (old_mem.mpr hb))
+  refine ⟨S,⟨x.castSucc,(inS _).mpr (by rw [qo]; exact .stay _)⟩,
+    ⟨y.castSucc,fun h => lost (by simpa only [qo] using (inS _).mp h)⟩,?_,within⟩
+  intro v sv
+  exact (inS _).mpr (((inS _).mp sv).join (colorPath v))
+
 /-- Realize the layout as ordinary wild lines. The added root has no wild
 edge. In each color projection it is mapped to its unique matching partner. -/
 theorem upper_from_layout (g : Coloring n n) (odd : n%2=1) (B : Finset (Fin (n+1))) (f t : Nat)
@@ -87,25 +115,13 @@ theorem upper_from_layout (g : Coloring n n) (odd : n%2=1) (B : Finset (Fin (n+1
   intro c x y
   apply Classical.byContradiction
   intro lost
-  obtain ⟨q,qo,colorPath⟩ := matching_projection g odd c w
-  let S := univ.filter fun v => Walk (Joined g w c) x (q v)
-  have inS (v : Fin (n+1)) : v∈S ↔ Walk (Joined g w c) x (q v) := by simp [S]
-  have within (T : Finset (Fin (n+1))) (nr : root∉T) (draw : spokes (oldPart T)⊆w) : Cohesive T S := by
-    intro a ha b hb sa
-    obtain ⟨a,rfl⟩ := before_root a (fun ar => nr (by simpa only [root,ar] using ha))
-    obtain ⟨b,rfl⟩ := before_root b (fun br => nr (by simpa only [root,br] using hb))
-    have old := (inS _).mp sa
-    apply (inS _).mpr
-    apply old.join
-    rw [qo,qo]
-    exact Walk.mapInto (E:=Touch w) id (fun _ _ h => .step (.stay _) (Or.inl h))
-      (in_star draw (old_mem.mpr ha) (old_mem.mpr hb))
+  obtain ⟨S,left,right,cl,within⟩ := closed_side_of_failure g odd w c x y lost
   have sizeW : Bᶜ.card=3*t := ws
   apply no_cut F B root f t rb bs (by simpa only [Finset.card_compl,Fintype.card_fin] using sizeW) rain shape L wins c S
-  · exact ⟨x.castSucc,(inS _).mpr (by rw [qo]; exact .stay _)⟩
-  · exact ⟨y.castSucc,mem_compl.mpr (fun h => lost (by simpa only [qo] using (inS _).mp h))⟩
-  · intro v sv
-    exact (inS _).mpr (((inS _).mp sv).join (colorPath v))
+  · exact left
+  · obtain ⟨v,hv⟩ := right
+    exact ⟨v,mem_compl.mpr hv⟩
+  · exact cl
   · exact within fixed (not_mem_erase _ _) subset_union_left
   · intro T ht
     exact within _ (out T) (fun e he => mem_union_right _ (mem_biUnion.mpr ⟨T,ht,he⟩))
