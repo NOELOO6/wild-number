@@ -29,15 +29,13 @@ build=$(mktemp -d)
 trap 'rm -rf -- "$build"' EXIT
 export LEAN_PATH="$build:$("$lake" env printenv LEAN_PATH)"
 "$lean" --version
+if [[ ${1:-bounds} == exact || ${1:-bounds} == exact-k13 ]]; then
+    source "$root/verification/exact-k13.sh"
+    exit 0
+fi
 for file in "$root/cases/k16/Delete.lean" "$root/cases/k19/EdgeWalk.lean"; do
     "$lean" --root="$root" -o "$build/$(basename "$file" .lean).olean" "$file"
 done
-if [[ ${1:-bounds} == exact ]]; then
-    for name in ExactModel UniversalLower MatchingModel Enumerate Counting Anchors SmallOrders; do
-        "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
-    done
-    exit 0
-fi
 "$lean" --root="$root" -o "$build/LowerBound.olean" "$root/cases/k19/LowerBound.lean"
 for name in UniformCuts CutRepair GraphLayouts ColorCoordinates LegalEdges Bounds; do
     "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/graph-bounds/$name.lean"

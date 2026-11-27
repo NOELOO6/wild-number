@@ -2,10 +2,7 @@ import Enumerate
 namespace WildExact
 open Finset WildDeletion
 
-def rowHas {n} (m : Row n) (e : Fin (n+1) × Fin (n+1)) :=
-  m.contains e || m.contains (e.2,e.1)
-
-private theorem cover_node {n} (fuel) (xs : List (Fin (n+1))) (m : Row n)
+theorem cover_node {n} (fuel) (xs : List (Fin (n+1))) (m : Row n)
     (hm : m ∈ enumerate fuel xs) (v : Fin (n+1)) (hv : v∈xs) :
     ∃ u, rowHas m (v,u)=true := by
   induction fuel generalizing xs m with
@@ -44,8 +41,6 @@ theorem row_equiv {n} (g : Coloring (n+1) n) (c) (m : Row n) (mem : m∈Rows n)
     have xy := g.proper x (mate g c x) y (mate_spec g c x).1 ne ((mate_spec g c x).2.trans eq.symm)
     exact same.symm.trans xy ▸ yes
 
-def totalI {α} (xs : List α) (f : α → Int) : Int := (xs.map f).sum
-
 theorem total_add {α} (xs : List α) (f g : α → Int) :
     totalI xs (fun x => f x+g x)=totalI xs f+totalI xs g := by
   induction xs with
@@ -76,10 +71,6 @@ theorem single_color {n} (c : Fin n) (v : Int) :
   classical
   rw [totalI,← List.sum_toFinset _ (List.nodup_finRange n)]
   simp
-
-abbrev Price (n : Nat) := (Fin (n+1) × Fin (n+1)) × Int
-def fee {n} (ps : List (Price n)) (r : Row n) :=
-  totalI ps (fun ⟨e,v⟩ => if rowHas r e then v else 0)
 
 theorem fees_sum {n} (g : Coloring (n+1) n) (rs : Fin n → Row n)
     (h : ∀ c, rs c∈Rows n ∧ Respects (mate g c) (rs c))

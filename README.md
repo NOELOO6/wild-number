@@ -12,29 +12,25 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 
 | Complete graph | Conjectured | Status | Proof or bounds |
 | --- | ---: | --- | --- |
-| K₁₃, K₁₄ | 9 | ✅ Solved | [Computer-assisted proof](cases/k13/) |
+| K₁₃, K₁₄ | 9 | ✅ Solved in Lean | [End-to-end theorem](verification/exact/K13K14.lean) · [Proof and credits](cases/k13/) |
 | K₁₅, K₁₆ | 10 | Partial | 10–11 · [K15](cases/k15/) · [K16](cases/k16/) |
-| K₁₇, K₁₈ | 12 | ✅ Solved | [Written proof with Lean-checked counts](cases/k17/) |
+| K₁₇, K₁₈ | 12 | Solved in writing · Lean partial | [Written proof with Lean-checked counts](cases/k17/) |
 | K₁₉ | 13 | Partial | 13–14 · [Bounds and solved families](cases/k19/) |
 
-The K₁₃ proof builds on an earlier nine-point reduction. The case report credits that work and distinguishes the written graph argument from the finite certificate checked by Lean. [K13 proof and credits](cases/k13/)
-
-For K₁₇ and K₁₈, the universal statement has a computer-assisted written proof. Lean verifies the K₁₇ cut criterion, finite certificate, and counting implication. The reduction from arbitrary colorings to the enumerated cases is written. K₁₈ follows by vertex deletion. [Formalization scope](cases/k17/#reproduce-the-result)
+The K₁₃/K₁₄ theorem starts with an arbitrary minimum proper coloring and proves both bounds. Its finite checks use Lean’s native evaluator. The K₁₇/K₁₈ written proof uses exhaustive counts that can also be replayed in Lean. [Verification guide](verification/)
 
 ### Results from other sources
 
 | Complete graph | Wild number | Status | Source |
 | --- | ---: | --- | --- |
-| K₃, K₄ | 2 | ✅ Solved | [Dawkins et al., Theorem 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
-| K₅, K₆ | 4 | ✅ Solved | [Theorem 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
-| K₇, K₈ | 5 | ✅ Solved | [Theorem 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
-| K₉, K₁₀ | 6 | ✅ Solved | [Theorem 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
-| K₁₁, K₁₂ | 8 | ✅ Solved | [Theorem 3.5](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS3) |
-| All n ≥ 155 | ⌊4⌈n/2⌉/3⌋ | Reported solved | [External proof and verification record](https://github.com/1337isnot1337/solved-conjectures/issues/155) |
+| K₃, K₄ | 2 | ✅ Solved | Dawkins et al. |
+| K₅, K₆ | 4 | ✅ Solved | Dawkins et al. |
+| K₇, K₈ | 5 | ✅ Solved | Dawkins et al. |
+| K₉, K₁₀ | 6 | ✅ Solved | Dawkins et al. |
+| K₁₁, K₁₂ | 8 | ✅ Solved | Dawkins et al. |
+| All n ≥ 155 | ⌊4⌈n/2⌉/3⌋ | Reported solved | External project |
 
-This repository also verifies every case from K₃ through K₁₂ end to end in Lean. The theorems quantify over every minimum proper coloring and prove both sufficiency and necessity. [Lean statements](verification/exact/SmallOrders.lean) · [Replay command](verification/)
-
-Dawkins et al. also proved the conjectured expression is a lower bound for every n ≥ 3. [Theorem 3.4](https://arxiv.org/html/2610.22142v1#S3.SS3.SSS1)
+Dawkins et al. proved the exact values through K₁₂ and the general lower bound. The large-order entry records a result reported by a separate project. [Original paper, Theorems 3.4–3.5](https://arxiv.org/html/2610.22142v1#S3.SS3) · [Large-order proof record](https://github.com/1337isnot1337/solved-conjectures/issues/155)
 
 ## Verification
 

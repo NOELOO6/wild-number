@@ -87,8 +87,6 @@ theorem pick_three (hn : n%2=1) (room : 6 ≤ n) (g : Coloring n n)
   have := cap 0; have := cap 1; have := cap 2
   omega
 
-def atIndex (n i : Nat) [NeZero n] : Fin n := Fin.ofNat' n i
-
 theorem normalize_three [NeZero n] (hn : n%2=1) (room : 6≤n) (g : Coloring n n) :
     ∃ p : Equiv.Perm (Fin n), GoodThree (renamed p g) (atIndex n 0) (atIndex n 1) (atIndex n 2) := by
   let a : Fin n := ⟨0,by omega⟩

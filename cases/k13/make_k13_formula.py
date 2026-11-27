@@ -1,7 +1,6 @@
 """Regenerate the exact K13 nine-point obstruction formula using Python 3.10+."""
 from itertools import combinations
 from pathlib import Path
-import sys
 
 TRIPLES = [sum(1 << i for i in triple) for triple in combinations(range(9), 3)]
 
@@ -64,7 +63,7 @@ class Formula:
                 print(*clause, 0, file=handle)
 
 
-def main(path):
+def main(path, symmetry=True):
     cnf = Formula()
     for a, b, c in combinations(range(len(TRIPLES)), 3):
         if TRIPLES[a] | TRIPLES[b] | TRIPLES[c] == 511:
@@ -76,10 +75,16 @@ def main(path):
                 inputs = [i + 1 for i, triple in enumerate(TRIPLES)
                           if (triple & subset).bit_count() >= required]
                 cnf.bound_count(inputs, limit)
-    for u, v in combinations(range(9), 2):
-        cnf.lex_leader(u, v)
+    if symmetry:
+        for u, v in combinations(range(9), 2):
+            cnf.lex_leader(u, v)
     cnf.save(path)
 
 
 if __name__ == "__main__":
-    main(Path(sys.argv[1]) if len(sys.argv) == 2 else Path("ninesym.cnf"))
+    import argparse
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("output", type=Path, nargs="?", default=Path("ninesym.cnf"))
+    parser.add_argument("--without-symmetry", action="store_true")
+    args = parser.parse_args()
+    main(args.output, symmetry=not args.without_symmetry)

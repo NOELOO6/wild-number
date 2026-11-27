@@ -11,4 +11,6 @@ The proof chooses four points and partitions the other nine into three triples. 
 | [Lean certificate](CertifiedNine.lean) | Proves that the supplied Boolean formula is unsatisfiable by checking its LRAT certificate. |
 | [Runtime replay](Replay.lean) | Checks the same data by reading the two files at runtime. |
 
-The reduction from arbitrary graph colorings to the Boolean formula is a written proof. The compressed formula and certificate are included in this directory. [Replay instructions](../../verification/) · [Earlier reduction and credit](https://raw.githubusercontent.com/1337isnot1337/solved-conjectures/main/results/wild-number-complete-graphs/continuation/attempt3/REPORT.md)
+Run `./verification/graph-bounds.sh exact-k13` from the repository root to check the theorem for arbitrary colorings of K13 and K14. The replay constructs the four-point set, proves the restrictions on the blocked triples, checks a symmetry-free SAT certificate, converts a surviving partition into actual paths, and proves the lower bound. The theorem uses Lean’s native evaluator for finite computations. [Exact theorem](../../verification/exact/K13K14.lean) · [Replay instructions](../../verification/)
+
+The original nine-point reduction is credited to an earlier investigation. The report and the Lean formalization in this repository build on that reduction. [Earlier reduction](https://raw.githubusercontent.com/1337isnot1337/solved-conjectures/main/results/wild-number-complete-graphs/continuation/attempt3/REPORT.md)

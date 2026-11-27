@@ -4,7 +4,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay als
 
 | What to check | Command |
 | --- | --- |
-| Exact wild numbers of every minimum proper coloring of K3 through K12 | `./verification/graph-bounds.sh exact` |
+| Exact wild number 9 for every minimum proper coloring of K13 and K14 | `./verification/graph-bounds.sh exact-k13` |
 | Four exhaustive K15 counts, the redraw of the original 19 and all six-point completions | `./verification/replay.sh six-point-trap` |
 | The 13-point obstruction certificate and its regenerated formula | `./verification/replay.sh k13` |
 | Three-point and four-point K15 families, the two-swap repair and the 2,800-grouping search | `./verification/replay.sh stars` |
@@ -32,6 +32,6 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The K17 replay als
 
 To use a separate Lean installation, set `LEAN` to its executable. The script creates compiled modules and uncompressed proof data in a temporary directory.
 
-The ordinary Lean kernel checks the cyclic starter proof and the sixteen-point deletion argument. Several larger finite enumerations use `native_decide`, which also trusts Lean’s native evaluator. The source files print the axioms of their main results. The 13-point LRAT proof checks the specified formula. Its relationship to the graph problem is established in the written report.
+The ordinary Lean kernel checks the cyclic starter proof and the sixteen-point deletion argument. Several larger finite enumerations use `native_decide`, which also trusts Lean’s native evaluator. The source files print the axioms of their main results. The standalone K13 LRAT replay checks the original symmetry-reduced formula. The end-to-end K13/K14 replay builds a second formula, proves its meaning in Lean and generates an LRAT proof using the CaDiCaL executable bundled with Lean 4.19.0. It checks all 127,584 clauses and the matching-to-path implications. Allow several gigabytes of temporary disk space in addition to the pinned mathlib cache.
 
 For independent 13-point checks, run `python3 cases/k13/verify_k13.py` or compile and run [the C++ enumerator](../cases/k13/crosscheck_k13.cpp). The 16-point catalogue generator has its own independent connectivity test. [Case pages](../README.md#results-by-graph-size)

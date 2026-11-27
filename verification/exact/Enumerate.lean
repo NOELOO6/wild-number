@@ -1,16 +1,7 @@
 import MatchingModel
+import GraphSearch
 namespace WildExact
 open WildDeletion Finset
-abbrev Row (n : Nat) := List (Fin (n+1) × Fin (n+1))
-
-def enumerate {n} : Nat → List (Fin (n+1)) → List (Row n)
-  | _, [] => [[]]
-  | 0, _::_ => []
-  | fuel+1, x::xs => xs.flatMap fun y =>
-      (enumerate fuel (xs.filter (· != y))).map ((x,y)::·)
-
-def Rows (n : Nat) := enumerate (n+1) (List.finRange (n+1))
-
 def Respects {n} (f : Fin (n+1) → Fin (n+1)) (m : Row n) := ∀ e ∈ m, f e.1 = e.2
 
 theorem enumerate_complete {n} (f : Fin (n+1) → Fin (n+1))
@@ -55,14 +46,6 @@ theorem choose_rows {n} (g : Coloring (n+1) n) :
     · exact fun _ _ => List.mem_finRange _
   choose rs mem res using ex
   exact ⟨rs,fun c => ⟨mem c,res c⟩⟩
-
-/-- Delete the temporary point, retaining actual ordinary edges. -/
-def eraseRoot {n} (m : Row n) : List (EdgeWalk.Edge n) := m.filterMap fun e =>
-  if h : e.1.val<n ∧ e.2.val<n then some (⟨e.1,h.1⟩,⟨e.2,h.2⟩) else none
-
-abbrev TestLines (n : Nat) := List (EdgeWalk.Edge n)
-def passesRow {n} (r : Fin n) (w : TestLines n) (m : Row n) :=
-  EdgeWalk.passes r (w ++ eraseRoot m)
 
 theorem from_rows {n} (hn : n%2=1) (g : Coloring n n) (rs : Fin n → Row n)
     (owned : ∀ c, Respects (mate (augment hn g) c) (rs c))
