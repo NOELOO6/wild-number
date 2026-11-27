@@ -79,7 +79,7 @@ case ${1:-bounds} in
       exit 0
     fi
     "$lean" --root="$root" -s 65536 -o "$build/MatchingModel.olean" "$root/verification/exact/MatchingModel.lean"
-    for name in NearCharge NearRange ThreeGroups CoreSplit TwoGroupCore CoreRange CoreBudget CoreProfiles TwoCoreCheck Core21Data Core21Trap TwoCore19 TwoCore21 TwoCore23 CoreTransfer; do
+    for name in NearCharge NearRange ThreeGroups CoreSplit TwoGroupCore CoreRange CoreBudget CoreProfiles TwoCoreCheck Core21Data Core21Trap TwoCore19 TwoCore21 TwoCore23 CoreTransfer Exchange21Data Exchange21; do
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
     done
     ;;

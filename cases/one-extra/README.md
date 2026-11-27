@@ -38,6 +38,8 @@ The number of pieces of each color meeting the core gives a test for success. Co
 
 Every color reaches the chosen core in each example. For each proposed split, the certificate gives a color and a set that no edge of that color and no permitted wild edge can leave. Exchanging the two specified vertices produces a winning arrangement for the same coloring. Each example extends to the next even order with the same wild number. [How the certificates are checked](TwoCoreCheck.lean) · [Even-order transfer](CoreTransfer.lean)
 
+A second K21 example defeats **every single exchange**, including exchanges entirely outside the core. Start with six core vertices and five exterior triples. There are 210 pairs of vertices to exchange. After each exchange, all ten possible splits of the core fail. The ten original splits also fail. Exchanging vertices 0 and 6, then 1 and 10, gives a fourteen-edge solution. Two exchanges are necessary and sufficient from this starting arrangement when the core can be split freely. [All 2,110 checks and the repair](Exchange21.lean)
+
 There is also a K21 coloring with four exterior triples for which all 280 splits of the remaining nine vertices into three triples fail. A different layout of fourteen edges connects every color in that coloring. [Nine-point obstruction and witness](Core21Trap.lean) · [General three-group test](CoreSplit.lean)
 
 Run `./verification/graph-bounds.sh one-extra` to replay the bounds, the six-to-eight-point reduction and the examples. The ordinary kernel checks the unrestricted reduction. The small piece-count table and the explicit examples use Lean’s native evaluator.
