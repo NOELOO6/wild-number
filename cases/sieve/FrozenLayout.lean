@@ -124,6 +124,16 @@ theorem bad_scope_degree (F : Factor A C) (B : Finset A) (root : A) (f t : Nat)
   rw [← width_eq B root hr f t j bs,List.map_map]
   simpa [L,ws,bs,Function.comp_def] using b
 
+theorem bad_scope_count (F : Factor A C) (B : Finset A) (root : A) (f t : Nat)
+    (hr : root∈B) (bs : B.card=f+1) (ws : Bᶜ.card=3*t) (rain : Rainbow F B) (j : Nat) :
+    (badScopes F B root f t j).card ≤ countBound (Fintype.card C) f t j := by
+  have b := bound_gather (fun D => pullSides F B D (3*j)) (choices B root f t j)
+    (fun D => totalFor (Fintype.card C) Bᶜ.card B.card D.card (3*j) Bᶜ.card)
+    (fun D hd => pull_total F B D _ rain (choices_sub B root hr f t j D hd))
+  unfold countBound
+  rw [← width_eq B root hr f t j bs,List.map_map]
+  simpa [badScopes,ws,bs,Function.comp_def] using b
+
 /-- A passing numerical certificate supplies a layout for every factorization
 with the indicated rainbow frozen set. -/
 theorem frozen_layout (F : Factor A C) (B : Finset A) (root : A) (f t : Nat)
@@ -142,11 +152,5 @@ theorem frozen_layout (F : Factor A C) (B : Finset A) (root : A) (f t : Nat)
     simp [shortLevels] at hj
     omega
   · exact fun U z zu j _ => bad_scope_degree F B root f t hr bs ws rain U z zu j
-  · intro j _
-    have b := bound_gather (fun D => pullSides F B D (3*j)) (choices B root f t j)
-      (fun D => totalFor (Fintype.card C) Bᶜ.card B.card D.card (3*j) Bᶜ.card)
-      (fun D hd => pull_total F B D _ rain (choices_sub B root hr f t j D hd))
-    unfold countBound
-    rw [← width_eq B root hr f t j bs,List.map_map]
-    simpa [bad,badScopes,ws,bs,Function.comp_def] using b
+  · exact fun j _ => bad_scope_count F B root f t hr bs ws rain j
 end WildSieve

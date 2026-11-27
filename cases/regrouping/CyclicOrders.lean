@@ -1,3 +1,4 @@
+import MatchingModel
 import RoundRobin
 import Reflection
 import StarDraw
@@ -158,5 +159,16 @@ theorem round_robin_odd (n : Nat) [NeZero n] (lo : 3≤n) (odd : n%2=1) :
     exact move_order eq _ h
   · exact exact_of_upper (defect_upper n (n/3-1) (by have := Nat.mod_add_div n 3; omega)) (fun _ => odd_lower lo _)
 
+/-- Add the stationary player to the odd round-robin schedule. Its edge
+in each round goes to the unique player who had a bye in that round. -/
+theorem round_robin_even (n : Nat) [NeZero n] (lo : 3≤n) (odd : n%2=1) :
+    Exact (augment odd (roundRobin n)) ((2*n+2)/3) := by
+  apply exact_of_upper _ (fun _ => even_lower (by omega) _)
+  apply upper_from_deletion
+  rw [restrict_augment]
+  obtain ⟨w,legal,size,win⟩ := (round_robin_odd n lo odd).1
+  exact ⟨w,legal,size.le,win⟩
+
+#print axioms round_robin_even
 #print axioms round_robin_odd
 end WildExact.Periodic

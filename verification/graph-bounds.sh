@@ -32,9 +32,9 @@ if [[ ! -f .lake/build/lib/lean/Mathlib/GroupTheory/Perm/Sign.olean ||
       Mathlib/Data/Fintype/Perm.lean Mathlib/Data/Fintype/BigOperators.lean Mathlib/Algebra/BigOperators/Fin.lean \
       Mathlib/Data/Fintype/Powerset.lean Mathlib/Algebra/Order/BigOperators/Group/Finset.lean
 fi
-if [[ ${1:-bounds} == regrouping || ${1:-bounds} == sieve ]]; then
+if [[ ${1:-bounds} == regrouping || ${1:-bounds} == sieve || ${1:-bounds} == anchor-packing ]]; then
     extras=(Mathlib/Combinatorics/Hall/Finite Mathlib/Data/ZMod/Basic Mathlib/Data/Fintype/Prod Mathlib/Data/List/Dedup Mathlib/Data/Int/GCD Mathlib/Tactic/Ring)
-    if [[ ${1:-bounds} == sieve ]]; then
+    if [[ ${1:-bounds} == sieve || ${1:-bounds} == anchor-packing ]]; then
         extras=(Mathlib/Tactic/Linarith Mathlib/Tactic/FieldSimp)
     fi
     for module in "${extras[@]}"; do
@@ -73,11 +73,20 @@ case ${1:-bounds} in
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
     done
     ;;
-  sieve)
+  sieve|anchor-packing)
     for name in ExactModel UniversalLower MatchingModel; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
     done
-    for name in FiniteSieve Avoidance TripleParts TripleCounts Coupling Relabel TripleCoupling ClosedEvents SizeBounds MatchingCuts Factors Rainbow FrozenStats FrozenRows RowTotals DegreeChord FrozenLayout PlantedCuts StarDraw Numeric GraphSieve KernelTables ExactRange TrimmedEvents InnerCuts TrimmedScopes TrimmedLayout ExactTrimmed SplitLayout ExactSplit; do
+    for name in FiniteSieve Avoidance TripleParts TripleCounts Coupling Relabel TripleCoupling ClosedEvents SizeBounds MatchingCuts Factors Rainbow FrozenStats FrozenRows RowTotals DegreeChord FrozenLayout PlantedCuts StarDraw Numeric GraphSieve; do
+      "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/sieve/$name.lean"
+    done
+    if [[ ${1:-bounds} == anchor-packing ]]; then
+      for name in AnchorPacking AnchorExample PackingColoring; do
+        "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/k15/half-packing/$name.lean"
+      done
+      exit 0
+    fi
+    for name in KernelTables ExactRange TrimmedEvents InnerCuts TrimmedScopes LocalSeals PairRegions RootRegions RegionBudget MatchingRegions TrimmedLayout ExactTrimmed SplitLayout ExactSplit JointDegrees JointScopes ExactJoint ExactInterval; do
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/sieve/$name.lean"
     done
     "$lean" --root="$root" -s 65536 -o "$build/HalfMoment.olean" "$root/cases/k16/quartets/HalfMoment.lean"
@@ -120,5 +129,5 @@ case ${1:-bounds} in
       "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
     done
     ;;
-  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
+  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, anchor-packing, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
 esac

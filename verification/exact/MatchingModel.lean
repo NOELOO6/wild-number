@@ -92,6 +92,13 @@ noncomputable def augment (hn : n%2=1) (g : Coloring n n) : Coloring (n+1) n whe
 @[simp] theorem augment_paint (hn : n%2=1) (g : Coloring n n) (x y : Fin n) :
     (augment hn g).paint x.castSucc y.castSucc = g.paint x y := by simp [augment]
 
+@[simp] theorem restrict_augment (hn : n%2=1) (g : Coloring n n) : restrict (augment hn g)=g := by
+  have ext {a b : Coloring n n} (h : a.paint=b.paint) : a=b := by
+    cases a
+    cases b
+    congr
+  exact ext (funext fun x => funext fun y => augment_paint hn g x y)
+
 /-- One partner of each color at each point of an even complete graph. -/
 theorem has_partner (g : Coloring (n+1) n) (v : Fin (n+1)) (c : Fin n) :
     ∃ u, v ≠ u ∧ g.paint v u=c := by
@@ -116,4 +123,26 @@ theorem mate_involutive (g : Coloring (n+1) n) (c : Fin n) : Function.Involutive
   obtain ⟨ne,eq⟩ := mate_spec g c v
   obtain ⟨ne',eq'⟩ := mate_spec g c (mate g c v)
   exact g.proper _ _ _ ne' ne.symm (eq'.trans ((g.symm _ _).trans eq).symm)
+/-- Restoring the deleted vertex recovers every off-diagonal color. -/
+theorem augment_restrict_edge (hn : n%2=1) (g : Coloring (n+1) n) (x y : Fin (n+1))
+    (ne : x≠y) : (augment hn (restrict g)).paint x y=g.paint x y := by
+  have root (a : Fin n) : missingColor (restrict g) a=g.paint a.castSucc (Fin.last n) := by
+    symm
+    apply (unique_missing (restrict g) a).choose_spec.2
+    intro b ab eq
+    have bad := g.proper a.castSucc b.castSucc (Fin.last n)
+      (fun e => ab (Fin.castSucc_inj.mp e)) (Fin.castSucc_ne_last a) eq
+    exact Fin.castSucc_ne_last b bad
+  cases x using Fin.lastCases <;> cases y using Fin.lastCases
+  · exact False.elim (ne rfl)
+  · simpa [augment,g.symm (Fin.last n)] using root _
+  · simpa [augment] using root _
+  · rw [augment_paint]; rfl
+
+theorem mate_augment_restrict (hn : n%2=1) (g : Coloring (n+1) n) (c : Fin n) (x : Fin (n+1)) :
+    mate (augment hn (restrict g)) c x=mate g c x := by
+  obtain ⟨ne,eq⟩ := mate_spec (augment hn (restrict g)) c x
+  rw [augment_restrict_edge hn g _ _ ne] at eq
+  exact g.proper _ _ _ ne (mate_spec g c x).1 (eq.trans (mate_spec g c x).2.symm)
+
 end WildExact

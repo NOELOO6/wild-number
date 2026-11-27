@@ -44,9 +44,8 @@ def restrict {n k} (g : Coloring (n+1) k) : Coloring n k where
 def liftLine {n} : (Fin n × Fin n) ↪ (Fin (n+1) × Fin (n+1)) :=
   (Fin.castLEEmb (Nat.le_succ n)).prodMap (Fin.castLEEmb (Nat.le_succ n))
 
-theorem even_upper {n b} (oddUpper : ∀ g : Coloring n n, Upper g b)
-    (g : Coloring (n+1) n) : Upper g b := by
-  obtain ⟨w,legal,size,paths⟩ := oddUpper (restrict g)
+theorem upper_from_deletion {n b} (g : Coloring (n+1) n) (oddUpper : Upper (restrict g) b) : Upper g b := by
+  obtain ⟨w,legal,size,paths⟩ := oddUpper
   refine ⟨w.map liftLine, ?_, (Finset.card_map _).le.trans size, ?_⟩
   · intro e he
     obtain ⟨a,ha,rfl⟩ := Finset.mem_map.mp he
@@ -72,4 +71,6 @@ theorem even_upper {n b} (oddUpper : ∀ g : Coloring n n, Upper g b)
     Fin.lastCases (Walk.step (.stay _) (joined_symm g edge)) (fun i => reach v i) x
   intro x y
   exact (backwards (joined_symm g) (all x)).join (all y)
+theorem even_upper {n b} (oddUpper : ∀ g : Coloring n n, Upper g b)
+    (g : Coloring (n+1) n) : Upper g b := upper_from_deletion g (oddUpper (restrict g))
 end WildExact

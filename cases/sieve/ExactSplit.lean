@@ -24,7 +24,7 @@ elab "splitTable%(" n:num ")" : term => do
   let t := levels k
   return toExpr (comparisonTable (shortDegree k (fixedSize k) t) t)
 
-local instance (priority := 2000) {m : Nat} : DecidableEq (Fin m) :=
+local instance (priority := 2000) splitFinEq {m : Nat} : DecidableEq (Fin m) :=
   (inferInstance : LinearOrder (Fin m)).toDecidableEq
 set_option maxRecDepth 200000
 set_option maxHeartbeats 0

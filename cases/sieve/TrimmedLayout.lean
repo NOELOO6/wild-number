@@ -1,9 +1,9 @@
-import TrimmedScopes
+import MatchingRegions
 namespace WildSieve
 open Finset
 
 def survivingWays (d j : Nat) :=
-  if d=1 ∧ j=3 then 240 else if d=0 ∧ j=4 then 15300 else ways j
+  if d=1 ∧ j=3 then 240 else if 4≤j ∧ d≤1 then ways j-saving (d=1) (3*j/2) j else ways j
 
 def trimmedCount (n f t j : Nat) := ((widths f t j).map
   (fun d => totalFor n (3*t) (f+1) d (3*j) (3*t)*survivingWays d j)).sum
@@ -31,12 +31,8 @@ private theorem scope_weight (F : Factor A C) (B : Finset A) (root : A) (f t j :
     (hd : D∈choices B root f t j) (X : Finset (Free B)) (hit : X∈pullSides F B D (3*j)) :
     (admissible shortLevels (badScopes F B root f t) X).card≤survivingWays D.card j := by
   classical
-  unfold survivingWays
-  split
-  next h =>
-    obtain ⟨one,rfl⟩ := h
-    have isRoot : D={root} := by
-      by_cases add : 0<f ∧ 2*3<t
+  have root_of_one (one : D.card=1) : D={root} := by
+      by_cases add : 0<f ∧ 2*j<t
       · simp [choices,add] at hd
         rcases hd with rfl|rfl|rfl|rfl
         · simp at one
@@ -48,12 +44,21 @@ private theorem scope_weight (F : Factor A C) (B : Finset A) (root : A) (f t j :
         rcases hd with rfl|rfl
         · simp at one
         · rfl
-    exact root_nine F B root f t hr X (isRoot ▸ hit)
+  unfold survivingWays
+  split
+  next h =>
+    obtain ⟨one,rfl⟩ := h
+    exact root_nine F B root f t hr X (root_of_one one ▸ hit)
   next =>
     split
     next h =>
-      obtain ⟨zero,rfl⟩ := h
-      exact empty_twelve F B root f t X (card_eq_zero.mp zero ▸ hit)
+      obtain ⟨lo,small⟩ := h
+      rcases Nat.eq_zero_or_pos D.card with zero|pos
+      · rw [zero]
+        exact even_regions F B root f t j X (card_eq_zero.mp zero ▸ hit) lo
+      · have one : D.card=1 := by omega
+        rw [one]
+        exact odd_regions F B root f t j hr X (root_of_one one ▸ hit) lo
     next =>
       exact (card_le_univ _).trans_eq (card_layout j X (pull_mem.mp hit).1)
 
@@ -76,28 +81,46 @@ theorem bounded_subdivisions (F : Factor A C) (B : Finset A) (root : A) (f t j :
   rw [← width_eq B root hr f t j bs,List.map_map]
   simpa only [badScopes,L,w,ts,ws,bs,Function.comp_apply] using b
 
-theorem frozen_trimmed (F : Factor A C) (B : Finset A) (root : A) (f t : Nat)
+theorem frozen_trimmed_actual (F : Factor A C) (B : Finset A) (root : A) (f t : Nat)
     (hr : root∈B) (bs : B.card=f+1) (ws : Bᶜ.card=3*t) (rain : Rainbow F B) (shape : f=0 ∨ 2≤f)
-    (h : Nat → ℚ) (cert : TrimCert (Fintype.card C) f t h) :
+    (h : Nat → ℚ) (positive : ∀ u≤3*t,0<h u)
+    (budget : ∀ U z,z∈U →
+      ∑ j∈shortLevels,((active (badScopes F B root f t j) U z).card:ℚ)*
+        (sealWeight t j*h (U.card-3*j)) ≤ h (U.card-1)-h U.card)
+    (tail : (∑ j∈longLevels t,(trimmedCount (Fintype.card C) f t j:ℚ)*
+      ((ways (t-j):ℚ)/ways t*h (3*t-3*j))) < h (3*t)) :
     ∃ L : Layout (univ : Finset (Free B)), ∀ j ∈ shortLevels ∪ longLevels t, ∀ X ∈ badScopes F B root f t j,
       L ∉ sealEvent X := by
   classical
   let bad := badScopes F B root f t
-  refine trimmed_partition t ((Fintype.card_coe Bᶜ).trans ws) shortLevels (longLevels t) bad ?_ ?_
-    (degBound (Fintype.card C) f t) (fun U z zu j _ => bad_scope_degree F B root f t hr bs ws rain U z zu j)
-    h cert.1 cert.2.1 ?_
+  refine trimmed_actual t ((Fintype.card_coe Bᶜ).trans ws) shortLevels (longLevels t) bad ?_ ?_
+    h positive budget ?_
   · intro j _ X hx
     obtain ⟨D,_,hx⟩ := (mem_gather _ _ X).mp hx
     exact (pull_mem.mp hx).1
   · intro j hj
     simp [shortLevels] at hj
     omega
-  · apply lt_of_le_of_lt _ cert.2.2
+  · apply lt_of_le_of_lt _ tail
     apply sum_le_sum
     intro j _
     rw [←sum_mul]
     apply mul_le_mul_of_nonneg_right
     · exact_mod_cast bounded_subdivisions F B root f t j hr bs ws rain shape
     · exact mul_nonneg (div_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _))
-        (cert.1 _ (Nat.sub_le _ _)).le
+        (positive _ (Nat.sub_le _ _)).le
+theorem frozen_trimmed (F : Factor A C) (B : Finset A) (root : A) (f t : Nat)
+    (hr : root∈B) (bs : B.card=f+1) (ws : Bᶜ.card=3*t) (rain : Rainbow F B) (shape : f=0 ∨ 2≤f)
+    (h : Nat → ℚ) (cert : TrimCert (Fintype.card C) f t h) :
+    ∃ L : Layout (univ : Finset (Free B)), ∀ j ∈ shortLevels ∪ longLevels t, ∀ X ∈ badScopes F B root f t j,
+      L ∉ sealEvent X := by
+  apply frozen_trimmed_actual F B root f t hr bs ws rain shape h cert.1 _ cert.2.2
+  intro U z hz
+  have le : U.card≤3*t := U.card_le_univ.trans_eq ((Fintype.card_coe Bᶜ).trans ws)
+  apply le_trans _ (cert.2.1 U.card (card_pos.mpr ⟨z,hz⟩) le)
+  apply sum_le_sum
+  intro j _
+  exact mul_le_mul_of_nonneg_right (by exact_mod_cast bad_scope_degree F B root f t hr bs ws rain U z hz j)
+    (mul_nonneg (div_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Nat.cast_nonneg _))
+      (cert.1 _ ((Nat.sub_le _ _).trans le)).le)
 end WildSieve

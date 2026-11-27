@@ -1,6 +1,6 @@
 # Round-robin constructions and local repairs
 
-Every standard round-robin coloring of odd K<sub>n</sub>, n ≥ 3, has wild number ⌊(2n+2)/3⌋. Here the vertices are the residues modulo n and the edge between x and y has color x+y. [All odd orders in Lean](CyclicOrders.lean)
+Every standard round-robin coloring of K<sub>n</sub>, n ≥ 3, has wild number ⌊4⌈n/2⌉/3⌋. At odd orders the vertices are residues modulo n and the edge between x and y has color x+y. To get the next even order, add a player whose opponent in each round is the player who previously had a bye. [Odd and even theorems in Lean](CyclicOrders.lean)
 
 When n leaves remainder one or two on division by three, write n=3k+4 or n=3k+5. Take the k triples {3i, 3i+4, 3i+5} for 0 ≤ i < k, and put the remaining four or five vertices in one group. Join each group by a star. For example, on K₁₃ the triples are {0,4,5}, {3,7,8} and {6,10,11}. The last group is {1,2,9,12}.
 

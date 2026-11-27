@@ -20,14 +20,12 @@ private theorem inject_short (J : Finset Nat) (bad : Nat → Finset (Finset V)) 
 
 /-- The tail budget can count subdivisions of a cut that have survived the
 short tests. Its coefficient may depend on the actual set of vertices. -/
-theorem trimmed_partition (t : Nat) (total : Fintype.card V=3*t)
+theorem trimmed_actual (t : Nat) (total : Fintype.card V=3*t)
     (J K : Finset Nat) (bad : Nat → Finset (Finset V))
     (size : ∀ j∈J∪K,∀ X∈bad j,X.card=3*j) (nonzero : ∀ j∈J,0<j)
-    (degree : Nat → Nat → Nat)
-    (local_bound : ∀ U z,z∈U → ∀ j∈J,(active (bad j) U z).card≤degree U.card j)
     (h : Nat → ℚ) (positive : ∀ u≤3*t,0<h u)
-    (budget : ∀ u,0<u → u≤3*t →
-      ∑ j∈J,(degree u j:ℚ)*(sealWeight t j*h (u-3*j)) ≤ h (u-1)-h u)
+    (budget : ∀ U z,z∈U →
+      ∑ j∈J,((active (bad j) U z).card:ℚ)*(sealWeight t j*h (U.card-3*j)) ≤ h (U.card-1)-h U.card)
     (tail : (∑ j∈K, ∑ X∈bad j,((admissible J bad X).card : ℚ) *
       ((ways (t-j):ℚ)/ways t*h (3*t-3*j))) < h (3*t)) :
     ∃ D : Layout (univ : Finset V), ∀ j∈J∪K,∀ X∈bad j,D∉sealEvent X := by
@@ -44,11 +42,7 @@ theorem trimmed_partition (t : Nat) (total : Fintype.card V=3*t)
   have shortBound (U : Finset V) (z : V) (hz : z∈U) :
       (∑ i∈through s U z,sealWeight t i.1.val*h (U \ s i).card) ≤ h (U.erase z).card-h U.card := by
     rw [budget_sum J bad sz,card_erase_of_mem hz]
-    apply le_trans _ (budget U.card (card_pos.mpr ⟨z,hz⟩) (total ▸ U.card_le_univ))
-    apply sum_le_sum
-    intro j hj
-    exact mul_le_mul_of_nonneg_right (by exact_mod_cast local_bound U z hz j hj)
-      (mul_nonneg (wpos _) (positive _ ((Nat.sub_le _ _).trans (total ▸ U.card_le_univ))).le)
+    exact budget U z hz
   have endBound : (∑ i:Events K bad,wt i*h (univ \ r i).card) < h (univ : Finset V).card := by
     rw [card_univ,total,Fintype.sum_sigma]
     apply lt_of_le_of_lt _ tail
@@ -74,4 +68,23 @@ theorem trimmed_partition (t : Nat) (total : Fintype.card V=3*t)
   rcases mem_union.mp hj with a|b
   · exact small j a X hx
   · exact fun e => rest ⟨⟨j,b⟩,X,hx⟩ (inject_short J bad X D small e)
+theorem trimmed_partition (t : Nat) (total : Fintype.card V=3*t)
+    (J K : Finset Nat) (bad : Nat → Finset (Finset V))
+    (size : ∀ j∈J∪K,∀ X∈bad j,X.card=3*j) (nonzero : ∀ j∈J,0<j)
+    (degree : Nat → Nat → Nat)
+    (local_bound : ∀ U z,z∈U → ∀ j∈J,(active (bad j) U z).card≤degree U.card j)
+    (h : Nat → ℚ) (positive : ∀ u≤3*t,0<h u)
+    (budget : ∀ u,0<u → u≤3*t →
+      ∑ j∈J,(degree u j:ℚ)*(sealWeight t j*h (u-3*j)) ≤ h (u-1)-h u)
+    (tail : (∑ j∈K, ∑ X∈bad j,((admissible J bad X).card : ℚ) *
+      ((ways (t-j):ℚ)/ways t*h (3*t-3*j))) < h (3*t)) :
+    ∃ D : Layout (univ : Finset V), ∀ j∈J∪K,∀ X∈bad j,D∉sealEvent X := by
+  refine trimmed_actual t total J K bad size nonzero h positive ?_ tail
+  intro U z hz
+  apply le_trans _ (budget U.card (card_pos.mpr ⟨z,hz⟩) (total ▸ U.card_le_univ))
+  apply sum_le_sum
+  intro j hj
+  exact mul_le_mul_of_nonneg_right (by exact_mod_cast local_bound U z hz j hj)
+    (mul_nonneg (div_nonneg (mul_nonneg (Nat.cast_nonneg _) (Nat.cast_nonneg _)) (Nat.cast_nonneg _))
+      (positive _ ((Nat.sub_le _ _).trans (total ▸ U.card_le_univ))).le)
 end WildSieve

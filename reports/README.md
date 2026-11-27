@@ -2,6 +2,8 @@
 
 | Question | Report |
 | --- | --- |
+| Which orders does the general counting argument settle? | [Every order from K77 through K154](../cases/sieve/) · [One-edge gap at smaller orders](../cases/one-extra/) |
+| What holds for every standard round-robin coloring? | [Odd and even orders](../cases/regrouping/) |
 | Can all 2,800 marked groupings fail, and what happens to the original 19? | [Four full K15 counts and a sharp bound for 3,725,456 completions](../cases/k15/six-point-trap/) |
 | Can the last K15 color be repaired outside both six-color families? | [Two swaps keeping fourteen connected](../cases/k15/vertex-redraw/) · [A test on three points](../cases/k15/three-stars/) |
 | What can the last two colors block? | [New general bounds and a two-line K19 repair](last-two-colors.md) |

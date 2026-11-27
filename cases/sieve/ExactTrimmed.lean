@@ -26,7 +26,7 @@ private theorem trim_cert_of_table (n f t : Nat) (a : Array Nat) (yes : trimmedT
   rw [←div_eq_mul_inv,div_lt_iff₀ hp,mul_comm (tableAt a (3*t) : ℚ)]
   exact_mod_cast h
 
-local instance (priority := 2000) {m : Nat} : DecidableEq (Fin m) :=
+local instance (priority := 2000) trimmedFinEq {m : Nat} : DecidableEq (Fin m) :=
   (inferInstance : LinearOrder (Fin m)).toDecidableEq
 set_option maxRecDepth 200000
 set_option maxHeartbeats 0

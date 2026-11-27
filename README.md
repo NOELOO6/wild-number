@@ -20,12 +20,12 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | K₂₃ through K₇₆ | ⌊4⌈n/2⌉/3⌋ | Partial | Conjectured value or one more · [End-to-end theorem](cases/one-extra/NearRange.lean) |
 | K₇₇, K₇₈ | 52 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactTrimmed.lean) |
 | K₇₉, K₈₀ | 53 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactSplit.lean) |
-| K₈₁, K₈₂ | 54 | Partial | 54–55 · [End-to-end bound](cases/one-extra/NearRange.lean) |
+| K₈₁, K₈₂ | 54 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactJoint.lean) |
 | K₈₃ through K₁₅₄ | ⌊4⌈n/2⌉/3⌋ | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactRange.lean) · [Counting argument](cases/sieve/) |
 
-The exact theorems start with an arbitrary minimum proper coloring and prove both bounds. Run `./verification/graph-bounds.sh exact` to replay them. K13–K14 and K17–K18 include native finite checks. Lean’s ordinary kernel checks the full K77–K80 and K83–K154 proofs, including its arithmetic. [Verification guide](verification/)
+The exact theorems start with an arbitrary minimum proper coloring and prove both bounds. Run `./verification/graph-bounds.sh exact` to replay them. K13–K14 and K17–K18 include native finite checks. Lean’s ordinary kernel checks the full K77–K154 proof, including its arithmetic. [Full interval theorem](cases/sieve/ExactInterval.lean) · [Verification guide](verification/)
 
-The standard round-robin coloring attains the conjectured value for every odd order n ≥ 3. [Uniform constructions in Lean](cases/regrouping/CyclicOrders.lean)
+The standard round-robin coloring attains the conjectured value for every order n ≥ 3. [Uniform constructions in Lean](cases/regrouping/CyclicOrders.lean)
 
 ### Results from other sources
 

@@ -6,6 +6,7 @@ You can name any nine colors that must stay connected. At least 666 groupings co
 
 | Case or experiment | Conclusion | Evidence |
 | --- | --- | --- |
+| A fixed first triple and 140 candidate layouts | Up to seven of 142 other triples may fail the two local tests. Ten edges still work. | [Test, example and end-to-end proof](half-packing/) |
 | All 69 lines touching the chosen six | With the original outside lines and nine outside missing colors fixed, at least one of the 2,800 wins. A separate test adds 243,143 other missing-color lists. | [Seven-point results and proofs](seven-point/) |
 | The six points of the 19-survivor drawing | At least 19 wins in each of 3,725,456 proper completions. Two other drawings defeat all 2,800 marked groupings and still admit ten wild lines. | [Counts, drawings and proofs](six-point-trap/) |
 | Three points passing the quartet test | With the missing colors fixed, ten work for every legal coloring of the other 66 ordinary lines. | [Seven cases and graph proof](three-stars/) |

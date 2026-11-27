@@ -1,11 +1,12 @@
-# Exact wild numbers for K77–K80 and K83–K154
+# Exact wild numbers for K77–K154
 
-At each of these 76 orders, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [Exact theorem](ExactRange.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
+At each of these 78 orders, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [Exact interval theorem](ExactInterval.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
 
 | Orders | Wild number |
 | --- | ---: |
 | K77, K78 | 52 |
 | K79, K80 | 53 |
+| K81, K82 | 54 |
 | K83, K84 | 56 |
 | K89, K90 | 60 |
 | K91, K92 | 61 |
@@ -28,6 +29,10 @@ Both orders have wild number 52. The sharper count discards subdivisions that wo
 
 Both orders have wild number 53. At K79 the fixed group has four vertices. The local count excludes short cuts that lie entirely away from this group. Cuts that contain it enter the final sum as a separate family, even when only one or two other triples lie on their side. This changes the comparison sequence enough to prove existence. [Two-family sieve](SplitLayout.lean) · [Final theorem](ExactSplit.lean)
 
+## K81 and K82
+
+Both orders have wild number 54. Fix one vertex and consider cuts that contain it. Every color that can close a three-point cut uses matching edges that other colors cannot use to close a six-point cut. Bounding the two counts together improves the estimate. Inside a larger closed set, smaller closed sets rule out many subdivisions. Counting individual exclusions and subtracting their pairwise overlaps gives the second improvement. Together the two estimates leave a positive margin at K81. [Joint degree bound](JointDegrees.lean) · [Overlap count](RegionBudget.lean) · [Final theorem](ExactJoint.lean)
+
 ## Verification
 
-Run `./verification/graph-bounds.sh sieve` from the repository root with Lean 4.19.0. The checker constructs the comparison sequence from integers and tests its inequalities exactly. Lean’s ordinary kernel checks the graph argument and all 38 numerical certificates. The tables are generated during elaboration and every inequality is checked again by kernel reduction. [Kernel certificates](KernelTables.lean) [Arithmetic checker](Numeric.lean) · [Verification guide](../../verification/)
+Run `./verification/graph-bounds.sh sieve` from the repository root with Lean 4.19.0. The checker constructs the comparison sequence from integers and tests its inequalities exactly. Lean’s ordinary kernel checks the graph argument and all 39 numerical certificates. The tables are generated during elaboration and every inequality is checked again by kernel reduction. [Kernel certificates](KernelTables.lean) [Arithmetic checker](Numeric.lean) · [Verification guide](../../verification/)

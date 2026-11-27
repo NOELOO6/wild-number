@@ -26,10 +26,12 @@ private theorem choose_chord (a i m : Nat) (le : i≤m) :
   dsimp at x y z w q
   nlinarith only [x,y,z,w,q,tail]
 
-def chordBound (g u : Nat) : Nat :=
+def chordPrice (g u reserve : Nat) : Nat :=
   let a := (u-g)/2-1
   let m := g/2
-  ((u-1)*m*a.choose 2 + (g.choose 2)*((a+m).choose 2-a.choose 2))/m
+  ((u-1)*m*a.choose 2 + (g.choose 2-reserve)*((a+m).choose 2-a.choose 2))/m
+
+def chordBound (g u : Nat) := chordPrice g u 0
 
 def improvedDegree (n N b d s u : Nat) :=
   let old := degreeFor n N b d s u
@@ -40,9 +42,11 @@ variable {A C : Type} [LinearOrder A] [Fintype A] [Fintype C]
 
 /-- When a pair of triples closes on its own, the outside vertices constrain
 all colors at once. Every outside edge contributes to just one matching. -/
-theorem six_local (F : Factor A C) (U : Finset A) (z : A) (zu : z∈U)
-    (large : Uᶜ.card<U.card) (den : 0<Uᶜ.card/2) :
-    ((sides F ∅ U 6).filter (fun X => z∈X)).card ≤ chordBound Uᶜ.card U.card := by
+theorem six_local_price (F : Factor A C) (U : Finset A) (z : A) (zu : z∈U)
+    (large : Uᶜ.card<U.card) (den : 0<Uᶜ.card/2)
+    (reserve : Nat)
+    (credit : (∑ c∈univ.filter (fun c => F.f c z∈U),Inside F c Uᶜ)≤Uᶜ.card.choose 2-reserve) :
+    ((sides F ∅ U 6).filter (fun X => z∈X)).card ≤ chordPrice Uᶜ.card U.card reserve := by
   classical
   let g := Uᶜ.card
   let u := U.card
@@ -93,15 +97,26 @@ theorem six_local (F : Factor A C) (U : Finset A) (z : A) (zu : z∈U)
   have count := (card_le_card cover).trans card_biUnion_le
   have middle := sum_le_sum (s:=S) (fun c _ => per c)
   rw [← Finset.mul_sum,Finset.sum_add_distrib,Finset.sum_const,nsmul_eq_mul,← Finset.sum_mul] at middle
-  have all := sum_le_sum_of_subset_of_nonneg (f:=fun c => Inside F c Uᶜ) (subset_univ S) (fun _ _ _ => Nat.zero_le _)
-  rw [sum_inside F] at all
-  change H.card≤chordBound g u
+  have sub : S⊆univ.filter (fun c => F.f c z∈U) := by
+    intro c hc
+    obtain ⟨X,xh⟩ := (mem_filter.mp hc).2
+    obtain ⟨sub,_,cl,zx⟩ := conditions c X xh
+    exact mem_filter.mpr ⟨mem_univ _,sub (cl z zx)⟩
+  have all := (sum_le_sum_of_subset_of_nonneg (f:=fun c => Inside F c Uᶜ) sub (fun _ _ _ => Nat.zero_le _)).trans credit
+  change H.card≤chordPrice g u reserve
   apply (Nat.le_div_iff_mul_le den).mpr
   rw [Nat.mul_comm H.card]
   apply (Nat.mul_le_mul_left m count).trans
   apply middle.trans
   exact Nat.add_le_add (by simpa [Nat.mul_assoc] using Nat.mul_le_mul_right (m*low) sc)
     (Nat.mul_le_mul_right delta all)
+
+theorem six_local (F : Factor A C) (U : Finset A) (z : A) (zu : z∈U)
+    (large : Uᶜ.card<U.card) (den : 0<Uᶜ.card/2) :
+    ((sides F ∅ U 6).filter (fun X => z∈X)).card ≤ chordBound Uᶜ.card U.card := by
+  apply six_local_price F U z zu large den 0
+  rw [Nat.sub_zero,←sum_inside F]
+  exact sum_le_sum_of_subset_of_nonneg (subset_univ _) (fun _ _ _ => Nat.zero_le _)
 
 theorem sides_local_improved (F : Factor A C) (B D U : Finset A) (s : Nat) (z : A) (zu : z∈U)
     (rain : Rainbow F B) (db : D⊆B) (ub : U⊆Bᶜ) :

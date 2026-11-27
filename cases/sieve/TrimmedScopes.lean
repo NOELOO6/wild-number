@@ -5,15 +5,15 @@ namespace WildSieve
 open Finset
 variable {A C : Type} [LinearOrder A] [Fintype A] [Fintype C]
 
-private def toFree (B S : Finset A) : Finset (Free B) := S.subtype (·∈Bᶜ)
+def toFree (B S : Finset A) : Finset (Free B) := S.subtype (·∈Bᶜ)
 
-private theorem back_free {B S : Finset A} (sub : S⊆Bᶜ) :
+theorem back_free {B S : Finset A} (sub : S⊆Bᶜ) :
     (toFree B S).map (emb B)=S := subtype_map_of_mem (fun _ h => sub h)
 
 omit [Fintype A] in
-private theorem short_empty (B : Finset A) (r : A) (f t j) : ∅∈choices B r f t j := by simp [choices]
+theorem short_empty (B : Finset A) (r : A) (f t j) : ∅∈choices B r f t j := by simp [choices]
 omit [Fintype A] in
-private theorem short_root (B : Finset A) (r : A) (f t j) : {r}∈choices B r f t j := by simp [choices]
+theorem short_root (B : Finset A) (r : A) (f t j) : {r}∈choices B r f t j := by simp [choices]
 
 /-- Six of the twelve points can be taken as three whole matching pairs. -/
 theorem empty_twelve (F : Factor A C) (B : Finset A) (r : A) (f t : Nat)
