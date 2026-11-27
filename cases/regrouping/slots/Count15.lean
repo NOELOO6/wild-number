@@ -4,6 +4,19 @@ import SixTrap
 namespace WildSlots.Quintet.K15
 open WildDeletion WildExact WildCuts.OneExtra
 
+private def points (m : Nat) := (Finset.univ : Finset (Fin 15)).filter fun v => m.testBit v.val
+private def first (m : Nat) := (m &&& (m ^^^ (m-1))).log2
+
+/-- For every nonempty remaining set, the pivot used by the enumeration is
+its least vertex. Its catalogue contains each triple with that least vertex
+exactly once. A partition has exactly one block containing that vertex. -/
+theorem enumeration_checks :
+    (∀ m : Fin 32768,m.val≠0 → m.val.testBit (first m)=true ∧
+      ∀ i : Fin 15,i.val<first m → m.val.testBit i.val=false) ∧
+    (∀ a : Fin 15,let row := (SixTrap.choices[a.val]!).toList
+      row.Nodup ∧ (∀ t∈row,t<32768) ∧ ∀ t : Fin 32768,
+      (t.val∈row ↔ (points t.val).card=3 ∧ first t.val=a.val)) := by native_decide
+
 private def colors := (List.finRange 15).map (CoreTest.colored odd)
 
 /-- The previously checked exhaustive search is fed the ordinary edges of

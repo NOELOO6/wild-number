@@ -9,6 +9,45 @@ def exchange {d r n k : Nat} (t : Setup d r n k) (x y : Fin n) : Setup d r n k :
   { t with fixed := t.fixed.map (fun z => edge (swap z.1) (swap z.2)),
            point := fun i => swap (t.point i), dest := fun i => swap (t.dest i) }
 
+private def relabel {n : Nat} (s : Equiv.Perm (Fin n)) (e : EdgeWalk.Edge n) := edge (s e.1) (s e.2)
+
+private theorem on_edge {n : Nat} (s : Equiv.Perm (Fin n)) (a b : Fin n) :
+    relabel s (edge a b)=edge (s a) (s b) := by
+  rcases le_total a b with h|h
+  · simp [relabel,edge,min_eq_left h,max_eq_right h]
+  · simp [relabel,edge,min_eq_right h,max_eq_left h,min_comm,max_comm]
+
+/-- Exchanging two labels preserves legality and the number of wild edges for every placement. -/
+theorem exchange_cost {d r n k b : Nat} (t : Setup d r n k) (x y : Fin n) (p : Perm (Fin d))
+    (old : let w := draw t.fixed.toFinset t.point t.dest p; Legal w ∧ w.card=b) :
+    let w := (edges (exchange t x y) p).toFinset; Legal w ∧ w.card=b := by
+  let s := Equiv.swap x y
+  let W := (edges t p).toFinset
+  have legal : Legal W := by simpa only [W,actual] using old.1
+  have size : W.card=b := by simpa only [W,actual] using old.2
+  have eq : edges (exchange t x y) p=(edges t p).map (relabel s) := by
+    change t.fixed.map (relabel s) ++ (List.finRange d).map (fun i => edge (s (t.point i)) (s (t.dest (p i)))) =
+      (t.fixed ++ (List.finRange d).map (fun i => edge (t.point i) (t.dest (p i)))).map (relabel s)
+    simp only [List.map_append,List.map_map,Function.comp_def,on_edge]
+  have mapped : ((edges t p).map (relabel s)).toFinset=W.image (relabel s) := by
+    ext z
+    simp [W]
+  rw [eq,mapped]
+  change Legal (W.image (relabel s)) ∧ (W.image (relabel s)).card=b
+  have ordered (a b : Fin n) (ne : a≠b) : (edge a b).1<(edge a b).2 := by
+    rcases lt_or_gt_of_ne ne with h|h <;> simp [edge,min_eq_left,min_eq_right,max_eq_left,max_eq_right,h.le,h]
+  refine ⟨?_,?_⟩
+  · intro z hz
+    obtain ⟨e,he,rfl⟩ := Finset.mem_image.mp hz
+    exact ordered _ _ (s.injective.ne (legal _ he).ne)
+  · rw [Finset.card_image_of_injOn]; exact size
+    intro e he f hf h
+    have restore (a : EdgeWalk.Edge n) (ha : a∈W) : relabel s.symm (relabel s a)=a := by
+      change relabel s.symm (edge (s a.1) (s a.2))=a
+      rw [on_edge]
+      simp only [s.symm_apply_apply,edge,min_eq_left (legal _ ha).le,max_eq_right (legal _ ha).le,Prod.mk.eta]
+    exact (restore e he).symm.trans ((congrArg (relabel s.symm) h).trans (restore f hf))
+
 def successful {d r n k : Nat} (t : Setup d r n k) :=
   ∃ p : Perm (Fin d),Works t.graph (draw t.fixed.toFinset t.point t.dest p)
 
@@ -59,9 +98,10 @@ theorem which (a : Choice) : successful (changed a) ↔ works a :=
 
 theorem count : (Finset.univ.filter works).card=49 := by decide
 
-theorem cost : ∀ a : Choice,∀ p : Perm (Fin 5),
+theorem cost (a : Choice) (p : Perm (Fin 5)) :
     let w := (edges (changed a) p).toFinset
-    (∀ e∈w,e.1<e.2) ∧ w.card=10 := by native_decide
+    Legal w ∧ w.card=10 :=
+  exchange_cost _ _ _ p (sharp_odd.1 p)
 
 #print axioms which
 end K15
@@ -90,9 +130,10 @@ theorem which (a : Choice) : successful (changed a) ↔ works a :=
 
 theorem count : (Finset.univ.filter works).card=60 := by decide
 
-theorem cost : ∀ a : Choice,∀ p : Perm (Fin 5),
+theorem cost (a : Choice) (p : Perm (Fin 5)) :
     let w := (edges (changed a) p).toFinset
-    (∀ e∈w,e.1<e.2) ∧ w.card=12 := by native_decide
+    Legal w ∧ w.card=12 :=
+  exchange_cost _ _ _ p (sharp_odd.1 p)
 
 #print axioms which
 end K17
@@ -121,9 +162,10 @@ theorem which (a : Choice) : successful (changed a) ↔ works a :=
 
 theorem count : (Finset.univ.filter works).card=50 := by decide
 
-theorem cost : ∀ a : Choice,∀ p : Perm (Fin 5),
+theorem cost (a : Choice) (p : Perm (Fin 5)) :
     let w := (edges (changed a) p).toFinset
-    (∀ e∈w,e.1<e.2) ∧ w.card=13 := by native_decide
+    Legal w ∧ w.card=13 :=
+  exchange_cost _ _ _ p (sharp_odd.1 p)
 
 #print axioms which
 end K19
@@ -152,9 +194,10 @@ theorem which (a : Choice) : successful (changed a) ↔ works a :=
 
 theorem count : (Finset.univ.filter works).card=50 := by decide
 
-theorem cost : ∀ a : Choice,∀ p : Perm (Fin 5),
+theorem cost (a : Choice) (p : Perm (Fin 5)) :
     let w := (edges (changed a) p).toFinset
-    (∀ e∈w,e.1<e.2) ∧ w.card=14 := by native_decide
+    Legal w ∧ w.card=14 :=
+  exchange_cost _ _ _ p (sharp_odd.1 p)
 
 #print axioms which
 end K21
@@ -183,9 +226,10 @@ theorem which (a : Choice) : successful (changed a) ↔ works a :=
 
 theorem count : (Finset.univ.filter works).card=60 := by decide
 
-theorem cost : ∀ a : Choice,∀ p : Perm (Fin 5),
+theorem cost (a : Choice) (p : Perm (Fin 5)) :
     let w := (edges (changed a) p).toFinset
-    (∀ e∈w,e.1<e.2) ∧ w.card=16 := by native_decide
+    Legal w ∧ w.card=16 :=
+  exchange_cost _ _ _ p (sharp_odd.1 p)
 
 #print axioms which
 end K23
