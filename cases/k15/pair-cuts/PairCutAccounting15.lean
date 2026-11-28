@@ -152,4 +152,28 @@ theorem count_from_mixed_cycles (xs : List (Nat × Nat)) (types : List (Fin 11))
   have positive := table r s (by omega) (by omega)
   omega
 
+/-- Four incidences per square, summed over the sixteen possible singleton roots. -/
+theorem choose_mixed_root (roots : List Int) (cycles squares : Int) (order : roots.length=16)
+    (incidences : roots.sum=4*cycles) (enough : 3299≤9*cycles+5*squares) :
+    ∃ r∈roots,3299≤36*r+5*squares := by
+  apply Classical.byContradiction
+  intro none
+  have maxSum (xs : List Int) (small : ∀ r∈xs,36*r+5*squares≤3298) :
+      36*xs.sum+(xs.length : Int)*(5*squares)≤(xs.length : Int)*3298 := by
+    induction xs with
+    | nil => simp
+    | cons r xs ih =>
+      have one := small r (by simp)
+      have rest := ih (fun x hx => small x (by simp [hx]))
+      simp only [List.sum_cons,List.length_cons,Int.natCast_add,Int.natCast_one,
+        Int.add_mul,Int.one_mul,Int.mul_add]
+      omega
+  have total := maxSum roots (fun r hr => by
+    have h : ¬3299≤36*r+5*squares := fun good => none ⟨r,hr,good⟩
+    omega)
+  rw [order,incidences] at total
+  omega
+
+#print axioms count_from_mixed_cycles
+#print axioms choose_mixed_root
 end PairCutCheck15
