@@ -153,6 +153,7 @@ check_contractions() {
     "$lean" --root="$root" -j1 -s 8192 -o "$build/ContractionExamples.olean" "$root/cases/one-extra/contraction-examples/ContractionExamples.lean"
     "$lean" --root="$root" -j1 -s 8192 -o "$build/PaletteCompletion.olean" "$root/cases/k16/perfect-redraw/PaletteCompletion.lean"
     "$lean" --root="$root" -j1 -s 8192 -o "$build/DisjointSixCredit.olean" "$root/cases/two-triple-cuts/DisjointSixCredit.lean"
+    "$lean" --root="$root" -j1 -s 8192 -o "$build/CommonSixes.olean" "$root/cases/two-triple-cuts/CommonSixes.lean"
     for name in AbsorbEdge PairAbsorbNumbers PartitionMoments; do
         "$lean" --root="$root" -j1 -s 8192 -o "$build/$name.olean" "$root/cases/absorption/$name.lean"
     done
@@ -190,6 +191,7 @@ case ${1:-bounds} in
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
     done
     "$lean" --root="$root" -s 65536 -o "$build/MatchingCuts.olean" "$root/cases/sieve/MatchingCuts.lean"
+    "$lean" --root="$root" -j1 -s 8192 -o "$build/Factors.olean" "$root/cases/sieve/Factors.lean"
     for name in TripleParts TripleCounts; do
       "$lean" --root="$root" -j1 -s 8192 -o "$build/$name.olean" "$root/cases/sieve/$name.lean"
     done

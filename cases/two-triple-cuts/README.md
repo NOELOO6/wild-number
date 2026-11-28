@@ -1,6 +1,6 @@
 # Simultaneous two-triple cuts at K75
 
-Every minimum proper coloring of K75 and K76 has wild number **50**. At least **1,500 per million** partitions of the 75 ordinary vertices into triples connect every color when a tree is drawn on each triple. This settles the conjecture at every order $n\ge71$ together with the previous K71–K74 counting results and the Lean theorem for $n\ge77$. [K71](../absorption/) · [K73 and K74](../absorption/conditioned.md) · [Uniform Lean theorem](../sieve/AllLarge.lean)
+Every minimum proper coloring of K75 and K76 has wild number **50**. At least **1,500 per million** partitions of the 75 ordinary vertices into triples connect every color when a tree is drawn on each triple. A refinement at K69 and K70 extends the settled interval down to K65. [K69 and K70](remaining-regions.md) [K71](../absorption/) · [K73 and K74](../absorption/conditioned.md) · [Uniform Lean theorem](../sieve/AllLarge.lean)
 
 The argument below uses $n=75$, $k=(n-1)/2$ and $t=n/3$. The finite checker also accepts other odd multiples of three between 21 and 75, so the inequalities can be tested at smaller orders.
 

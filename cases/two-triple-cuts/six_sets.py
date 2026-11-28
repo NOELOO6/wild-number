@@ -63,6 +63,10 @@ def checker(n, executable, target):
                  * completions(1-a, t-j))
         shape_mass.append((j, a, (3*j-a)//2, F(count, den)))
     qs = {n, n-9, n-12, n-15, n-18, *(n-3*j for j, *_ in shape_mass)}
+    refined = n == 69
+    if refined:
+        from remaining_regions import RemainingRegions
+        qs.update(range(3, n, 3))
     tables = {q: avoidance_table(executable, n, 1, q) for q in qs}
 
     @cache
@@ -116,18 +120,34 @@ def checker(n, executable, target):
         third = (third_max*F(10*partitions(t-6), partitions(t-4))*bounds[n-18].top
                  + 2*shared_max/comb(n-13, 2)*bounds[n-15].top)
         base = F(full_lo, SCALE)-other
-        intervals = [((labels+4)//5, labels)]
+        leftmost = (labels+4)//5
+        if refined:
+            extra = RemainingRegions(n, m, labels, w, H, m*labels-meet, region_labels,
+                                     bounds, shape_mass)
+            repeated_pairs = min(w, 3*(w-m)//2)
+            leftmost = max(leftmost, labels-((n-9)//6)*w-repeated_pairs)
+        intervals = [(leftmost, labels)]
         while intervals:
             left, right = intervals.pop()
             min_neighbors = max((dis_min+4)//5, dis_min-(labels-left))
             max_neighbors = min(right, dis_max)
             pairs = left*min_neighbors
-            assert pairs > 0
+            most_pairs = right*max_neighbors
+            v_excess = centered_sum
+            if refined:
+                pairs, most_pairs, v_excess = extra.pair_counts(
+                    left, right, pairs, most_pairs, v_excess, pair)
+            assert pairs > 0 and most_pairs >= pairs and v_excess >= 0
             lost = F(2*max_neighbors*H, 10)
-            mean_v = min(pair.vmax, pair.vmin+F(centered_sum, pairs))
+            mean_v = min(pair.vmax, pair.vmin+F(v_excess, pairs))
             lower_avoid = max(pair.bottom, pair.lower_intercept+pair.lower_slope*mean_v)
             A = prob_two*max(0, pair.bottom*(pairs-lost), pairs*lower_avoid-pair.max_lower*lost)
-            B = prob_two*right*max_neighbors*third
+            B = prob_two*most_pairs*third
+            long_credit = 0
+            if refined:
+                shared = 2*shared_max/comb(n-13, 2)*bounds[n-15].top
+                B = min(B, extra.third_bound(left, right, pairs, most_pairs, prob_two, shared))
+                long_credit = extra.long_credit(left, right)
             # Every nonnegative integer slope index is valid. Select the best
             # neighboring integers for these bounds, using the exact ratio.
             if A:
@@ -138,7 +158,7 @@ def checker(n, executable, target):
             unique_hits = max(F(H, 5), H-9*(labels-left))
             six_cost = min(labeled_charge-prob_one*six.bottom*(labels-right),
                            right*prob_one*six.top) - prob_one*six.bottom*unique_hits/20
-            margin = base-six_cost+credit
+            margin = base-six_cost+credit+long_credit
             if margin >= target:
                 checked += 1
                 least = min(least, margin)
