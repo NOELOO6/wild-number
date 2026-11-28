@@ -152,7 +152,7 @@ check_contractions() {
     done
     "$lean" --root="$root" -j1 -s 8192 -o "$build/ContractionExamples.olean" "$root/cases/one-extra/contraction-examples/ContractionExamples.lean"
     "$lean" --root="$root" -j1 -s 8192 -o "$build/PaletteCompletion.olean" "$root/cases/k16/perfect-redraw/PaletteCompletion.lean"
-    for name in AbsorbEdge PairAbsorbNumbers; do
+    for name in AbsorbEdge PairAbsorbNumbers PartitionMoments; do
         "$lean" --root="$root" -j1 -s 8192 -o "$build/$name.olean" "$root/cases/absorption/$name.lean"
     done
 }
@@ -189,6 +189,9 @@ case ${1:-bounds} in
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
     done
     "$lean" --root="$root" -s 65536 -o "$build/MatchingCuts.olean" "$root/cases/sieve/MatchingCuts.lean"
+    for name in TripleParts TripleCounts; do
+      "$lean" --root="$root" -j1 -s 8192 -o "$build/$name.olean" "$root/cases/sieve/$name.lean"
+    done
     check_contractions
     ;;
   sparse-orders|sieve|exact-k36|k24|k30|large-orders|anchor-packing|exterior|palette19)
