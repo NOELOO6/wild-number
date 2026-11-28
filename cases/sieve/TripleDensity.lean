@@ -47,9 +47,10 @@ private theorem three {t : Nat} (order : n=3*t) {A B C : Finset V}
 
 /-- A third-order bound for all forbidden triples of bounded pair degree.
 The ordered disjoint-pair count keeps the same coefficient on both sides. -/
-theorem density_budget (t k : Nat) (order : n=3*t) (H : Finset (Finset V))
+theorem density_budget_full (t k : Nat) (order : n=3*t) (H : Finset (Finset V))
     (size : ∀ A∈H,A.card=3) (cap : PairBound H k) :
     ∃ p : Nat,
+      H.card*H.card≤p+H.card*(1+3*(n-3)*k/2) ∧
       H.card*(H.card+2)≤p+H.card*(3*(k*(n-1)/2)) ∧
       6*(ways t)+p*(3*ways (t-2))≤6*(clear H).card+
         6*(H.card*ways (t-1))+p*((k*(n-6).choose 2/3)*ways (t-3)) := by
@@ -68,7 +69,10 @@ theorem density_budget (t k : Nat) (order : n=3*t) (H : Finset (Finset V))
     simp [e] at s
   have low := sum_le_sum (s:=H) (fun T h => disjoint_lower H size k cap h)
   simp only [sum_add_distrib,sum_const,nsmul_eq_mul,Nat.cast_id,Fintype.card_fin] at low
-  refine ⟨P,by simpa only [Nat.mul_add] using low,?_⟩
+  have cross := sum_le_sum (s:=H) (fun T h => crossing_disjoint H size k cap h)
+  simp only [sum_add_distrib,sum_const,nsmul_eq_mul,Nat.cast_id,Fintype.card_fin] at cross
+  refine ⟨P,?_,by simpa only [Nat.mul_add] using low,?_⟩
+  · simpa only [Nat.mul_add,Nat.mul_one,add_assoc] using cross
   have u := overlap_credit H E N adj
   have one (T) (ht : T∈H) : (E T).card=ways (t-1) := by
     rw [E,SixCounts.event_mass t order (singleton_triple (size _ ht)),card_singleton]
@@ -112,5 +116,14 @@ theorem density_budget (t k : Nat) (order : n=3*t) (H : Finset (Finset V))
   simp only [Nat.cast_id] at u
   dsimp [cost] at all
   omega
+
+theorem density_budget (t k : Nat) (order : n=3*t) (H : Finset (Finset V))
+    (size : ∀ A∈H,A.card=3) (cap : PairBound H k) :
+    ∃ p : Nat,
+      H.card*(H.card+2)≤p+H.card*(3*(k*(n-1)/2)) ∧
+      6*(ways t)+p*(3*ways (t-2))≤6*(clear H).card+
+        6*(H.card*ways (t-1))+p*((k*(n-6).choose 2/3)*ways (t-3)) := by
+  obtain ⟨p,_,bounds⟩ := density_budget_full t k order H size cap
+  exact ⟨p,bounds⟩
 
 end WildSieve.TripleIncidence

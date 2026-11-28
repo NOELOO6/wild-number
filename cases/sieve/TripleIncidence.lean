@@ -17,8 +17,8 @@ private theorem exchange {α β : Type} [DecidableEq α] [DecidableEq β]
   simp only [card_filter]
   rw [sum_comm]
 
-/-- Count the three vertex pairs in each retained triple, then count by pair. -/
 omit [Fintype V] in
+/-- Count the three vertex pairs in each retained triple, then count by pair. -/
 theorem within_bound (H : Finset (Finset V)) (size : ∀ A∈H,A.card=3) (k)
     (cap : PairBound H k) (U : Finset V) : 3*(within H U).card≤k*U.card.choose 2 := by
   classical
@@ -93,6 +93,54 @@ theorem disjoint_lower (H : Finset (Finset V)) (size : ∀ A∈H,A.card=3) (k)
   rw [card_erase_of_mem ht] at a
   have pos := card_pos.mpr (show H.Nonempty from ⟨T,ht⟩)
   simp only [nsmul_eq_mul,Nat.cast_id,mul_one] at e
+  omega
+
+/-- Every other triple meeting T contains exactly two pairs across the cut T | Tᶜ. -/
+theorem crossing_disjoint (H : Finset (Finset V)) (size : ∀ A∈H,A.card=3) (k)
+    (cap : PairBound H k) {T : Finset V} (ht : T∈H) :
+    H.card ≤ (within H Tᶜ).card+1+3*(Fintype.card V-3)*k/2 := by
+  classical
+  let K := (H.erase T).filter (fun A => ¬Disjoint A T)
+  let C := T ×ˢ Tᶜ
+  let hits (A : Finset V) (q : V × V) := q.1∈A ∧ q.2∈A
+  have row (A) (ha : A∈K) : (C.filter (hits A)).card=2 := by
+    obtain ⟨er,meet⟩ := mem_filter.mp ha
+    have split : C.filter (hits A)=(A∩T) ×ˢ (A \ T) := by ext q; simp [C,hits,and_assoc,and_left_comm,and_comm]
+    have pos : 0<(A∩T).card := card_pos.mpr (not_disjoint_iff_nonempty_inter.mp meet)
+    have bound : (A∩T).card<3 := by
+      by_contra! bad
+      have eq : A∩T=A := eq_of_subset_of_card_le inter_subset_left (by simpa [size A (mem_erase.mp er).2] using bad)
+      have sub : A⊆T := by rw [←eq]; exact inter_subset_right
+      exact (mem_erase.mp er).1 (eq_of_subset_of_card_le sub (by rw [size _ ht,size _ (mem_erase.mp er).2]))
+    rw [split,card_product]
+    have parts := card_sdiff_add_card_inter A T
+    rw [size A (mem_erase.mp er).2] at parts
+    have cases : (A∩T).card=1 ∨ (A∩T).card=2 := by omega
+    rcases cases with one|two
+    · rw [one] at parts ⊢; omega
+    · rw [two] at parts ⊢; omega
+  have col (q) (hq : q∈C) : (K.filter (fun A => hits A q)).card≤k := by
+    obtain ⟨x,y⟩ := mem_product.mp hq
+    have ne : q.1≠q.2 := fun eq => mem_compl.mp y (eq ▸ x)
+    apply le_trans _ (cap {q.1,q.2} (by simp [ne]))
+    apply card_le_card
+    intro A h
+    obtain ⟨hk,h1,h2⟩ := mem_filter.mp h
+    exact mem_filter.mpr ⟨(mem_erase.mp (mem_filter.mp hk).1).2,insert_subset h1 (singleton_subset_iff.mpr h2)⟩
+  have e := exchange K C hits
+  rw [sum_congr rfl row,sum_const] at e
+  have b := sum_le_sum col
+  rw [sum_const,show C.card=3*(Fintype.card V-3) by simp [C,card_compl,size _ ht]] at b
+  have cover : H⊆(within H Tᶜ ∪ K)∪{T} := by
+    intro A ha
+    by_cases eq : A=T
+    · simp [eq]
+    by_cases d : Disjoint A T
+    · exact mem_union_left _ (mem_union_left _ (mem_filter.mpr ⟨ha,fun x hx => mem_compl.mpr (disjoint_left.mp d hx)⟩))
+    · exact mem_union_left _ (mem_union_right _ (mem_filter.mpr ⟨mem_erase.mpr ⟨eq,ha⟩,d⟩))
+  have u := (card_le_card cover).trans (card_union_le ..)
+  have v := card_union_le (within H Tᶜ) K
+  simp only [nsmul_eq_mul,Nat.cast_id,card_singleton] at e b u
   omega
 
 end WildSieve.TripleIncidence

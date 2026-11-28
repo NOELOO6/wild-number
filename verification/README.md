@@ -9,7 +9,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The independent K1
 | End-to-end Lean theorems for unrestricted exact orders and K24 component checks | `./verification/graph-bounds.sh exact` |
 | Exact wild number 9 for every minimum proper coloring of K13 and K14 | `./verification/graph-bounds.sh exact-k13` |
 | Exact wild number 12 for every minimum proper coloring of K17 and K18 | `./verification/graph-bounds.sh exact-k17` |
-| Exact wild numbers for every multiple of six from 30 upward and every order from K77 upward, plus the 10/91 lower bound for avoiding closed triples at every n = 6s + 15 | `./verification/graph-bounds.sh sieve` |
+| Exact wild numbers for every multiple of six from 30 upward and every order from K77 upward, plus the 146/1001 lower bound for avoiding closed triples at every n = 6s + 15 | `./verification/graph-bounds.sh sieve` |
 | All orders from 155 upward, including the uniform large-order proof | `./verification/graph-bounds.sh large-orders` |
 | Sparse rooted-cut bounds at seven odd orders and their even transfers | `./verification/graph-bounds.sh sparse-orders` |
 | Steiner triple system colorings of K15 and K16 colorings with a Steiner deletion | `./verification/graph-bounds.sh steiner-k15` |

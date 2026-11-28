@@ -6,7 +6,7 @@ You can name any nine colors that must stay connected. At least 666 groupings co
 
 | Case or experiment | Conclusion | Evidence |
 | --- | --- | --- |
-| Every minimum proper coloring | At least 154,000 of the 1,401,400 partitions into five triples have an edge of every color leaving every triple. A pair of triples can still form a closed cut. | [K15 count](../sieve/RootDensity.lean) · [10/91 bound at every n = 6s + 15](../sieve/UniformRootDensity.lean) |
+| Every minimum proper coloring | At least 204,400 of the 1,401,400 partitions into five triples have an edge of every color leaving every triple. A pair of triples can still form a closed cut. | [K15 and all orders n = 6s + 15](../sieve/UniformRootDensity.lean) |
 | Every Steiner triple system coloring | The same ten wild edges work after every proper redraw of two prescribed colors. The proof also covers K16 with a Steiner deletion. | [Graph theorem and enumeration](steiner/) |
 | Every minimum proper coloring | Five triples can be chosen so every color leaves every triple. Only cuts formed by two whole triples remain. | [General partition theorem](../regrouping/ValidTriples.lean) |
 | A two-piece color with 36 possible cross-component swaps | All 36 repair the color and each disconnects another. Two swaps connect all fifteen. | [Drawing, counts and proof](../regrouping/single-swaps.md) |
