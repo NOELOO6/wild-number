@@ -48,3 +48,19 @@ You can name any nine colors that must stay connected. At least 666 groupings co
 | Swapping points between groups | In another coloring all single swaps miss, but two successive swaps work | [Lean](HardRepair.lean) and [example](two-swaps.json) |
 
 A failed starting arrangement shows what that repair method can miss. To disprove the ten-line conjecture, a coloring must defeat **every** starting arrangement. [Independent example check](check_example.py) · [Verification instructions](../../verification/)
+
+## Counts for seven published one-swap obstructions
+
+Ariavitt gives seven colorings with a starting partition from which every single swap fails. Enumerating all 1,401,400 unordered partitions of each coloring gives the following counts. The first column of counts requires an edge of every color to leave every triple. The final column also tests all ten pairs of triples, which covers every remaining cut of the five-block graph. Each winning partition yields a choice of ten wild edges connecting all fifteen colors. [Source colorings and starting partitions](https://github.com/ariavitt/wild-number-complete-graphs/blob/886b31cbf10831a803e570a7a3a61b2619350965/one-swap-obstructions.json) · [Enumeration](count-partitions.mjs)
+
+| Source profile | Pass every single-triple cut | Winning partitions |
+| ---: | ---: | ---: |
+| 0 | 405,799 | 119,906 |
+| 1 | 405,119 | 120,631 |
+| 2 | 399,960 | 119,008 |
+| 4 | 388,670 | 115,119 |
+| 8 | 394,322 | 117,807 |
+| 9 | 411,756 | 121,993 |
+| 10 | 416,879 | 123,610 |
+
+Run `node cases/k15/count-partitions.mjs /path/to/one-swap-obstructions.json` from the repository root with the linked source file. The counts describe those seven colorings. The unrestricted result would require a winning partition for every proper coloring.
