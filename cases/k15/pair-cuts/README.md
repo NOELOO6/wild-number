@@ -2,6 +2,8 @@
 
 In every minimum proper coloring of K₁₅, at least **390,724** of the **1,401,400** unordered partitions into five triples have an edge of every color leaving each union of two triples. At least **27,810** clear all these cuts and connect at least fourteen colors. In the latter partitions, any remaining disconnected color has exactly two components, one of which is a single triple. Each partition uses ten wild edges, two within each triple.
 
+Fixing any one triple in advance still leaves at least **844** partitions clearing every ordinary two-triple cut. The bound rises to 1,521, 2,204 or 2,892 when one, two or three colors close the prescribed triple with the root. [Prescribed-triple proof](prescribed.md)
+
 There is also a sufficient condition for the full conjecture. Complete the coloring to a one-factorization of K₁₆ by joining each vertex to the new root in its missing color. If at least **76 of the 105** unordered pairs of colors have union consisting of four 4-cycles, at least **105** of the partitions connect every color. Such K₁₅ colorings have wild number ten. On K₁₆ the same conclusion holds with any singleton root, since this particular cycle type is independent of the root. A second sufficient condition only inspects the cycle through the chosen root. If at least **92 of the 105** pairs have root cycle length four, at least **1,387** partitions connect every color. The other cycles may have any lengths. This applies to K₁₅ at its added root and to K₁₆ if some root qualifies. The unconditional interval at both orders is still 10–11.
 
 ## Two types of failure

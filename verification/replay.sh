@@ -62,7 +62,9 @@ if [[ $mode == k15 || $mode == all ]]; then
     python3 "$root/cases/k15/endgame/make_formula.py" "$build/regenerated38.cnf"
     cmp "$build/regenerated38.cnf" "$build/end38.cnf"
     "$lean_bin" -o "$build/HalfSplits.olean" "$root/cases/k15/HalfSplits.lean"
-    for file in TwoCuts FiveTeams ThreeTeams Five Cyclic15 Near15 Trade HardRepair LineTrap FourChanges; do "$lean_bin" "$root/cases/k15/$file.lean"; done
+    "$lean_bin" -o "$build/TwoCuts.olean" "$root/cases/k15/TwoCuts.lean"
+    "$lean_bin" "$root/cases/k15/pair-cuts/PrescribedCuts15.lean"
+    for file in FiveTeams ThreeTeams Five Cyclic15 Near15 Trade HardRepair LineTrap FourChanges; do "$lean_bin" "$root/cases/k15/$file.lean"; done
     "$lean_bin" -s 65536 "$root/examples/SearchExample.lean"
     python3 "$root/cases/k15/verify_k15.py"
     python3 "$root/cases/k15/check_example.py"
