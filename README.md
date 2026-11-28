@@ -38,6 +38,8 @@ Every coloring from K15 through K82 admits a common exterior that leaves six to 
 
 For a fixed choice of points to rearrange, the repository gives a general bound on how many colors can block every move. The sharp bounds are four colors for three points and thirteen for four. With five chosen points, every proper subset of the palette can work while the full palette fails, even on K15. [Theorems, examples and repairs](cases/regrouping/slots/)
 
+At each remaining order through K76 there are explicit families of minimum colorings for which one layout stays optimal under simultaneous alternating-cycle switches. Examples include 2³² colorings on K19 and 2³⁵⁹ on K75 with fixed vertex labels. [Construction and Lean theorem](cases/regrouping/cycle-families/)
+
 The standard round-robin coloring attains the conjectured value for every order n ≥ 3. [Uniform constructions in Lean](cases/regrouping/CyclicOrders.lean)
 
 ### Results from other sources

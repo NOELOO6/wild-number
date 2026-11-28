@@ -85,7 +85,7 @@ Either column suffices. In a Steiner triple system coloring, any forbidden tripl
 
 ## Counting after forbidden triples are removed
 
-For a specified forbidden set of triples, intersections of closed-cut events factor over the regions they define. The product retains the forbidden triples at every level. Two cubic lower bounds on the number of surviving layouts follow from their first three intersection counts. At orders divisible by three a positive bound gives the wild-number formula for the actual coloring. On fifteen vertices all remaining cut sides in this test have size six. [Factorization](FilteredCuts.lean) · [Cubic bounds](FilteredMoments.lean) · [Graph theorem](OddCutCriterion.lean)
+For a specified forbidden set of triples, intersections of closed-cut events factor over the regions they define. The product retains the forbidden triples at every level. Two cubic lower bounds on the number of surviving layouts follow from their first three intersection counts. At orders divisible by three a positive bound gives the wild-number formula for the actual coloring. On fifteen vertices all remaining cut sides in this test have size six. With a fixed rainbow block, the same test works with zero, four or five ordinary vertices set aside. This covers all odd residue classes. [Factorization](FilteredCuts.lean) · [Cubic bounds](FilteredMoments.lean) · [Triple-order graph theorem](OddCutCriterion.lean) · [Fixed-block graph theorem](FixedCutCriterion.lean)
 
 ## Verification
 

@@ -219,7 +219,7 @@ case ${1:-bounds} in
       done
     }
     check_root_density() {
-      for file in cases/regrouping/{TripleRepair,SymmetricRepair,ValidTriples} cases/sieve/{TripleIncidence,TripleDensity,RootDensity,UniformRootDensity,FilteredCuts,FilteredMoments,OddCutCriterion}; do
+      for file in cases/regrouping/{TripleRepair,SymmetricRepair,ValidTriples} cases/sieve/{TripleIncidence,TripleDensity,RootDensity,UniformRootDensity,FilteredCuts,FilteredMoments,OddCutCriterion,FixedCutCriterion}; do
         "$lean" --root="$root" -s 65536 -o "$build/${file##*/}.olean" "$root/$file.lean"
       done
     }
@@ -308,6 +308,9 @@ case ${1:-bounds} in
     "$lean" --root="$root" -o "$build/MatchingCuts.olean" "$root/cases/sieve/MatchingCuts.lean"
     for name in Periodic RoundRobin Reflection CyclicOrders TwoGroups CommonHalf MergeColors SwapExamples HalfTrap Bounds21 BridgeSwitch PartnerSwitch GraphSwitch OddSwitch DetourCount ChoosePoints SwitchCases; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/regrouping/$name.lean"
+    done
+    for name in SwitchFamily CycleFamilies CycleCertificates; do
+      "$lean" --root="$root" -j1 -s 65536 -o "$build/$name.olean" "$root/cases/regrouping/cycle-families/$name.lean"
     done
     for name in QuartetTrap QuartetCount; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/k16/quartets/$name.lean"
