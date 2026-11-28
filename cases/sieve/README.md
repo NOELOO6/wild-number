@@ -83,6 +83,10 @@ Complete an odd coloring by adding the missing vertex as a root. Call a triple o
 
 Either column suffices. In a Steiner triple system coloring, any forbidden triple containing a given pair must be its unique Steiner line. This proves the predicted number for every such coloring of K61, K67, K69, K73 and K75. [Steiner graph proof](SteinerOrders.lean)
 
+## Counting after forbidden triples are removed
+
+For a specified forbidden set of triples, intersections of closed-cut events factor over the regions they define. The product retains the forbidden triples at every level. Two cubic lower bounds on the number of surviving layouts follow from their first three intersection counts. At orders divisible by three a positive bound gives the wild-number formula for the actual coloring. On fifteen vertices all remaining cut sides in this test have size six. [Factorization](FilteredCuts.lean) · [Cubic bounds](FilteredMoments.lean) · [Graph theorem](OddCutCriterion.lean)
+
 ## Verification
 
 Run `./verification/graph-bounds.sh sieve` from the repository root with Lean 4.19.0. The checker constructs the comparison sequence from integers and tests its inequalities exactly. Lean’s ordinary kernel checks the graph argument and all 44 numerical certificates used in the K77–K154 and even-order proofs. The `large-orders` target replays the proof from 155 upward on its own. The kernel tables are generated during elaboration and every inequality is checked again by kernel reduction. [Kernel certificates](KernelTables.lean) [Arithmetic checker](Numeric.lean) · [Verification guide](../../verification/)
