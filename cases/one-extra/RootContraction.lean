@@ -120,14 +120,14 @@ theorem repair_size (w : Lines n) (a z : Fin n) : (repair w a z).card≤w.card+1
   · simp [repair,eq]
   · simpa [repair,eq] using card_insert_le (WildCuts.ordered (a,z)) w
 
-private theorem lift_walk {g : Coloring n n} {w : Lines n} {a z c u v : Fin n}
+theorem lift_walk {g : Coloring n n} {w : Lines n} {a z c u v : Fin n}
     (p : Walk (Joined g w c) u v) : Walk (Joined g (repair w a z) c) u v := by
   apply Walk.mapInto id _ p
   intro x y h
   exact .step (.stay _) (h.elim (fun t => Or.inl (t.imp
     (fun h => repair_sub w a z h) (fun h => repair_sub w a z h))) Or.inr)
 
-private theorem link (g : Coloring n n) (w : Lines n) (c a z : Fin n) :
+theorem link (g : Coloring n n) (w : Lines n) (c a z : Fin n) :
     Walk (Joined g (repair w a z) c) a z := by
   by_cases eq : a=z
   · exact eq ▸ Walk.stay _

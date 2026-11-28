@@ -21,6 +21,7 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | K₃₀ | 20 | ✅ Solved in Lean | [End-to-end theorem](cases/k30/Exact30.lean) · [Counting proof and certificate](cases/k30/) |
 | K₃₆ | 24 | ✅ Solved in Lean | [End-to-end theorem and counting proof](cases/k36/) |
 | K₆ₘ for every m ≥ 5 | 4m | ✅ Solved in Lean | [Infinite-family theorem](cases/sieve/SixFamily.lean) · [First values](cases/sieve/#orders-divisible-by-six) |
+| K₅₉, K₆₅, K₇₁ | 40, 44, 48 | Proved by counting | [Choosing the last wild edge](cases/absorption/) · [Lean graph repair](cases/absorption/AbsorbEdge.lean) · [Lean counts](cases/absorption/PairAbsorbNumbers.lean) |
 | Other K₂₃ through K₇₆ | ⌊4⌈n/2⌉/3⌋ | Partial | Conjectured value or one more · [General bound](cases/one-extra/NearRange.lean) · [Cyclic K23 and K24](cases/k23/) · [Cyclic K25 and K26](cases/k25/) · [Cyclic K27 and K28](cases/k27/) · [Sparse rooted cuts below K77](cases/sieve/#sparse-rooted-cuts-below-k77) |
 | Every Kₙ with n ≥ 77 | ⌊4⌈n/2⌉/3⌋ | ✅ Solved in Lean | [Uniform theorem](cases/sieve/AllLarge.lean) · [Proof for n ≥ 155](cases/sieve/ExactLarge.lean) |
 | K₇₇, K₇₈ | 52 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactTrimmed.lean) |

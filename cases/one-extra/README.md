@@ -18,6 +18,8 @@ Any two nontrivial cuts admit an edge that crosses both. Adding that edge connec
 
 At K43, K49, K55, K69, K75 and several other odd orders, one layout at the conjectured budget leaves at most one extra component across all colors. This also holds at the following even orders. At K75 at least 13,520 per million completions of any specified rainbow seven-vertex frame achieve it. [Component averages and complete table](piece-moments/)
 
+At K59, K65 and K71 the conjectured budget now connects **every** color. Any prescribed pair can be reserved for the final edge. [Proof and exact counts](../absorption/)
+
 ## The remaining six to eight vertices
 
 For every minimum proper coloring from K15 through K82 there is a set of 6, 7 or 8 vertices and a choice of exterior wild edges such that every vertex can reach this set in every color. There is enough room in the conjectured edge budget to split the set in two and draw a star in each part. This follows by reopening the two groups containing the ends of the extra edge in the earlier proof. The same result holds at the even orders by deleting one vertex and then restoring it. [Odd-order construction](TwoGroupCore.lean) · [Full range theorem](CoreRange.lean)

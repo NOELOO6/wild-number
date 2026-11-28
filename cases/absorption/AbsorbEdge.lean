@@ -1,0 +1,111 @@
+import RootContraction
+
+namespace WildExact.Absorption
+open Finset WildDeletion RootContraction
+
+variable {n k : Nat}
+
+noncomputable def piece (g : Coloring n k) (w : Lines n) (c : Fin k) (x : Fin n) : Finset (Fin n) := by
+  classical exact univ.filter (Walk (Joined g w c) x)
+
+noncomputable def pieces (g : Coloring n k) (w : Lines n) (c : Fin k) :=
+  univ.image (piece g w c)
+
+theorem mem_piece {g : Coloring n k} {w : Lines n} {c x y} :
+    y∈piece g w c x ↔ Walk (Joined g w c) x y := by classical simp [piece]
+
+private theorem self_mem (g : Coloring n k) (w : Lines n) (c x) : x∈piece g w c x :=
+  mem_piece.mpr (.stay x)
+
+theorem piece_eq {g : Coloring n k} {w : Lines n} {c x y} :
+    piece g w c x=piece g w c y ↔ Walk (Joined g w c) x y := by
+  constructor
+  · intro eq
+    apply mem_piece.mp
+    rw [eq]
+    exact self_mem _ _ _ _
+  · intro h
+    ext z
+    simp only [mem_piece]
+    exact ⟨fun p => (backwards (joined_symm _) h).join p,fun p => h.join p⟩
+
+private theorem one {g : Coloring n k} {w : Lines n} {c} (h : (pieces g w c).card≤1) :
+    Connected (Joined g w c) := by
+  intro x y
+  exact piece_eq.mp (card_le_one.mp h _ (mem_image_of_mem _ (mem_univ x)) _ (mem_image_of_mem _ (mem_univ y)))
+
+private theorem two {g : Coloring n k} {w : Lines n} {c x y}
+    (h : (pieces g w c).card≤2) (different : ¬Walk (Joined g w c) x y) (z : Fin n) :
+    Walk (Joined g w c) x z ∨ Walk (Joined g w c) y z := by
+  classical
+  by_contra! bad
+  have xy := fun e => different (piece_eq.mp e)
+  have xz := fun e => bad.1 (piece_eq.mp e)
+  have yz := fun e => bad.2 (piece_eq.mp e)
+  let f := piece g w c
+  have sub : {f x,f y,f z} ⊆ pieces g w c := by
+    intro q hq
+    simp only [mem_insert,mem_singleton] at hq
+    rcases hq with rfl|rfl|rfl <;> exact mem_image_of_mem _ (mem_univ _)
+  have hz := card_le_card sub
+  have nx : f x∉({f y,f z} : Finset _) := fun h => (mem_insert.mp h).elim xy (fun m => xz (mem_singleton.mp m))
+  have ny : f y∉({f z} : Finset _) := fun h => yz (mem_singleton.mp h)
+  have count : ({f x,f y,f z} : Finset _).card=3 := by
+    rw [card_insert_of_not_mem nx,card_insert_of_not_mem ny,card_singleton]
+  omega
+
+/-- The reserved color isolates the small block. Its outside can be repaired simultaneously
+with one other two-component color, by choosing the endpoint after the layout is known. -/
+theorem absorb (g : Coloring n n) (w : Lines n) (leg : Legal w) (base : Fin n) (special : Fin n)
+    (A : Finset (Fin n)) (proper : A≠univ) (reserved : piece g w special base=A)
+    (block : ∀ c, A⊆piece g w c base)
+    (budget : 2*((pieces g w special).card-2)+
+      ∑ c∈univ.erase special,((pieces g w c).card-1)≤1) :
+    ∃ y∉A, Legal (repair w base y) ∧ (repair w base y).card≤w.card+1 ∧ Works g (repair w base y) := by
+  classical
+  let d (c : Fin n) := (pieces g w c).card-1
+  have total : (∑ c∈univ.erase special,d c)≤1 := by dsimp [d]; omega
+  have sp : (pieces g w special).card≤2 := by omega
+  have outside : ∃ y,y∉A := by
+    by_contra! h
+    exact proper (eq_univ_of_forall h)
+  have choosePoint : ∃ y∉A, ∀ c,c≠special → ∀ x,Walk (Joined g w c) base x ∨ Walk (Joined g w c) y x := by
+    by_cases finished : ∀ c,c≠special → Connected (Joined g w c)
+    · obtain ⟨y,hy⟩ := outside
+      exact ⟨y,hy,fun c ne x => Or.inl (finished c ne _ x)⟩
+    push_neg at finished
+    obtain ⟨c,ne,no⟩ := finished
+    have m : c∈univ.erase special := mem_erase.mpr ⟨ne,mem_univ _⟩
+    have dc : 1≤d c := by
+      by_contra! h
+      exact no (one (by dsimp [d] at h; omega))
+    have eq := sum_erase_add (univ.erase special) d m
+    have dc' : (pieces g w c).card≤2 := by dsimp [d] at *; omega
+    have missing : ∃ y, ¬Walk (Joined g w c) base y := by
+      by_contra! all
+      exact no (fun x y => (backwards (joined_symm _) (all x)).join (all y))
+    obtain ⟨y,hy⟩ := missing
+    refine ⟨y,fun inA => hy (mem_piece.mp (block c inA)),?_⟩
+    intro col other x
+    by_cases eqc : col=c
+    · exact eqc ▸ two dc' hy x
+    · have incl : col∈(univ.erase special).erase c := by simp [other,eqc]
+      have val := single_le_sum (f:=d) (fun i _ => Nat.zero_le (d i)) incl
+      have small : (pieces g w col).card≤1 := by dsimp [d] at val; dsimp [d] at *; omega
+      exact Or.inl (one small _ x)
+  obtain ⟨y,hy,other⟩ := choosePoint
+  refine ⟨y,hy,repair_legal leg _ _,repair_size _ _ _,?_⟩
+  intro c
+  have both (x : Fin n) : Walk (Joined g w c) base x ∨ Walk (Joined g w c) y x := by
+    by_cases eq : c=special
+    · subst c
+      apply two sp _ _
+      intro h
+      exact hy (reserved ▸ mem_piece.mpr h)
+    · exact other c eq x
+  have all (x : Fin n) : Walk (Joined g (repair w base y) c) base x :=
+    (both x).elim lift_walk (fun p => (link g w c base y).join (lift_walk p))
+  exact fun x z => (backwards (joined_symm _) (all x)).join (all z)
+
+#print axioms absorb
+end WildExact.Absorption
