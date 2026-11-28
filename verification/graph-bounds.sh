@@ -152,6 +152,7 @@ check_contractions() {
     done
     "$lean" --root="$root" -j1 -s 8192 -o "$build/ContractionExamples.olean" "$root/cases/one-extra/contraction-examples/ContractionExamples.lean"
     "$lean" --root="$root" -j1 -s 8192 -o "$build/PaletteCompletion.olean" "$root/cases/k16/perfect-redraw/PaletteCompletion.lean"
+    "$lean" --root="$root" -j1 -s 8192 -o "$build/DisjointSixCredit.olean" "$root/cases/two-triple-cuts/DisjointSixCredit.lean"
     for name in AbsorbEdge PairAbsorbNumbers PartitionMoments; do
         "$lean" --root="$root" -j1 -s 8192 -o "$build/$name.olean" "$root/cases/absorption/$name.lean"
     done
