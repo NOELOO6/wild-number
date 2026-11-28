@@ -49,10 +49,32 @@ if [[ ${1:-bounds} == slots || ${1:-bounds} == regrouping || ${1:-bounds} == sie
         fi
     done
 fi
+if [[ ${1:-bounds} == cyclic-k21 ]]; then
+    modules=(Mathlib/Algebra/Group/Fin/Basic Mathlib/GroupTheory/Perm/ViaEmbedding)
+    for module in "${modules[@]}"; do
+        if [[ ! -f .lake/build/lib/lean/"$module".olean ]]; then
+            "$lake" exe cache get "${modules[@]/%/.lean}"
+            break
+        fi
+    done
+fi
 build=$(mktemp -d)
 trap 'rm -rf -- "$build"' EXIT
 export LEAN_PATH="$build:$("$lake" env printenv LEAN_PATH)"
 "$lean" --version
+if [[ ${1:-bounds} == cyclic-k21 ]]; then
+    source "$root/verification/native.sh"
+    native_module "$root/cases/k16/Delete.lean"
+    native_module "$root/cases/k19/EdgeWalk.lean" -lDelete
+    native_module "$root/cases/k21/Starters21.lean" -lEdgeWalk -lDelete
+    "$lean" --root="$root" --load-dynlib="$build/libStarters21.$ext" -s 65536 \
+        -o "$build/Cyclic21Check.olean" "$root/cases/k21/Cyclic21Check.lean"
+    for file in verification/exact/{ExactModel,UniversalLower,MatchingModel} \
+        cases/regrouping/{TripleRepair,ValidTriples} cases/k21/{OrbitLayouts,Extract21,Cyclic21}; do
+        "$lean" --root="$root" -s 65536 -o "$build/${file##*/}.olean" "$root/$file.lean"
+    done
+    exit 0
+fi
 if [[ ${1:-bounds} == exact-k13 ]]; then
     source "$root/verification/exact-k13.sh"
     exit 0
@@ -172,5 +194,5 @@ case ${1:-bounds} in
       "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
     done
     ;;
-  *) echo 'Use exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, slots, anchored, exterior, palette19, anchor-packing, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
+  *) echo 'Use cyclic-k21, exact, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, slots, anchored, exterior, palette19, anchor-packing, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
 esac

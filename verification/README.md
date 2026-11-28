@@ -8,6 +8,7 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The independent K1
 | Exact wild number 9 for every minimum proper coloring of K13 and K14 | `./verification/graph-bounds.sh exact-k13` |
 | Exact wild number 12 for every minimum proper coloring of K17 and K18 | `./verification/graph-bounds.sh exact-k17` |
 | Exact wild numbers for every multiple of six from 42 upward and every K77 through K154 | `./verification/graph-bounds.sh sieve` |
+| Cyclic K21, K22 with a cyclic deletion, and the general valid-triple partition | `./verification/graph-bounds.sh cyclic-k21` |
 | K15 seven-point rule, partitions of the other nine and a ten-edge sufficient condition | `./verification/graph-bounds.sh exterior` |
 | K15 packing test, example coloring and prescribed-pair theorem | `./verification/graph-bounds.sh anchor-packing` |
 | Exact K24, K30 and K36 families defined by alternating-cycle counts | `./verification/graph-bounds.sh anchored` |

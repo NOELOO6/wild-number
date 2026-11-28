@@ -16,7 +16,7 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | K₁₅, K₁₆ | 10 | Partial | 10–11 · [K15](cases/k15/) · [K16](cases/k16/) |
 | K₁₇, K₁₈ | 12 | ✅ Solved in Lean | [End-to-end theorem](verification/exact/K17K18.lean) · [Counting proof](cases/k17/) |
 | K₁₉, K₂₀ | 13 | Partial | 13–14 · [K19 families](cases/k19/) · [General bound](cases/one-extra/) |
-| K₂₁, K₂₂ | 14 | Partial | 14–15 · [Graph bounds and K21 obstructions](cases/one-extra/) |
+| K₂₁, K₂₂ | 14 | Partial | 14–15 · [Graph bounds](cases/one-extra/) · [Exact cyclic cases](cases/k21/) |
 | K₆ₘ for every m ≥ 7 | 4m | ✅ Solved in Lean | [Infinite-family theorem](cases/sieve/InfiniteEven.lean) · [First values](cases/sieve/#orders-divisible-by-six) |
 | Other K₂₃ through K₇₆ | ⌊4⌈n/2⌉/3⌋ | Partial | Conjectured value or one more · [General bound](cases/one-extra/NearRange.lean) · [K24, K30 and K36 families](cases/anchored/) |
 | K₇₇, K₇₈ | 52 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactTrimmed.lean) |
