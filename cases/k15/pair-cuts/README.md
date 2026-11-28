@@ -6,6 +6,8 @@ There is also a sufficient condition for the full conjecture. Complete the color
 
 ## Two types of failure
 
+The two cycle tests can be combined. Let $R$ count pairs whose root cycle has length four and let $S$ count pairs whose union consists of four squares. A square pair contributes to both counts. If **$36R+5S\ge3299$**, at least **92** ten-edge partitions connect all colors. For example, $R\ge84$ and $S\ge55$ suffice. On K₁₆ there is a root-independent test: let $C$ be the total number of four-cycles across the 105 pairs. If $9C+5S\ge3299$, a qualifying root exists, since the average of $R$ over the sixteen roots is $C/4$. [Lean aggregation theorem](PairCutAccounting15.lean)
+
 Keep the root as a singleton block and draw two spokes in each ordinary triple. In any one color, every block has odd size and a closed side of the perfect matching has even size. If the contracted graph is disconnected, there is therefore a closed pair of blocks. Two distinct closed block pairs are disjoint, since their intersection is closed and cannot be one odd block. The complement of two disjoint pairs is the third closed pair. Thus the closed pairs of blocks are either absent, unique, or the three pairs of a partition of the six blocks. Deleting the singleton root preserves ordinary connectivity, since the root has degree one in each color. [Lean cut classification](../../k16/last-two/GraphCuts.lean)
 
 Call a color **P** if it closes an ordinary six-set made of two triples. Call it **R** if it closes a root-four (the root and one ordinary triple) and has no ordinary six-set cut. All other colors are connected. For a fixed color and layout, write $s$ for the number of closed ordinary six-sets, $q$ for the number of closed root-fours and $d$ for the number of partitions into three closed pairs of blocks. The cut classification gives the two indicator functions $1_P=s-d$ and $1_R=q-d$. Over all layouts a given color occurs in mode P exactly 91,000 times and in mode R exactly 100,800 times.
@@ -47,6 +49,8 @@ If $N_i$ of the 105 color pairs have type $i$, summing the score over all layout
 | All two-triple cuts clear, at most one root failure | 27,810 | [Integer prices](one-root-prices.txt) |
 | Every color connected, at least 92 pairs with root on a four-cycle | 1,387 | [Integer prices](root-fours.txt) |
 | Every color connected, at least 76 square-cycle pairs | 105 | [Integer prices](square-pairs.txt) |
+
+For the mixed test, the four-cycle price file gives every row a gain of at least 1,154,745,768,085, plus 367,774,852,655 if its root cycle has length four and a further 51,022,931,120 if all four cycles are squares. Insert these three terms into the histogram inequality. The Lean checker tests the integer pairs $0\le S\le R\le105$ to establish the stated threshold and rounding.
 
 ## A single remaining rooted triple
 

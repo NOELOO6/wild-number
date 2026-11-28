@@ -8,6 +8,7 @@ You can name any nine colors that must stay connected. At least 666 groupings co
 | --- | --- | --- |
 | At most three triples closed with the root by exactly one color | At least 2,475 partitions connect all fifteen colors. | [Fixed-triple bound](pair-cuts/#a-single-remaining-rooted-triple) |
 | At least 92 color pairs with the added root on a 4-cycle | At least 1,387 partitions connect all fifteen colors. | [Cycle-type prices](pair-cuts/) |
+| At least 84 pairs have the root on a 4-cycle and at least 55 pairs consist entirely of squares | At least 92 partitions connect every color. More generally $36R+5S\ge3299$ suffices for the two counts $R,S$. | [Mixed cycle criterion](pair-cuts/) |
 | Every minimum proper coloring | At least 390,724 partitions clear all two-triple cuts. At least 27,810 also leave at most one disconnected color, with an isolated triple. | [Cubic proof and integer certificates](pair-cuts/) |
 | At least 76 pairs of colors each form four alternating 4-cycles in the completion | At least 105 ten-edge partitions connect every color. | [Cycle-type criterion](pair-cuts/) |
 | Every minimum proper coloring | At least 204,400 of the 1,401,400 partitions into five triples have an edge of every color leaving every triple. A pair of triples can still form a closed cut. | [K15 and all orders n = 6s + 15](../sieve/UniformRootDensity.lean) |

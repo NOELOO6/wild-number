@@ -102,4 +102,54 @@ theorem count_from_accounts (g : Goal) (xs : List (Nat × Nat)) (types : List (F
   rw [D] at budget strict
   omega
 
+def rootFlag (i : Fin 11) : Int := if i.val<4 then 1 else 0
+def squareFlag (i : Fin 11) : Int := if i.val=0 then 1 else 0
+
+private theorem mixed_gain (is : List (Fin 11)) :
+    (is.length : Int)*1154745768085 + isum is rootFlag*367774852655 +
+      isum is squareFlag*51022931120 ≤ isum is (gain .rootFours) := by
+  have allRows : (List.finRange 11).all (fun i => decide (1154745768085+
+      rootFlag i*367774852655+squareFlag i*51022931120 ≤ gain .rootFours i))=true := by native_decide
+  induction is with
+  | nil => simp [isum]
+  | cons i is ih =>
+    have hz : i.val < (List.finRange 11).length := by simp
+    have mem : i∈List.finRange 11 := by simpa using List.getElem_mem (l:=List.finRange 11) hz
+    have row := of_decide_eq_true (List.all_eq_true.mp allRows i mem)
+    simp only [isum,List.map_cons,List.sum_cons,List.length_cons,Int.natCast_add,Int.natCast_one,
+      Int.add_mul,Int.one_mul] at *
+    omega
+
+/-- A mixed histogram can certify exactness even when both individual thresholds fail. -/
+theorem count_from_mixed_cycles (xs : List (Nat × Nat)) (types : List (Fin 11))
+    (cap : ∀ v∈xs,v.1+v.2≤15) (pairs : types.length=105)
+    (enough : 3299≤36*isum types rootFlag+5*isum types squareFlag)
+    (account : 315*base .rootFours+3*isum types (gain .rootFours)≤105*isum xs (fun v => score .rootFours v.1 v.2)) :
+    92≤isum xs (fun v => succeeds .rootFours v.1 v.2) := by
+  have bins := mixed_gain types
+  have scored := sum_score .rootFours xs cap
+  have baseEq : base .rootFours=(-1475600000000 : Int) := by native_decide
+  have scaleEq : scale .rootFours=1000000 := by native_decide
+  rw [baseEq] at account
+  rw [scaleEq] at scored
+  rw [pairs] at bins
+  have bounded (is : List (Fin 11)) : 0≤isum is squareFlag ∧ isum is squareFlag≤isum is rootFlag ∧ isum is rootFlag≤(is.length : Int) := by
+    induction is with
+    | nil => simp [isum]
+    | cons i is ih =>
+      simp only [isum,List.map_cons,List.sum_cons,List.length_cons,Int.natCast_add,Int.natCast_one] at *
+      simp only [squareFlag,rootFlag]
+      split <;> split <;> omega
+  have hb := bounded types
+  rw [pairs] at hb
+  have table : ∀ r s : Fin 106, s.val≤r.val → 3299≤36*r.val+5*s.val →
+      (105 : Int)*1000000*91 < 105*(-1475600000000+1154745768085)+
+        (r.val : Int)*367774852655+(s.val : Int)*51022931120 := by native_decide
+  let r : Fin 106 := ⟨(isum types rootFlag).toNat,by omega⟩
+  let s : Fin 106 := ⟨(isum types squareFlag).toNat,by omega⟩
+  have re : (r.val : Int)=isum types rootFlag := by dsimp [r]; omega
+  have se : (s.val : Int)=isum types squareFlag := by dsimp [s]; omega
+  have positive := table r s (by omega) (by omega)
+  omega
+
 end PairCutCheck15
