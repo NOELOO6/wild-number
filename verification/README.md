@@ -40,6 +40,8 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The independent K1
 | Every way to redraw six round-robin colors on K15/K16 | `./verification/replay.sh six` |
 | The K19 rotation proof, placement counts and repair lemma | `./verification/replay.sh k19` |
 | K15 and K16 after any five colors are redrawn in any perfect one-factorization | [Standalone C++ replay](../cases/k16/perfect-redraw/#replay) |
+| Four cubic K15 certificates, 44 rooted matching rows and score accounting | `./verification/replay.sh pair-cuts` |
+| Near-optimal component counts at the remaining orders | [Exact Python checks](../cases/one-extra/piece-moments/#verification) · `./verification/graph-bounds.sh sieve` |
 | Any eleven or twelve named colors on K15 or thirteen on K16 | `./verification/replay.sh prescribed` |
 | Every proper redraw of six colors in the counterexample-search coloring | `./verification/replay.sh search-redraw` |
 | Latest K15/K16/K19 last-color counting tables and arithmetic | `./verification/replay.sh last-colors` |

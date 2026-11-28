@@ -301,6 +301,9 @@ case ${1:-bounds} in
     check_k30
     check_k24
     check_root_density
+    for name in FrameGrowth PieceMoments; do
+      "$lean" --root="$root" -j1 -s 8192 -o "$build/$name.olean" "$root/cases/one-extra/piece-moments/$name.lean"
+    done
     check_large_orders
     "$lean" --root="$root" -s 65536 -o "$build/AllLarge.olean" "$root/cases/sieve/AllLarge.lean"
     "$lean" --root="$root" -j2 -s 65536 -o "$build/InfiniteEven.olean" "$root/cases/sieve/InfiniteEven.lean"

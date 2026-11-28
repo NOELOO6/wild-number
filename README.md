@@ -34,6 +34,8 @@ Combining the original K6 and K12 results, the K18 theorem, the K24 counting pro
 
 Lean proves that every K30 coloring has at least 2,211,739,995,828,567 winning partitions into ten triples. Its finite checks use the native evaluator. [K30 counting proof and replay](cases/k30/)
 
+At K43–K44, K49–K50, K55–K56, K69–K70 and K75–K76, among other orders, the conjectured edge budget connects every color except possibly one, and that color has exactly two components if disconnected. [Counting proof and verified arithmetic](cases/one-extra/piece-moments/)
+
 Every coloring from K15 through K82 admits a common exterior that leaves six to eight vertices to regroup within the conjectured budget. Whether one split works for every color remains open at the partial orders. [Reduction and checked examples](cases/one-extra/#the-remaining-six-to-eight-vertices)
 
 At each odd order immediately below a solved multiple of six, contracting an incident wild edge of an even optimum leaves at most two pieces per color. One edge repairs every case with at most two distinct cuts. For three cuts, the precise obstruction is a choice of three pairwise disjoint sides. [Reverse-deletion theorem](cases/one-extra/#deleting-a-vertex-from-an-optimal-even-solution)
