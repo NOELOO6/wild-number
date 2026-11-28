@@ -68,7 +68,7 @@ struct Certificate {
                 "missing certificate header");
         require(scale > 0 && scale <= 10000000 && root_max >= 0 && root_max <= 15 &&
                 pair_max >= 0 && pair_max <= 15 && minimum_pairs >= 0 && minimum_pairs <= 105 &&
-                template_id >= 0 && template_id < shapes && bound >= 0 && bound <= layouts,
+                template_id >= 0 && template_id <= shapes && bound >= 0 && bound <= layouts,
                 "invalid certificate header");
         read_numbers(in, a, 20000000);
         auto types = rooted_types();
@@ -314,7 +314,14 @@ int main(int argc,char** argv) {
                 least=std::min(least,c.rows[i].gain);
             }
             Integer base=layouts*c.a[0]+15*(91000*c.a[1]+100800*c.a[2]);
-            Integer total=105*(base+least)+c.minimum_pairs*(c.rows[c.template_id].gain-least);
+            // The additional type selector accepts every cycle type with root cycle length four.
+            Integer special=INT64_MAX;
+            for (unsigned i=0;i<shapes;++i) {
+                bool selected=c.template_id==shapes ? c.rows[i].cycles.front()==4 : i==c.template_id;
+                if (selected) special=std::min(special,c.rows[i].gain);
+            }
+            require(special!=INT64_MAX,"empty cycle-type selection");
+            Integer total=105*(base+least)+c.minimum_pairs*(special-least);
             require(total>(c.bound-1)*105*c.scale && total<=c.bound*105*c.scale,"rounded guarantee");
             std::cout<<argv[file]<<": "<<c.bound<<" layouts; "<<evaluated<<" third matchings checked\n";
         }

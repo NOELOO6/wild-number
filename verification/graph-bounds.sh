@@ -219,7 +219,7 @@ case ${1:-bounds} in
       done
     }
     check_root_density() {
-      for file in cases/regrouping/{TripleRepair,SymmetricRepair,ValidTriples} cases/sieve/{TripleIncidence,TripleDensity,RootDensity,UniformRootDensity,FilteredCuts,FilteredMoments,OddCutCriterion,FixedCutCriterion}; do
+      for file in cases/regrouping/{TripleRepair,SymmetricRepair,ValidTriples} cases/sieve/{TripleIncidence,TripleDensity,RootDensity,UniformRootDensity,FilteredCuts,FilteredMoments,OddCutCriterion,FixedCutCriterion,RootedSix15,TwoTripleDensity}; do
         "$lean" --root="$root" -s 65536 -o "$build/${file##*/}.olean" "$root/$file.lean"
       done
     }
