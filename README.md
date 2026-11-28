@@ -13,18 +13,23 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | Complete graph | Conjectured | Status | Proof or bounds |
 | --- | ---: | --- | --- |
 | K₁₃, K₁₄ | 9 | ✅ Solved in Lean | [End-to-end theorem](verification/exact/K13K14.lean) · [Proof and credits](cases/k13/) |
-| K₁₅, K₁₆ | 10 | Partial | 10–11 · [K15](cases/k15/) · [K16](cases/k16/) |
+| K₁₅, K₁₆ | 10 | Partial | 10–11 · [Exact for Steiner colorings](cases/k15/steiner/) · [K15](cases/k15/) · [K16](cases/k16/) |
 | K₁₇, K₁₈ | 12 | ✅ Solved in Lean | [End-to-end theorem](verification/exact/K17K18.lean) · [Counting proof](cases/k17/) |
 | K₁₉, K₂₀ | 13 | Partial | 13–14 · [K19 families](cases/k19/) · [General bound](cases/one-extra/) |
 | K₂₁, K₂₂ | 14 | Partial | 14–15 · [Graph bounds](cases/one-extra/) · [Exact cyclic cases](cases/k21/) |
-| K₆ₘ for every m ≥ 7 | 4m | ✅ Solved in Lean | [Infinite-family theorem](cases/sieve/InfiniteEven.lean) · [First values](cases/sieve/#orders-divisible-by-six) |
-| Other K₂₃ through K₇₆ | ⌊4⌈n/2⌉/3⌋ | Partial | Conjectured value or one more · [General bound](cases/one-extra/NearRange.lean) · [K24, K30 and K36 families](cases/anchored/) |
+| K₃₀ | 20 | ✅ Solved in Lean | [End-to-end theorem](cases/k30/Exact30.lean) · [Counting proof and certificate](cases/k30/) |
+| K₃₆ | 24 | ✅ Solved in Lean | [End-to-end theorem and counting proof](cases/k36/) |
+| K₆ₘ for every m ≥ 5 | 4m | ✅ Solved in Lean | [Infinite-family theorem](cases/sieve/SixFamily.lean) · [First values](cases/sieve/#orders-divisible-by-six) |
+| Other K₂₃ through K₇₆ | ⌊4⌈n/2⌉/3⌋ | Partial | Conjectured value or one more · [General bound](cases/one-extra/NearRange.lean) · [Cyclic K23 and K24](cases/k23/) · [Cyclic K25 and K26](cases/k25/) · [Cyclic K27 and K28](cases/k27/) · [K24 and K30 families](cases/anchored/) · [Sparse rooted cuts below K77](cases/sieve/#sparse-rooted-cuts-below-k77) |
+| Every Kₙ with n ≥ 77 | ⌊4⌈n/2⌉/3⌋ | ✅ Solved in Lean | [Uniform theorem](cases/sieve/AllLarge.lean) · [Proof for n ≥ 155](cases/sieve/ExactLarge.lean) |
 | K₇₇, K₇₈ | 52 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactTrimmed.lean) |
 | K₇₉, K₈₀ | 53 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactSplit.lean) |
 | K₈₁, K₈₂ | 54 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactJoint.lean) |
 | K₈₃ through K₁₅₄ | ⌊4⌈n/2⌉/3⌋ | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactRange.lean) · [Counting argument](cases/sieve/) |
 
-The exact theorems start with an arbitrary minimum proper coloring and prove both bounds. Run `./verification/graph-bounds.sh exact` to replay them. K13–K14 and K17–K18 include native finite checks. Lean’s ordinary kernel checks the infinite family K₆ₘ for m ≥ 7 and the full K77–K154 interval, including the arithmetic. [Full interval theorem](cases/sieve/ExactInterval.lean) · [Verification guide](verification/)
+The exact theorems start with an arbitrary minimum proper coloring and prove both bounds. Run `./verification/graph-bounds.sh exact` to replay them. K13–K14, K17–K18 and the 526 odd base orders from 155 to 1205 use Lean’s native evaluator for finite calculations. Lean’s ordinary kernel checks the full K77–K154 interval, every order from 1207 upward, and the infinite family K₆ₘ for m ≥ 6. [Full interval theorem](cases/sieve/ExactInterval.lean) · [Verification guide](verification/)
+
+Lean proves that every K30 coloring has at least 2,211,739,995,828,567 winning partitions into ten triples. Its finite checks use the native evaluator. [K30 counting proof and replay](cases/k30/)
 
 Every coloring from K15 through K82 admits a common exterior that leaves six to eight vertices to regroup within the conjectured budget. Whether one split works for every color remains open at the partial orders. [Reduction and checked examples](cases/one-extra/#the-remaining-six-to-eight-vertices)
 
@@ -41,9 +46,9 @@ The standard round-robin coloring attains the conjectured value for every order 
 | K₇, K₈ | 5 | ✅ Solved | Dawkins et al. |
 | K₉, K₁₀ | 6 | ✅ Solved | Dawkins et al. |
 | K₁₁, K₁₂ | 8 | ✅ Solved | Dawkins et al. |
-| All n ≥ 155 | ⌊4⌈n/2⌉/3⌋ | Reported solved | External project |
+| All n ≥ 155 | ⌊4⌈n/2⌉/3⌋ | Earlier large-order result | @aadrianvv |
 
-Dawkins et al. proved the exact values through K₁₂ and the general lower bound. The large-order entry records a result reported by a separate project. [Original paper, Theorems 3.4–3.5](https://arxiv.org/html/2610.22142v1#S3.SS3) · [Large-order proof record](https://github.com/1337isnot1337/solved-conjectures/issues/155)
+Dawkins et al. proved the exact values through K₁₂ and the general lower bound. The partition argument of @aadrianvv established the large-order threshold before the Lean proof here. [Original paper, Theorems 3.4–3.5](https://arxiv.org/html/2610.22142v1#S3.SS3) · [Large-order proof record](https://github.com/1337isnot1337/solved-conjectures/issues/155)
 
 ## Verification
 

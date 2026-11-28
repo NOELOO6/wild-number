@@ -50,6 +50,13 @@ private theorem anchor : ∀ i : Sides 10 (tag root),∃ j,(groupSide tag i j).1
 private theorem bounds : (cycleLists 15 3 15).all (fun cs => decide
     (quickBill 15 weights cs + discount*(if 3∈cs then 1 else 0) ≤ base))=true := by native_decide
 
+def singleBill (cs : List Nat) := quickBill 15 weights cs
+
+theorem singleBill_eq (cs : List Nat) :
+    (∑ a : Sides 10 (tag root),∑ b : Mask 15,price (groupSide tag a) (row (cyclePerm 15 cs) (bits b)))=
+      singleBill cs :=
+  (charge_table tag (tag root) (cyclePerm 15 cs) weights table).trans (quickBill_eq 15 weights cs).symm
+
 /-- Exact for any ordinary coloring with an anchor having no alternating four-cycle, and at least ten other colors making a six-cycle.
 Cycle sizes in its frame are measured in anchor edges. -/
 theorem exact (g : Coloring 30 29) (a : Fin 29) (e : Point 15 ≃ Fin 30)

@@ -1,0 +1,7 @@
+# Cyclic colorings of K25
+
+For every minimum proper coloring of K25 admitting a vertex cycle of length 25 that permutes the colors, the wild number is 17. The same value holds at K26 whenever deleting a vertex gives such a coloring. The unrestricted bound at each order is 17–18. [Graph theorems](Cyclic25.lean) · [Unrestricted bounds](../one-extra/)
+
+In cyclic coordinates the matching of the color missing at zero uses each circular length once. Each candidate drawing joins seven triples and one quartet by stars, for seventeen edges. A side disconnected in a color must be a nonempty union of whole groups. The checker assigns one bit to each such side that avoids vertex zero. For each edge of the translated matching, it marks the sides on which its endpoints differ. Marking every bit proves connectivity in that color. [Starter reduction](../../verification/exact/CyclicExtraction.lean) · [Cut checker](../../verification/exact/CyclicCuts.lean) · [Soundness proof](../../verification/exact/CyclicCutSound.lean)
+
+The exhaustive Lean check uses 185 candidate orders. Multiplication by a unit modulo 25 lets the search keep a labeling whose partner of 1 is smallest. [Normalization proof](../../verification/exact/CyclicNormal.lean) An independent enumeration counted 13,376,125 labeled starters. Running `./verification/graph-bounds.sh cyclic-k25` with Lean 4.19.0 checks both graph theorems with Lean’s native evaluator. [Candidate layouts](Starters25.lean) · [Exhaustive check](Cyclic25Check.lean)

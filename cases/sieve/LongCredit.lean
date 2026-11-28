@@ -65,19 +65,13 @@ theorem inside_noSix (F : Factor A C) (X : Finset A) (c : C) (cl : Closed (F.f c
   rw [show 3*j/2=P.card by omega]
   exact save_even X P edge valid apart full j size lo _ lose
 
-/-- When a large set is closed by a matching, both its sides must avoid
-their smaller marks. Their subdivisions can be counted independently. -/
-theorem long_noSix (F : Factor A C) (S : Finset A) (c : C) (cl : Closed (F.f c) S)
-    (i j : Nat) (sz : S.card=3*i) (other : Sᶜ.card=3*j) (il : 4≤i) (jl : 4≤j) :
-    ((noSix F univ)∩localSeal univ S).card≤
-      (ways i-saving false (3*i/2) i)*(ways j-saving false (3*j/2) j) := by
+/-- A sealed cut splits a surviving layout into two subdivisions, each of
+which avoids the marked six-sets on its own side. -/
+theorem noSix_product (F : Factor A C) (S : Finset A) :
+    (noSix F univ∩localSeal univ S).card≤(noSix F S).card*(noSix F Sᶜ).card := by
   classical
   let U := (univ:Finset A) \ S
   have eq : U=Sᶜ := by ext; simp [U]
-  have closedU : Closed (F.f c) U := by
-    intro x hx
-    rw [eq] at hx ⊢
-    exact mem_compl.mpr fun h => mem_compl.mp hx (F.invol c x ▸ cl _ h)
   have bound := split_upper univ S (subset_univ _) _ (noSix F S) (noSix F U)
     (inter_subset_right : noSix F univ∩localSeal univ S⊆localSeal univ S) (fun P h => by
       have pass := noSix_mem.mp (mem_inter.mp h).1
@@ -90,5 +84,17 @@ theorem long_noSix (F : Factor A C) (S : Finset A) (c : C) (cl : Closed (F.f c) 
         intro Q hq cut
         obtain ⟨sub,qs,qcl⟩ := mark_mem.mp hq
         exact pass Q (mark_mem.mpr ⟨subset_univ _,qs,qcl⟩) ((seal_glue_right univ S Q _ P sub).mpr cut))
-  exact bound.trans (Nat.mul_le_mul (inside_noSix F S c cl i sz il) (inside_noSix F U c closedU j (eq ▸ other) jl))
+  simpa only [eq] using bound
+
+/-- When a large set is closed by a matching, both its sides must avoid
+their smaller marks. Their subdivisions can be counted independently. -/
+theorem long_noSix (F : Factor A C) (S : Finset A) (c : C) (cl : Closed (F.f c) S)
+    (i j : Nat) (sz : S.card=3*i) (other : Sᶜ.card=3*j) (il : 4≤i) (jl : 4≤j) :
+    ((noSix F univ)∩localSeal univ S).card≤
+      (ways i-saving false (3*i/2) i)*(ways j-saving false (3*j/2) j) := by
+  have closedU : Closed (F.f c) Sᶜ := by
+    intro x hx
+    exact mem_compl.mpr fun h => mem_compl.mp hx (F.invol c x ▸ cl _ h)
+  exact (noSix_product F S).trans (Nat.mul_le_mul (inside_noSix F S c cl i sz il)
+    (inside_noSix F Sᶜ c closedU j other jl))
 end WildSieve

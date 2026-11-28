@@ -1,4 +1,4 @@
-import TripleRepair
+import SymmetricRepair
 
 namespace WildExact.TripleRepair
 open Finset
@@ -84,16 +84,44 @@ private theorem crossing {n : Nat} (g : Coloring n n) (odd : n%2=1) {x y z : Fin
   exact xy (missing_injective odd g ((alone x y z rfl edge other).symm.trans
     (alone y x z (by ext; simp [S,or_left_comm]) (by rwa [g.symm]) last)))
 
-/-- In every odd minimum coloring of K_(3m), m ≥ 6, there is a partition
-into triples each of which has an outgoing edge in every color. -/
-theorem valid_triple_partition (m : Nat) (large : 6≤m) (odd : (m*3)%2=1)
+/-- A triple is sealed if one color has no edge leaving it. -/
+def SealedTriple {n : Nat} (g : Coloring n n) (S : Finset (Fin n)) : Prop :=
+  S.card=3 ∧ ∃ c, ∀ x∈S, ∀ y∉S, g.paint x y≠c
+
+private theorem sealed_degree {n : Nat} (g : Coloring n n) (odd : n%2=1) (x y : Fin n)
+    (xy : x≠y) : by classical exact (univ.filter fun z => SealedTriple g {x,y,z}).card≤3 := by
+  classical
+  apply le_trans _ (blocked_degree g odd x y)
+  apply card_le_card
+  intro z hz
+  obtain ⟨sz,c,trapped⟩ := (mem_filter.mp hz).2
+  have xz : x≠z := by
+    rintro rfl
+    have eq : ({x,y,x} : Finset _)={x,y} := by ext; simp [or_comm,or_left_comm]
+    simp [eq,xy] at sz
+  have yz : y≠z := by
+    rintro rfl
+    simp [xy] at sz
+  apply mem_filter.mpr ⟨mem_univ _,?_⟩
+  by_contra good
+  obtain ⟨u,hu,v,hv,edge⟩ := crossing g odd xy xz yz good c
+  exact trapped u hu v hv edge
+
+/-- At every odd order 3m with m ≥ 4, an arbitrary minimum coloring has
+a partition into triples each of which has an outgoing edge in every color.
+The first odd order covered is K15, with five triples. -/
+theorem valid_triple_partition (m : Nat) (large : 4≤m) (odd : (m*3)%2=1)
     (g : Coloring (m*3) (m*3)) : ∃ L : Layout m (Fin (m*3)), ∀ i c,
       let S : Finset _ := {L (i,0),L (i,1),L (i,2)}
       ∃ x∈S, ∃ y∉S, g.paint x y=c := by
-  obtain ⟨L,good⟩ := partition 3 (fun x y _ => blocked_degree g odd x y) (by omega : 3+2<m) (Fintype.equivOfCardEq (by simp [Slot]) : Layout m (Fin (m*3)))
+  classical
+  obtain ⟨L,good⟩ := partition_unordered (SealedTriple g) 3 (sealed_degree g odd)
+    (by omega) (by omega : 2≤m) (Fintype.equivOfCardEq (by simp [Slot]) : Layout m (Fin (m*3)))
   refine ⟨L,fun i c => ?_⟩
   have neq (j k : Slot) (h : j≠k) : L (i,j)≠L (i,k) := fun e => h (Prod.mk.inj (L.injective e)).2
-  exact crossing g odd (neq _ _ (by decide)) (neq _ _ (by decide)) (neq _ _ (by decide)) (good i) c
+  dsimp only
+  by_contra! h
+  exact good i ⟨by simp [neq 0 1 (by decide),neq 0 2 (by decide),neq 1 2 (by decide)],c,h⟩
 
 #print axioms valid_triple_partition
 end WildExact.TripleRepair

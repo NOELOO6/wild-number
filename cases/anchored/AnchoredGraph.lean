@@ -24,7 +24,7 @@ def starCost (tag : Point m → Fin t) := ∑ j,((region tag j).card-1)
 /-- A winning shuffle gives legal ordinary wild edges. A disconnected color
 would supply a whole union of template groups and a closed matching side
 with exactly the same image. -/
-theorem anchored_upper {A B : Type} [Fintype A] [Fintype B]
+theorem anchored_upper_of_selection {A B : Type} [Fintype A] [Fintype B]
     (g : Coloring n k) (a : Fin k) (e : Point m ≃ Fin n)
     (next : {c : Fin k // c≠a} → Equiv.Perm (Fin m)) (frame : InFrame g a e next)
     (tag : Point m → Fin t) (root : Point m)
@@ -33,11 +33,12 @@ theorem anchored_upper {A B : Type} [Fintype A] [Fintype B]
     (allSides : ∀ h : Fin t → Bool,h (tag root)=false → (∃ j,h j=true) →
       ∃ i,s i=state (fun x => h (tag x)))
     (anchorPass : ∀ i,∃ j,(s i j).1≠(s i j).2)
-    (budget : (∑ c,∑ i,∑ b,price (s i) (row (next c) (masks b))) < m.factorial*2^m) :
+    (select : ∀ coords : {c : Fin k // c≠a} → Shuffle (Fin m), ∃ p : Shuffle (Fin m),
+      ∀ c i b, ¬Fits p (s i) (transport (coords c) (row (next c) (masks b)))) :
     Upper g (starCost tag) := by
   classical
   choose q hq using frame.2
-  obtain ⟨p,safe⟩ := choose_shuffle s (fun c b => row (next c) (masks b)) q (by simpa using budget)
+  obtain ⟨p,safe⟩ := select q
   let label := (perm p).trans e
   let group (j) := (region tag j).map label.toEmbedding
   let w := univ.biUnion fun j => spokes (group j)
@@ -108,5 +109,22 @@ theorem anchored_upper {A B : Type} [Fintype A] [Fintype B]
         funext (fun j => Prod.ext (pointwise (j,false)) (pointwise (j,true)))
       exact safe d i b (same ▸ fits)
   exact fun x y => (backwards (joined_symm g) (all x)).join (all y)
+
+/-- A winning shuffle gives legal ordinary wild edges. A disconnected color
+would supply a whole union of template groups and a closed matching side
+with exactly the same image. -/
+theorem anchored_upper {A B : Type} [Fintype A] [Fintype B]
+    (g : Coloring n k) (a : Fin k) (e : Point m ≃ Fin n)
+    (next : {c : Fin k // c≠a} → Equiv.Perm (Fin m)) (frame : InFrame g a e next)
+    (tag : Point m → Fin t) (root : Point m)
+    (s : A → State (Fin m)) (masks : B → Fin m → Bool)
+    (allMasks : ∀ f : Fin m → Bool,∃ b,masks b=f)
+    (allSides : ∀ h : Fin t → Bool,h (tag root)=false → (∃ j,h j=true) →
+      ∃ i,s i=state (fun x => h (tag x)))
+    (anchorPass : ∀ i,∃ j,(s i j).1≠(s i j).2)
+    (budget : (∑ c,∑ i,∑ b,price (s i) (row (next c) (masks b))) < m.factorial*2^m) :
+    Upper g (starCost tag) :=
+  anchored_upper_of_selection g a e next frame tag root s masks allMasks allSides anchorPass
+    fun q => choose_shuffle s (fun c b => row (next c) (masks b)) q (by simpa using budget)
 
 end WildAnchor

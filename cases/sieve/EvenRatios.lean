@@ -1,4 +1,4 @@
-import EvenOrders
+import EvenTriples
 import Mathlib.Tactic.Ring
 namespace WildSieve.EvenTriples
 open Finset

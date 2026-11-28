@@ -1,4 +1,4 @@
-import EdgeWalk
+import CyclicScan
 
 namespace Wild21
 open EdgeWalk
@@ -6,15 +6,8 @@ open EdgeWalk
 abbrev V := Fin 21
 abbrev Edges := List (Edge 21)
 def points := List.finRange 21
-def dist (a b : V) := min (max a.val b.val - min a.val b.val)
-  (21 - (max a.val b.val - min a.val b.val))
-
-/-- From the least unpaired point, try each partner of an unused circular length. -/
-def scan (test : Edges → Bool) : Nat → List V → List Nat → Edges → Bool
-  | _, [], _, es => test es
-  | 0, _::_, _, _ => false
-  | fuel+1, a::rest, used, es => rest.all fun b =>
-      dist a b ∈ used || scan test fuel (rest.erase b) (dist a b :: used) ((a,b)::es)
+abbrev dist := @WildExact.Rotation.dist 21
+abbrev scan := @WildExact.Rotation.scan 21
 
 def point (i : Fin 7) (q : Nat) : V := ⟨(3*i.val+q)%21,Nat.mod_lt _ (by decide)⟩
 

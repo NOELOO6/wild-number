@@ -6,6 +6,8 @@ You can name any nine colors that must stay connected. At least 666 groupings co
 
 | Case or experiment | Conclusion | Evidence |
 | --- | --- | --- |
+| Every Steiner triple system coloring | The same ten wild edges work after every proper redraw of two prescribed colors. The proof also covers K16 with a Steiner deletion. | [Graph theorem and enumeration](steiner/) |
+| Every minimum proper coloring | Five triples can be chosen so every color leaves every triple. Only cuts formed by two whole triples remain. | [General partition theorem](../regrouping/ValidTriples.lean) |
 | A two-piece color with 36 possible cross-component swaps | All 36 repair the color and each disconnects another. Two swaps connect all fifteen. | [Drawing, counts and proof](../regrouping/single-swaps.md) |
 | Every choice of six passing the seven-point rule | Two partitions of the other nine share no triple and pass both common cut tests. Keeping the six in one tree always works with eleven edges. | [Theorems and proof](exterior/) |
 | Any two prescribed points | Both can be included in one triple, with nine different colors between it and a second triple. A specified start can still lose all 280 completions. | [Universal theorem and obstruction](rainbow-rectangle/) |

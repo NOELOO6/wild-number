@@ -1,9 +1,10 @@
 # Exact wild numbers from finite partition counts
 
-At each order from K77 through K154 and every multiple of six from 42 upward, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The interval proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [Exact interval theorem](ExactInterval.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
+At every order from K77 upward and at every multiple of six from 36 upward, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The interval proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [All orders from 77](AllLarge.lean) · [Finite interval theorem](ExactInterval.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
 
 | Orders | Wild number |
 | --- | ---: |
+| K36 | [24](../k36/) |
 | K42 | 28 |
 | K48, K54, K60, K66, K72 | 32, 36, 40, 44, 48 |
 | K77, K78 | 52 |
@@ -27,7 +28,9 @@ The proof uses the matching and random-partition approach of the separate large-
 
 At K48, K54, K60, K66 and K72 all vertices can be divided into triples. A color pairs up every vertex. A closed union of triples must therefore contain an even number of triples. The first possible obstruction has six vertices. When a cut divides the vertices equally, its two sides describe the same failure, so the count keeps the side avoiding one fixed point. The resulting inequalities leave a working grouping at all five orders. [Graph proof](EvenTriples.lean) · [Exact values](EvenOrders.lean)
 
-The same construction proves that **K₆ₘ has wild number 4m for every m ≥ 7**, with no upper limit on m. Each of the 2m triples uses two wild edges. To show that at least one partition works, count the fraction of partitions lost to closed sets of each size. At m ≥ 14 their sum is less than one. Lean checks the integer inequalities for 14 ≤ m < 70. For all m ≥ 70 a recurrence bounds the sum by a decreasing sequence, starting with a term of size 5m/(6m−5). The small cases use the K42 overlap count, the stronger local count or the K78 theorem. At orders of 155 and above, this gives an independent Lean proof for one of the classes covered by the external large-order result. [Term recurrence](EvenRatios.lean) · [Uniform estimate](EvenSeries.lean) · [End-to-end theorem](InfiniteEven.lean)
+The same construction proves that **K₆ₘ has wild number 4m for every m ≥ 5**, with no upper limit on m. Each of the 2m triples uses two wild edges. To show that at least one partition works, count the fraction of partitions lost to closed sets of each size. At m ≥ 14 their sum is less than one. Lean checks the integer inequalities for 14 ≤ m < 70. For all m ≥ 70 a recurrence bounds the sum by a decreasing sequence, starting with a term of size 5m/(6m−5). K30 bounds the joint distribution of marked sixes in a twelve-cut, and K36 counts three simultaneous six-point failures. [K30 proof](../k30/) · [K36 proof](../k36/)
+
+The remaining small cases use the K42 overlap count, the stronger local count or the K78 theorem. [Term recurrence](EvenRatios.lean) · [Uniform estimate](EvenSeries.lean) · [Family beginning at K30](SixFamily.lean) · [Ordinary-kernel family beginning at K36](InfiniteEven.lean)
 
 ### Why 28 works on K42
 
@@ -52,6 +55,28 @@ Both orders have wild number 53. At K79 the fixed group has four vertices. The l
 
 Both orders have wild number 54. Fix one vertex and consider cuts that contain it. Every color that can close a three-point cut uses matching edges that other colors cannot use to close a six-point cut. Bounding the two counts together improves the estimate. Inside a larger closed set, smaller closed sets rule out many subdivisions. Counting individual exclusions and subtracting their pairwise overlaps gives the second improvement. Together the two estimates leave a positive margin at K81. [Joint degree bound](JointDegrees.lean) · [Overlap count](RegionBudget.lean) · [Final theorem](ExactJoint.lean)
 
+## Every order from 155 upward
+
+The same partition count works beyond the finite interval. At an odd order, set aside zero, four or five ordinary vertices, according to the residue modulo three. Write $t$ for the number of free triples and $m=⌊t/2⌋$. A geometric comparison with ratio $1+2/m$ gives two sufficient inequalities. The first controls closed sides consisting of one or two free triples. The second requires the total relative loss from all larger sides to be less than one. [Graph reduction](GraphRule.lean) · [Geometric comparison](GeometricBounds.lean)
+
+For the 526 odd orders from 155 through 1205, Lean checks both inequalities using exact rational arithmetic and its native evaluator. From 1207 upward, $m≥200$. The local counting bounds are at most $10m$ and $31m^3$ for the two short sizes. The larger sizes are bounded by the partition counts for an even number of triples. Their successive ratios control the whole sum uniformly. This part uses ordinary kernel checking. The odd-to-even transfer covers each following even order. [Finite check](GeometricRange.lean) · [Local bounds](GeometricLocal.lean) · [Comparison of larger cuts](GeometricMass.lean) · [Infinite sum bound](GeometricTail.lean) · [End-to-end theorem](ExactLarge.lean)
+
+## Sparse rooted cuts below K77
+
+Complete an odd coloring by adding the missing vertex as a root. Call a triple of ordinary vertices forbidden if some color closes the four-set formed by the triple and the root. The table gives sufficient incidence bounds for the conjectured wild number. Each row applies to every coloring meeting its bound, and to the next even order when the indicated vertex deletion meets it. Count distinct triples, including a triple only once if several colors close its four-set. [Rooted cut degrees](RootTriples.lean) · [Exact graph theorems](SparseOrders.lean)
+
+| Odd order | Maximum forbidden triples through each vertex | Maximum forbidden triples through each pair |
+| --- | ---: | ---: |
+| 61 | | 1 |
+| 65 | 46 | |
+| 67 | 45 | 1 |
+| 69 | 38 | 1 |
+| 71 | 69 | 2 |
+| 73 | 70 | 2 |
+| 75 | 66 | 2 |
+
+Either column suffices. In a Steiner triple system coloring, any forbidden triple containing a given pair must be its unique Steiner line. This proves the predicted number for every such coloring of K61, K67, K69, K73 and K75. [Steiner graph proof](SteinerOrders.lean)
+
 ## Verification
 
-Run `./verification/graph-bounds.sh sieve` from the repository root with Lean 4.19.0. The checker constructs the comparison sequence from integers and tests its inequalities exactly. Lean’s ordinary kernel checks the graph argument and all 44 numerical certificates. The tables are generated during elaboration and every inequality is checked again by kernel reduction. [Kernel certificates](KernelTables.lean) [Arithmetic checker](Numeric.lean) · [Verification guide](../../verification/)
+Run `./verification/graph-bounds.sh sieve` from the repository root with Lean 4.19.0. The checker constructs the comparison sequence from integers and tests its inequalities exactly. Lean’s ordinary kernel checks the graph argument and all 44 numerical certificates used in the K77–K154 and even-order proofs. The `large-orders` target replays the proof from 155 upward on its own. The kernel tables are generated during elaboration and every inequality is checked again by kernel reduction. [Kernel certificates](KernelTables.lean) [Arithmetic checker](Numeric.lean) · [Verification guide](../../verification/)

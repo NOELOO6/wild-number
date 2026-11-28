@@ -2,6 +2,7 @@ import EvenSeries
 import EvenOrders
 import ExactTrimmed
 import Exact42
+import Exact36
 
 namespace WildSieve.EvenTriples
 open Finset WildExact
@@ -69,5 +70,14 @@ theorem exact_multiples_of_six (m : Nat) (lo : 7≤m) :
     omega
   simpa [show 6*m/3=2*m by omega,←Nat.mul_assoc] using exact_even_triples (6*m) mem
 
+/-- The conflict-edge count at K36 supplies the preceding order as well. -/
+theorem exact_six_mul (m : Nat) (lo : 6≤m) :
+    ∀ g : Coloring (6*m) (6*m-1), Exact g (4*m) := by
+  by_cases first : m=6
+  · subst m
+    exact ThirtySix.exact_K36
+  exact exact_multiples_of_six m (by omega)
+
+#print axioms exact_six_mul
 #print axioms exact_multiples_of_six
 end WildSieve.EvenTriples
