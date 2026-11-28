@@ -19,6 +19,7 @@ For **any thirteen colors named in advance**, at least 449,107 ten-line grouping
 | [Eight-point split and quartet redraw](quartets/) | Every coloring has a balanced split. One explicit coloring defeats all 1,024 redraws of a connected quartet grouping. |
 | [Leaf deletion](Delete.lean) | Adding or removing a leaf preserves path connectivity. |
 | [Ten-edge equivalence](Untouched16.lean) | A proof for all relevant colorings on sixteen vertices and every list of at most ten wild edges. |
+| [Any five colors in any perfect one-factorization](perfect-redraw/) | Every recoloring of any five colors works for every prescribed root. For four colors one layout per rooted palette covers all redraws. |
 | [Perfect one-factorizations](Perfect16.lean) | Checks 3,155 representatives at each of 16 deletions, totaling 50,480 ten-edge witnesses. |
 | [Three exceptional colors](three-exceptions/) | Twelve colors obeying a two-team split suffice on sixteen points. Every specified deletion works as well. |
 | [Two exceptional colors](../k15/trade.md) | If thirteen colors obey a two-team split, every possible deletion admits ten wild lines. |

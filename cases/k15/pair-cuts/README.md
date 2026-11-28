@@ -48,6 +48,16 @@ If $N_i$ of the 105 color pairs have type $i$, summing the score over all layout
 | Every color connected, at least 92 pairs with root on a four-cycle | 1,387 | [Integer prices](root-fours.txt) |
 | Every color connected, at least 76 square-cycle pairs | 105 | [Integer prices](square-pairs.txt) |
 
+## A single remaining rooted triple
+
+A triple is singly closed when exactly one color pairs its three vertices and the root internally. If there are at most **three** such triples, at least **2,475** layouts connect every color. This criterion uses the rooted four-sets of a coloring.
+
+To see this, take the 27,810 layouts above that avoid every ordinary six-cut and leave at most one disconnected color. If one fails, its unique disconnected color isolates one triple $T$. Every color closing the root together with $T$ would disconnect this layout, so $T$ is singly closed. For each specified singly closed triple there are at most **8,445** such layouts containing it. Subtracting three of these bounds leaves 2,475.
+
+For the last bound, fix $T$ as a block. There are 15,400 ways to partition the other twelve vertices. Call a color bad if it closes an ordinary pair of triples or isolates a triple other than $T$. Relative to the four-set comprising $T$ and the root, a matching has one of four types. It has no internal edge, just an edge from the root, just an edge inside $T$, or two internal edges. The respective multiplicities are $m=(10,2,2,1)$, since the root has three edges into $T$, the triangle has three edges, and exactly one color closes the four-set.
+
+For bad-color counts $x_i$ of each type the supplied quadratic score majorizes one million times the indicator that all counts vanish. It has constant term, linear terms in $x_i$, and ordered pair terms in $x_i(x_j-[i=j])$. For each rooted cycle type and each placement of $T$, enumerate all layouts containing $T$ and count the first-color and joint failures. For an ordered pair of matchings of types $i,j$, the quadratic coefficient times the joint count is at most the total edge price of the second matching plus a transfer depending on $i,j$. For each fixed first matching, the other fourteen partition the available edges. The edge price classes depend only on the locations of the endpoints and of their partners in the first matching, each of which is in the root, $T$, or the remaining twelve vertices. Summing the pair inequalities gives a total score of 8,445,144,528 in units of one million per layout. Rounding down bounds the number of survivors. [Integer prices](fixed-triple.txt) · [Finite checker](fixed-triple.hpp)
+
 ## Replay
 
 From this directory, run the independent C++20 checker. It reads only the price files, enumerates every layout and every admissible third matching for each rooted pair, and checks the integer inequalities and final rounding.
@@ -55,6 +65,7 @@ From this directory, run the independent C++20 checker. It reads only the price 
 ```sh
 c++ -O3 -std=c++20 check.cpp -o /tmp/wild-pair-cuts
 /tmp/wild-pair-cuts two-triples.txt one-root-prices.txt square-pairs.txt root-fours.txt
+/tmp/wild-pair-cuts --fixed-triple fixed-triple.txt
 ```
 
 The header stores the scale, maximum R, maximum P, required number of special pairs, their type selector and the guaranteed layout count. Selectors 0 through 10 specify an individual type. Selector 11 accepts all rows whose root cycle has length four and uses the least gain among those rows. After the coefficients, each type has four lines giving its cycle lengths, numerical counts and gain, 120 edge prices, and an 11 by 11 transfer table in row-major order. An edge $x<y$ has index $y(y-1)/2+x$ and the root is vertex 15.

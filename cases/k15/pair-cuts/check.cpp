@@ -300,8 +300,14 @@ struct Counts {
     }
 };
 
+#include "fixed-triple.hpp"
+
 int main(int argc,char** argv) {
     try {
+        if (argc==3 && std::string(argv[1])=="--fixed-triple") {
+            verify_fixed_triple(argv[2]);
+            return 0;
+        }
         require(argc >= 2, "supply a price file");
         for (int file=1;file<argc;++file) {
             Certificate c(argv[file]);

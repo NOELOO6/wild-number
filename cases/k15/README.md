@@ -6,6 +6,7 @@ You can name any nine colors that must stay connected. At least 666 groupings co
 
 | Case or experiment | Conclusion | Evidence |
 | --- | --- | --- |
+| At most three triples closed with the root by exactly one color | At least 2,475 partitions connect all fifteen colors. | [Fixed-triple bound](pair-cuts/#a-single-remaining-rooted-triple) |
 | At least 92 color pairs with the added root on a 4-cycle | At least 1,387 partitions connect all fifteen colors. | [Cycle-type prices](pair-cuts/) |
 | Every minimum proper coloring | At least 390,724 partitions clear all two-triple cuts. At least 27,810 also leave at most one disconnected color, with an isolated triple. | [Cubic proof and integer certificates](pair-cuts/) |
 | At least 76 pairs of colors each form four alternating 4-cycles in the completion | At least 105 ten-edge partitions connect every color. | [Cycle-type criterion](pair-cuts/) |
@@ -38,6 +39,7 @@ You can name any nine colors that must stay connected. At least 666 groupings co
 | Three teams of five | At least 2,400 different groupings work whenever every color pairs within one team and across the other two | [Construction and proof](three-teams.md) · [Lean](ThreeTeams.lean) |
 | Two teams with up to two exceptional colors | Ten work even if the two exceptional colors mix within-team and cross-team lines | [Counting proof](trade.md) · [Lean](Trade.lean) |
 | Two teams with three exceptional colors | Ten lines work after any specified deletion, including every one of the 212,976 genuine case-and-root choices. | [Proof](../k16/three-exceptions/#what-if-the-deleted-point-is-chosen-in-advance) · [Lean](../k16/three-exceptions/EveryDeletion.lean) |
+| Deletions after any five colors of a perfect one-factorization are redrawn | Ten suffice for every redraw and every deleted vertex, across all 3,155 starting classes. | [Proof and C++ checker](../k16/perfect-redraw/) |
 | Deletions of a perfect one-factorization | Ten suffice for all 3,155 catalogue entries, for every deleted point | [Catalogue verification](../k16/Perfect16.lean) |
 | Keeping a prescribed first triple | At least 1,824 completions clear the cuts involving that triple. At least twelve ways to split the rest also clear one more cut, leaving two. | [Counting proof](half-splits.md) · [Lean](HalfSplits.lean) |
 | Keeping one triple and clearing two of the last three splits | Every eligible first triple has at least four completions with at most one possible bad split. No score cutoff is needed. | [Counting proof](counting/) · [Lean square checks](counting/Squares.lean) |

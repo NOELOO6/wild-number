@@ -13,7 +13,7 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | Complete graph | Conjectured | Status | Proof or bounds |
 | --- | ---: | --- | --- |
 | K₁₃, K₁₄ | 9 | ✅ Solved in Lean | [End-to-end theorem](verification/exact/K13K14.lean) · [Proof and credits](cases/k13/) |
-| K₁₅, K₁₆ | 10 | Partial | 10–11 · [Two-triple cuts and an exact cycle-type criterion](cases/k15/pair-cuts/) · [Exact for Steiner colorings](cases/k15/steiner/) · [K15](cases/k15/) · [K16](cases/k16/) |
+| K₁₅, K₁₆ | 10 | Partial | 10–11 · [Two-triple cuts and an exact cycle-type criterion](cases/k15/pair-cuts/) · [All five-color redraws of perfect one-factorizations](cases/k16/perfect-redraw/) · [Exact for Steiner colorings](cases/k15/steiner/) · [K15](cases/k15/) · [K16](cases/k16/) |
 | K₁₇, K₁₈ | 12 | ✅ Solved in Lean | [End-to-end theorem](verification/exact/K17K18.lean) · [Counting proof](cases/k17/) |
 | K₁₉, K₂₀ | 13 | Partial | 13–14 · [K19 families](cases/k19/) · [General bound](cases/one-extra/) |
 | K₂₁, K₂₂ | 14 | Partial | 14–15 · [Graph bounds](cases/one-extra/) · [Exact cyclic cases](cases/k21/) |
