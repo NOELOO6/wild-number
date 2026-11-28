@@ -68,4 +68,6 @@ c++ -O3 -std=c++20 check.cpp -o /tmp/wild-pair-cuts
 /tmp/wild-pair-cuts --fixed-triple fixed-triple.txt
 ```
 
+Lean also checks the 44 matching rows of the four cubic price files with its native evaluator. The scalar proof verifies the score on all feasible $(p,r)$, the cycle-type transfers and the final rounding. The passage from a coloring to the matching rows uses the relabeling and double count above. For a direct ordinary-kernel theorem on actual colorings, the induced-region argument guarantees 36,400 layouts clearing every ordinary two-triple cut. From the repository root, run `./verification/replay.sh pair-cuts` to replay all four finite certificates on one worker. [Lean matching census](PairCutCheck15.lean) · [Scalar accounting](PairCutAccounting15.lean) · [Induced-region graph theorem](../../sieve/RootedSix15.lean)
+
 The header stores the scale, maximum R, maximum P, required number of special pairs, their type selector and the guaranteed layout count. Selectors 0 through 10 specify an individual type. Selector 11 accepts all rows whose root cycle has length four and uses the least gain among those rows. After the coefficients, each type has four lines giving its cycle lengths, numerical counts and gain, 120 edge prices, and an 11 by 11 transfer table in row-major order. An edge $x<y$ has index $y(y-1)/2+x$ and the root is vertex 15.
