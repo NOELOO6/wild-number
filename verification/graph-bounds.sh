@@ -150,6 +150,8 @@ check_contractions() {
     for name in RootContraction RootContractionParity ThreeCutRepair; do
         "$lean" --root="$root" -j1 -s 8192 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
     done
+    "$lean" --root="$root" -j1 -s 8192 -o "$build/ContractionExamples.olean" "$root/cases/one-extra/contraction-examples/ContractionExamples.lean"
+    "$lean" --root="$root" -j1 -s 8192 -o "$build/PaletteCompletion.olean" "$root/cases/k16/perfect-redraw/PaletteCompletion.lean"
 }
 case ${1:-bounds} in
   bounds) ;;

@@ -4,6 +4,8 @@ Start with any perfect one-factorization of K₁₆. Select any five colors and 
 
 With four colors the quantifiers can be strengthened. Fix the factorization, palette and root. There is **one layout** of ten edges that works simultaneously for all proper recolorings of those four colors.
 
+One can also delete the root **before** redrawing the colors. On the fifteen ordinary vertices, allow any proper redraw that retains the other ten color classes, including a change of which vertices miss the redrawn colors. Ten wild edges still suffice. The four-color simultaneous guarantee transfers in the same way. At any odd order, equality of colors outside the chosen palette on ordinary edges forces equality on the new root edges as well. The reason is that a root edge gets color $c$ precisely when its ordinary endpoint misses $c$. [Lean completion equivalence and lifting theorem](PaletteCompletion.lean)
+
 Gill and Wanless classified all 3,155 perfect one-factorizations of K₁₆ up to isomorphism. Their catalogue supplies the starting colorings. The new check covers 68,905,200 rooted four-color palettes and 151,591,440 rooted five-color palettes. Each count is the number of representatives times sixteen roots times the corresponding binomial coefficient on fifteen colors. Distinct rooted palettes can give overlapping sets of recolorings. [Classification paper](https://doi.org/10.1017/S0004972719000856) · [Authors’ catalogue](https://users.monash.edu.au/~iwanless/data/P1F/newP1F.html) · [Local input](../P1F16catalogue)
 
 ## Why the check covers every recoloring
