@@ -146,6 +146,11 @@ if [[ ${1:-bounds} != k30 && ${1:-bounds} != exact-k36 ]]; then
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/graph-bounds/$name.lean"
   done
 fi
+check_contractions() {
+    for name in RootContraction RootContractionParity ThreeCutRepair; do
+        "$lean" --root="$root" -j1 -s 8192 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
+    done
+}
 case ${1:-bounds} in
   bounds) ;;
   one-extra|anchored|slots)
@@ -178,6 +183,8 @@ case ${1:-bounds} in
     for name in NearCharge NearRange ThreeGroups CoreSplit TwoGroupCore CoreRange CoreBudget CoreProfiles TwoCoreCheck Core21Data Core21Trap TwoCore19 TwoCore21 TwoCore23 CoreTransfer Exchange21Data Exchange21; do
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
     done
+    "$lean" --root="$root" -s 65536 -o "$build/MatchingCuts.olean" "$root/cases/sieve/MatchingCuts.lean"
+    check_contractions
     ;;
   sparse-orders|sieve|exact-k36|k24|k30|large-orders|anchor-packing|exterior|palette19)
     for name in ExactModel UniversalLower MatchingModel; do
@@ -298,6 +305,8 @@ case ${1:-bounds} in
     "$lean" --root="$root" -s 65536 -o "$build/AllLarge.olean" "$root/cases/sieve/AllLarge.lean"
     "$lean" --root="$root" -j2 -s 65536 -o "$build/InfiniteEven.olean" "$root/cases/sieve/InfiniteEven.lean"
     "$lean" --root="$root" -s 65536 -o "$build/SixFamily.olean" "$root/cases/sieve/SixFamily.lean"
+    check_contractions
+    "$lean" --root="$root" -j1 -s 8192 -o "$build/ReverseSix.olean" "$root/cases/one-extra/ReverseSix.lean"
     "$lean" --root="$root" -s 65536 -o "$build/HalfMoment.olean" "$root/cases/k16/quartets/HalfMoment.lean"
     ;;
   regrouping)

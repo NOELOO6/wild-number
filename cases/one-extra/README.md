@@ -42,4 +42,12 @@ A second K21 example defeats **every single exchange**, including exchanges enti
 
 There is also a K21 coloring with four exterior triples for which all 280 splits of the remaining nine vertices into three triples fail. A different layout of fourteen edges connects every color in that coloring. [Nine-point obstruction and witness](Core21Trap.lean) · [General three-group test](CoreSplit.lean)
 
+## Deleting a vertex from an optimal even solution
+
+Let $r$ be the vertex to delete. If no wild edge touches $r$, the even solution restricts to the odd graph. Otherwise contract any wild edge from $r$ to an ordinary vertex $a$. Remove loops and repeated edges. This saves at least one wild edge. In every color, every ordinary vertex can now reach either $a$ or the former partner of $r$. A color can therefore split into at most two components. The nonempty component on the side away from $a$ has odd size. [Contraction and path proofs](RootContraction.lean) · [Parity](RootContractionParity.lean)
+
+One ordinary edge repairs the contraction exactly when its endpoints lie on opposite sides of every resulting cut. Count identical cuts only once. At most two distinct cuts always have a common crossing edge. For three distinct cuts there is a precise obstruction. Try the eight ways to choose one side of each cut. The contraction fails to admit a one-edge repair if and only if one of these choices gives three pairwise disjoint sets. An edge cannot touch all three disjoint sets. The converse uses the odd sizes of the three sides away from $a$ to rule out the other possible obstruction among the eight membership patterns. [Three-cut characterization](ThreeCutRepair.lean)
+
+For $m≥5$ the solved even order $6m$ supplies the starting optimum. Therefore a counterexample at $6m-1$ would have to defeat this test for **every** optimal even drawing and **every** incident contraction. Each would produce at least three distinct cuts admitting no common crossing edge. The ordinary-kernel contraction criteria also apply at K23 when starting from the written K24 theorem. [Reduction from the infinite even family](ReverseSix.lean) · [K24 starting result](../k24/)
+
 Run `./verification/graph-bounds.sh one-extra` to replay the bounds, the six-to-eight-point reduction and the examples. The ordinary kernel checks the unrestricted reduction. The small piece-count table and the explicit examples use Lean’s native evaluator.

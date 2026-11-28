@@ -36,6 +36,8 @@ Lean proves that every K30 coloring has at least 2,211,739,995,828,567 winning p
 
 Every coloring from K15 through K82 admits a common exterior that leaves six to eight vertices to regroup within the conjectured budget. Whether one split works for every color remains open at the partial orders. [Reduction and checked examples](cases/one-extra/#the-remaining-six-to-eight-vertices)
 
+At each odd order immediately below a solved multiple of six, contracting an incident wild edge of an even optimum leaves at most two pieces per color. One edge repairs every case with at most two distinct cuts. For three cuts, the precise obstruction is a choice of three pairwise disjoint sides. [Reverse-deletion theorem](cases/one-extra/#deleting-a-vertex-from-an-optimal-even-solution)
+
 For a fixed choice of points to rearrange, the repository gives a general bound on how many colors can block every move. The sharp bounds are four colors for three points and thirteen for four. With five chosen points, every proper subset of the palette can work while the full palette fails, even on K15. [Theorems, examples and repairs](cases/regrouping/slots/)
 
 At each remaining order through K76 there are explicit families of minimum colorings for which one layout stays optimal under simultaneous alternating-cycle switches. Examples include 2³² colorings on K19 and 2³⁵⁹ on K75 with fixed vertex labels. [Construction and Lean theorem](cases/regrouping/cycle-families/)
