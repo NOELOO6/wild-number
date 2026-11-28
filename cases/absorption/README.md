@@ -10,6 +10,8 @@ Every minimum proper coloring of **K59, K65 and K71** has wild number **40, 44 a
 
 A sharper count proves K47 and K53 with any prescribed pair, and K73 with any prescribed singleton. The latter gives K74 as well. [Proof, exact bounds and replay](conditioned.md)
 
+Allowing several cuts at a prescribed singleton proves K55–K56, K61–K62 and K67–K68. [Cut accounting and replay](singleton.md)
+
 ## What one edge repairs
 
 Complete the odd coloring with an auxiliary root so that each color is a perfect matching. Write $P$ for the prescribed pair and $p$ for the color of its internal edge. Place the root alone. The two vertices of $P$ form a component in color $p$. Removing that component leaves the outside graph of color $p$. In every color other than $p$, the two vertices of $P$ can reach each other along their wild edge.

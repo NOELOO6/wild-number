@@ -54,6 +54,60 @@ private theorem two {g : Coloring n k} {w : Lines n} {c x y}
     rw [card_insert_of_not_mem nx,card_insert_of_not_mem ny,card_singleton]
   omega
 
+/-- In each color the old components of the two endpoints must cover all vertices.
+This also applies to layouts with many split colors. -/
+theorem repair_iff_cover (g : Coloring n n) (w : Lines n) (x y : Fin n) :
+    Works g (repair w x y) ↔ ∀ c v,Walk (Joined g w c) x v ∨ Walk (Joined g w c) y v := by
+  constructor
+  · intro wins c v
+    let P := fun b => Walk (Joined g w c) x b ∨ Walk (Joined g w c) y b
+    have step {a b} (h : Joined g (repair w x y) c a b) (p : P a) : P b := by
+      have old (edge : Joined g w c a b) : P b :=
+        p.elim (fun h => Or.inl (.step h edge)) (fun h => Or.inr (.step h edge))
+      rcases h with wild|paint
+      · rcases repair_touch wild with was|⟨rfl,rfl⟩|⟨rfl,rfl⟩
+        · exact old (Or.inl was)
+        · exact Or.inr (.stay _)
+        · exact Or.inl (.stay _)
+      · exact old (Or.inr paint)
+    have follow {a b} (p : Walk (Joined g (repair w x y) c) a b) : P a → P b := by
+      induction p with
+      | stay => exact id
+      | step _ e ih => exact fun h => step e (ih h)
+    exact follow (wins c x v) (Or.inl (.stay _))
+  · intro cover c
+    have all (v : Fin n) : Walk (Joined g (repair w x y) c) x v :=
+      (cover c v).elim lift_walk (fun h => (link g w c x y).join (lift_walk h))
+    exact fun a b => (backwards (joined_symm _) (all a)).join (all b)
+
+/-- A list of available ordinary vertices may exclude all easy cuts at once.
+Only split colors impose a further restriction on the last endpoint. -/
+theorem endpoint_iff (g : Coloring n n) (w : Lines n) (x y : Fin n) :
+    Works g (repair w x y) ↔ ∀ c,(pieces g w c).card≤2 ∧
+      (Connected (Joined g w c) ∨ y∉piece g w c x) := by
+  classical
+  rw [repair_iff_cover]
+  constructor
+  · intro cover c
+    have sub : pieces g w c⊆{piece g w c x,piece g w c y} := by
+      intro S hs
+      obtain ⟨v,_,rfl⟩ := mem_image.mp hs
+      rcases cover c v with h|h
+      · exact mem_insert.mpr (Or.inl (piece_eq.mpr h).symm)
+      · exact mem_insert.mpr (Or.inr (mem_singleton.mpr (piece_eq.mpr h).symm))
+    refine ⟨(card_le_card sub).trans ((card_insert_le _ _).trans_eq (by simp)),?_⟩
+    by_cases h : y∈piece g w c x
+    · have all (v) : Walk (Joined g w c) x v :=
+        (cover c v).elim id (fun p => (mem_piece.mp h).join p)
+      exact Or.inl fun a b => (backwards (joined_symm _) (all a)).join (all b)
+    · exact Or.inr h
+  · intro conditions c v
+    obtain ⟨size,conn|outside⟩ := conditions c
+    · exact Or.inl (conn x v)
+    · exact two size (fun h => outside (mem_piece.mpr h)) v
+
+#print axioms endpoint_iff
+
 /-- The reserved color isolates the small block. Its outside can be repaired simultaneously
 with one other two-component color, by choosing the endpoint after the layout is known. -/
 theorem absorb (g : Coloring n n) (w : Lines n) (leg : Legal w) (base : Fin n) (special : Fin n)

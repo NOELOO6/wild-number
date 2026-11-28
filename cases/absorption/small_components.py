@@ -81,18 +81,26 @@ def avoidance_table(executable, n, roots, q):
     return table
 
 
-def estimate(n, executable):
+def estimate(n, executable, singleton=False):
     reserved = n % 3
     if n % 2 == 0 or reserved not in (1, 2):
         raise ValueError("Choose an odd order congruent to 1 or 2 modulo 3.")
-    roots = 3-reserved
+    if singleton and reserved != 1:
+        raise ValueError("The singleton construction requires n congruent to 1 modulo 3.")
+    roots = 1 if singleton else 3-reserved
     u = n-reserved
     w = roots * (comb(n, 2) - 3*((n-1)//2)*reserved + 3*comb(reserved, 2))
     degree_max = 3*roots*(u-1)//2
     degree_min = max(0, (roots*(3*((n-1)//2)-3*(n-u))+2)//3)
     generic_count = n-comb(reserved+1, 2)
-    masses = component_masses(n, reserved)
-    sizes = sorted({u, *(u-3*j for j, *_ in masses)})
+    if singleton:
+        from singleton_cuts import hard_masses, covered_masses
+        masses = hard_masses(n)
+        covers, all_excluded = covered_masses(n)
+    else:
+        masses = component_masses(n, reserved)
+        covers, all_excluded = [], 0
+    sizes = sorted({u, *(u-3*j for j, *_ in masses), *(q for q, _ in covers)})
     tables = {q: avoidance_table(executable, n, roots, q) for q in sizes}
 
     @cache
@@ -138,7 +146,13 @@ def estimate(n, executable):
             mean = max(low, p3*eligible+correction)
             upper = min(maximum, (Fraction(intercept)+num*mean)/den)
             charge += mass*upper
-        margin = (lo-charge/2)/SCALE
+        for q, mass in covers:
+            low, high = distinct_interval(n, roots, u, w, m, q)
+            bound = envelope(q, low, high)
+            if bound is None:
+                raise AssertionError((n, m, q, low, high))
+            charge += mass*bound[0]
+        margin = (lo-charge/2)/SCALE-all_excluded
         if worst is None or margin < worst:
             worst, worst_count = margin, m
     assert worst is not None
@@ -147,17 +161,20 @@ def estimate(n, executable):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("orders", nargs="*", type=int, default=[47, 53, 73])
+    parser.add_argument("orders", nargs="*", type=int, default=[])
+    parser.add_argument("--singleton", action="store_true", help="allow singleton-side cuts")
     args = parser.parse_args()
     with tempfile.TemporaryDirectory() as temp:
         executable = Path(temp) / "avoidance"
         subprocess.run([os.environ.get("CXX", "c++"), "-std=c++17", "-O2", "-Wall",
                         "-Wextra", "-fsanitize=undefined", "-fno-sanitize-recover=all",
                         str(HERE / "avoidance.cpp"), "-o", str(executable)], check=True)
-        for n in args.orders:
-            margin, m = estimate(n, executable)
+        for n in args.orders or ([55, 61, 67] if args.singleton else [47, 53, 73]):
+            margin, m = estimate(n, executable, args.singleton)
             ppm = margin*1_000_000
             expected = {47: 1910, 53: 39773, 73: 6447}
+            if args.singleton:
+                expected = {55: 2109, 61: 37888, 67: 64864}
             if n in expected:
                 assert ppm.numerator//ppm.denominator == expected[n], (n, m, ppm)
             print(f"K{n}: at least {ppm.numerator//ppm.denominator} per million; worst m={m}",

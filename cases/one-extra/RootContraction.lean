@@ -194,7 +194,7 @@ theorem crossing_works (g : Coloring (n+1) n) {w : Lines (n+1)} (win : Works g w
     · exact bridge hv hu (backwards (joined_symm _) e)
     · exact bridge hu hv e
 
-private theorem repair_touch {w : Lines n} {u v x y : Fin n} (h : Touch (repair w u v) x y) :
+theorem repair_touch {w : Lines n} {u v x y : Fin n} (h : Touch (repair w u v) x y) :
     Touch w x y ∨ (x=u ∧ y=v) ∨ (x=v ∧ y=u) := by
   by_cases eq : u=v
   · exact Or.inl (by simpa [repair,eq] using h)

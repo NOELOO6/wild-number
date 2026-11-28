@@ -22,6 +22,7 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | K₃₆ | 24 | ✅ Solved in Lean | [End-to-end theorem and counting proof](cases/k36/) |
 | K₆ₘ for every m ≥ 5 | 4m | ✅ Solved in Lean | [Infinite-family theorem](cases/sieve/SixFamily.lean) · [First values](cases/sieve/#orders-divisible-by-six) |
 | K₄₇, K₅₃, K₇₃, K₇₄ | 32, 36, 49, 49 | Proved by counting | [Prescribed pair and singleton proofs](cases/absorption/conditioned.md) · [Exact checker](cases/absorption/small_components.py) · [Lean partition identities](cases/absorption/PartitionMoments.lean) |
+| K₅₅, K₅₆, K₆₁, K₆₂, K₆₇, K₆₈ | 37, 37, 41, 41, 45, 45 | Proved by counting | [Cuts at a prescribed singleton](cases/absorption/singleton.md) · [Lean endpoint criterion](cases/absorption/AbsorbEdge.lean) |
 | K₅₉, K₆₅, K₇₁ | 40, 44, 48 | Proved by counting | [Choosing the last wild edge](cases/absorption/) · [Lean graph repair](cases/absorption/AbsorbEdge.lean) · [Lean counts](cases/absorption/PairAbsorbNumbers.lean) |
 | Other K₂₃ through K₇₆ | ⌊4⌈n/2⌉/3⌋ | Partial | Conjectured value or one more · [General bound](cases/one-extra/NearRange.lean) · [Cyclic K23 and K24](cases/k23/) · [Cyclic K25 and K26](cases/k25/) · [Cyclic K27 and K28](cases/k27/) · [Sparse rooted cuts below K77](cases/sieve/#sparse-rooted-cuts-below-k77) |
 | Every Kₙ with n ≥ 77 | ⌊4⌈n/2⌉/3⌋ | ✅ Solved in Lean | [Uniform theorem](cases/sieve/AllLarge.lean) · [Proof for n ≥ 155](cases/sieve/ExactLarge.lean) |
@@ -36,7 +37,7 @@ Combining the original K6 and K12 results, the K18 theorem, the K24 counting pro
 
 Lean proves that every K30 coloring has at least 2,211,739,995,828,567 winning partitions into ten triples. Its finite checks use the native evaluator. [K30 counting proof and replay](cases/k30/)
 
-At K43–K44, K49–K50, K55–K56, K69–K70 and K75–K76, among other orders, the conjectured edge budget connects every color except possibly one, and that color has exactly two components if disconnected. [Counting proof and verified arithmetic](cases/one-extra/piece-moments/)
+At K43–K44, K49–K50, K69–K70 and K75–K76, among other orders, the conjectured edge budget connects every color except possibly one, and that color has exactly two components if disconnected. [Counting proof and verified arithmetic](cases/one-extra/piece-moments/)
 
 Every coloring from K15 through K82 admits a common exterior that leaves six to eight vertices to regroup within the conjectured budget. Whether one split works for every color remains open at the partial orders. [Reduction and checked examples](cases/one-extra/#the-remaining-six-to-eight-vertices)
 
