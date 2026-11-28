@@ -6,7 +6,7 @@ from math import ceil, comb
 from pathlib import Path
 import json
 
-from check import averages, conditional_mean, surplus
+from check import averages, conditional_mean, frame_fraction, surplus
 
 
 def reduced(groups, edges):
@@ -90,6 +90,8 @@ def verify(row):
     colors = 1-(Fraction(row["failure_upper"],scale)-gain)/2
     result = [max(0,int(scale*near)),max(0,int(scale*colors))]
     assert result == ({37:[0,12377],43:[1808,22698]}[n]), (n,result)
+    uniform = int(1000*result[int(n == 37)]*frame_fraction(n,8,allow_collisions=True)/35)
+    assert uniform == {37:191,43:88}[n]
     print(n, total, *result)
 
 

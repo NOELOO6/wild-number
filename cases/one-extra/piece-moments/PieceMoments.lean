@@ -50,6 +50,21 @@ def rational (s : String) : ℚ :=
 
 def choose (n k : Nat) : Nat := Nat.fast_choose n k
 
+/-- Conditional extension bounds multiplied along an ordered frame through the root. -/
+def frameFraction (n size : Nat) (allowCollisions : Bool) : ℚ :=
+  (List.range (size-1)).foldl (fun prob j =>
+    let b := j+1
+    let outside := n+1-b
+    let charge := choose b 2*(b-2)
+    let cap := if allowCollisions then charge/outside else 0
+    prob*((outside-charge/(cap+1) : Nat) : ℚ)/outside) 1
+
+theorem uniform_layout_bounds :
+    (33298 : ℚ) ≤ 1000*1266*frameFraction 69 7 false ∧
+    (891247 : ℚ) ≤ 1000*13520*frameFraction 75 7 false ∧
+    (191 : ℚ) ≤ 1000*12377*frameFraction 37 8 true/35 ∧
+    (88 : ℚ) ≤ 1000*1808*frameFraction 43 8 true/35 := by native_decide
+
 def pairings (k : Nat) := if k%2=1 then 0 else
   (List.range (k/2)).foldl (fun z i => z*(2*i+1)) 1
 
@@ -176,9 +191,19 @@ def protectedCount (r : Row) (m : ℚ × ℚ) (gain : ℚ) : Array Nat := Id.run
         let fail := (profile true t changed).1
         worst := max worst fail
         if j == 0 then rooted := max rooted fail
-  let allowed (mean : ℚ) := (List.range (r.n+1)).foldl (fun best k =>
-    if mean-gain+(min 2 k : Nat)*rooted+(k-2 : Nat)*worst<2 then k else best) 0
-  return #[allowed m.2, allowed m.1]
+  let allowed (mean weight threshold : ℚ) := (List.range (r.n+1)).foldl (fun best k =>
+    if mean+weight*((min 2 k : Nat)*rooted+(k-2 : Nat)*worst)<threshold then k else best) 0
+  return #[allowed (m.2-gain) 1 2, allowed (m.1-gain) 1 2, allowed m.2 2 3]
+
+/-- If a named color fails, it contributes to the total deficit as well as its penalty. -/
+theorem protected_budget (d named cap : Nat) (bounded : named≤d)
+    (h : d+cap*named≤cap) : d≤cap ∧ named=0 := by
+  constructor
+  · omega
+  · by_contra bad
+    have pos : 1≤named := by omega
+    have enough : cap≤cap*named := by simpa using (Nat.mul_le_mul_left cap pos)
+    omega
 
 def test (r : Row) : Bool := Id.run do
   let b := 1+(r.frame.getD #[]).foldl (·+·) 0

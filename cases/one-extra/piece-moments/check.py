@@ -156,11 +156,21 @@ def protection(n, frame, failure, deficit, gain):
                 if j == 0:
                     rooted.append(probability)
         root, worst = max(rooted), max(probabilities)
-    def protected(mean):
+    def protected(mean, weight, threshold):
         allowed = [k for k in range(n+1)
-                   if mean-gain+min(2,k)*root+max(0,k-2)*worst < 2]
+                   if mean+weight*(min(2,k)*root+max(0,k-2)*worst) < threshold]
         return max(allowed, default=0)
-    return [protected(deficit), protected(failure)]
+    return [protected(deficit-gain,1,2), protected(failure-gain,1,2), protected(deficit,2,3)]
+
+
+def frame_fraction(n, size, allow_collisions=False):
+    probability = Fraction(1)
+    for b in range(1, size):
+        outside = n+1-b
+        charge = comb(b,2)*max(0,b-2)
+        cap = charge//outside if allow_collisions else 0
+        probability *= Fraction(max(0, outside-charge//(cap+1)), outside)
+    return probability
 
 
 def verify(path):
@@ -189,6 +199,9 @@ def verify(path):
         names = protection(n,frame,failure,deficit,credit)
         assert names == row["protect"]
         print(n, *result, *names)
+        if n in (69,75):
+            uniform = int(1000*result[0]*frame_fraction(n,1+sum(frame)))
+            assert uniform == {69:33298,75:891247}[n]
 
 
 if __name__ == "__main__":

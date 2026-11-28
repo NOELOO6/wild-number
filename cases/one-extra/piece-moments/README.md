@@ -53,15 +53,30 @@ The nearly winning layout can be chosen to connect some colors specified in adva
 
 Start the rainbow extension with the root and its partners in two named colors. These vertices form a rainbow triangle because two edges of the same matching would need four vertices. The conditional failure probabilities of these two colors come from the root-edge profiles. Bound each further named color by the largest single-color failure probability in any profile. If $P$ is the number of named colors failing, the same surplus bounds $\mathbb E(D+P-2)_+$. Whenever $\mathbb E D+\mathbb E P-g<2$, some layout has $D+P\le1$. In that layout no named color can fail. Replacing $D$ by $F$ gives the corresponding protected-color count when only the number of failing colors is restricted. [Seed extension in Lean](../../sieve/Rainbow.lean)
 
+At **every** tabulated order one can protect any two named colors and have at most two extra components in total. The guaranteed number of named colors is larger at most orders, including five at K31, nine at K63, nineteen at K71 and twelve at K75. Indeed, if $\mathbb E D+2\mathbb E P<3$, some layout has $D+2P\le2$. Any failed named color contributes to both $P$ and $D$, so that layout has $P=0$. This test also works without a planted frame, since each color then has the same failure probability. [Counts for all orders](certificates.json) · [Lean bound](PieceMoments.lean)
+
 ## Eight points at K37 and K43
 
 Count pairs of same-colored edges inside a planted set. When its size is $b$, the sum of additional pairs over all choices of one exterior vertex is at most $\binom b2(b-2)$. An old edge can match the color of a new edge at only the other $b-2$ old vertices. Choosing an extension at or below the average gives an eight-set through the root with at most four repeated pairs at K37 and three at K43. [Lean growth bound](FrameGrowth.lean)
 
 Divide the seven ordinary vertices into a four-set and a triple in all 35 ways. If some color has $k\ge2$ internal edges, correct the rainbow mean by adding the conditional mean for its entire submatching and $k-1$ empty-color means, and subtracting the $k$ single-edge means. The check covers every edge-disjoint collection of repeated submatchings whose total cost $\sum\binom k2$ is within budget. The first submatching can be relabeled fixing the root. All other submatchings are enumerated. This checks 1,231,495 configurations at K37 and 28,259 at K43, including the empty one. Changes to the means are rounded **up** before addition. The number of marks in the remaining vertices is between $H$ minus the collision budget and $H$, since an ordinary internal edge counted in the rainbow expression is lost only when its color also matches the root inside the frame.
 
+## Sampling a uniform partition without first choosing a frame
+
+For every coloring, the following fractions apply to **all** partitions of the indicated shape. No particular initial blocks need to be chosen. At odd orders divisible by three all blocks are triples. At K37 and K43 there is also one block of four.
+
+| Order | Guarantee | At least this many per billion uniform partitions |
+| --- | --- | ---: |
+| K37 | At most one disconnected color | 191 |
+| K43 | At most one extra component | 88 |
+| K69 | At most one extra component | 33,298 |
+| K75 | At most one extra component | 891,247 |
+
+Reveal a uniform random ordering of the ordinary vertices starting from the root alone. Group successive ordinary vertices into blocks of the specified sizes. Every partition has the same number of ordered descriptions. At frame size $b$, let $s=n+1-b$ and $Q=\binom b2(b-2)$. At most $\lfloor Q/(e+1)\rfloor$ of the $s$ possible next points add more than $e$ repeated pairs, since each such point uses at least $e+1$ charges. Multiply these conditional lower bounds on the proportion of acceptable choices. For a rainbow seven-set choose $e=0$ at each step. The resulting frame probabilities are at least $252/9581$ at K69 and $1025/15549$ at K75. At K37 and K43 use $e=\lfloor Q/s\rfloor$ at every step to reach the eight-point collision budgets. Conditional on an acceptable eight-set, at least one of its 35 equally likely divisions attains the specified bound. Multiplying by the fraction of successful completions gives the table. [Lean count of admissible extensions](FrameGrowth.lean) · [Exact numeric inequalities](PieceMoments.lean)
+
 ## Verification
 
-From this directory run the two standard-library Python checks. Each output bound is rounded down to a number of layouts per million. The first script prints the odd order, the lower fractions for $D\le1$, $F\le1$ and $D\le2$, followed by the numbers of arbitrary colors that can be protected under the first two guarantees. The eight-point script prints the odd order, the number of configurations checked, and the first two lower fractions. The second script can use different subdivisions for the two latter bounds.
+From this directory run the two standard-library Python checks. Each output bound is rounded down to a number of layouts per million. The first script prints the odd order, the lower fractions for $D\le1$, $F\le1$ and $D\le2$, followed by the numbers of arbitrary colors that can be protected under these three guarantees in the same order. The eight-point script prints the odd order, the number of configurations checked, and the first two lower fractions. The second script can use different subdivisions for the two latter bounds.
 
 ```sh
 python3 check.py

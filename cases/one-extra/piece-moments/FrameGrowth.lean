@@ -90,6 +90,33 @@ theorem sum_charge (F : Factor A C) (B : Finset A) :
   have := charge_balance F B
   omega
 
+/-- Counts extensions that add at most e repeated pairs. The four-charge saving
+from each existing collision also applies when the current frame is not rainbow. -/
+theorem extension_choices (F : Factor A C) (B : Finset A) (e : Nat) :
+    Fintype.card A-B.card-
+      ((B.card.choose 2*(B.card-2)-4*collisions F B)/(e+1)) ≤
+      (Bᶜ.filter (fun x => collisions F (insert x B)≤collisions F B+e)).card := by
+  classical
+  let bad := Bᶜ.filter (fun x => e<charge F B x)
+  have bound := sum_le_sum (s:=bad) (fun x hx =>
+    show e+1≤charge F B x from (mem_filter.mp hx).2)
+  rw [sum_const,nsmul_eq_mul] at bound
+  have total := sum_le_sum_of_subset_of_nonneg (s:=bad) (t:=Bᶜ)
+    (filter_subset _ _) (fun x _ _ => Nat.zero_le (charge F B x))
+  have balance := charge_balance F B
+  have cap : bad.card≤(B.card.choose 2*(B.card-2)-4*collisions F B)/(e+1) := by
+    apply (Nat.le_div_iff_mul_le (by omega)).mpr
+    exact bound.trans (total.trans (by omega))
+  have sub : Bᶜ \ bad ⊆ Bᶜ.filter (fun x => collisions F (insert x B)≤collisions F B+e) := by
+    intro x hx
+    obtain ⟨out,good⟩ := mem_sdiff.mp hx
+    have cost : charge F B x≤e := le_of_not_gt (fun high => good (mem_filter.mpr ⟨out,high⟩))
+    exact mem_filter.mpr ⟨out,(insert_cost F B x).trans (Nat.add_le_add_left cost _)⟩
+  have size := card_sdiff (show bad⊆Bᶜ from filter_subset _ _)
+  rw [card_compl] at size
+  have := card_le_card sub
+  omega
+
 /-- At least one exterior vertex costs at most the floor of the mean. -/
 theorem extend (F : Factor A C) (B : Finset A) (room : B.card<Fintype.card A) :
     ∃ x∉B,collisions F (insert x B)≤collisions F B+B.card.choose 2*(B.card-2)/(Fintype.card A-B.card) := by
