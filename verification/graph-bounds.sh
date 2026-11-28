@@ -34,18 +34,18 @@ if [[ ! -f .lake/build/lib/lean/Mathlib/GroupTheory/Perm/Sign.olean ||
       Mathlib/Data/Fintype/Perm.lean Mathlib/Data/Fintype/Prod.lean Mathlib/Data/Fintype/BigOperators.lean Mathlib/Algebra/BigOperators/Fin.lean \
       Mathlib/Data/Fintype/Powerset.lean Mathlib/Algebra/BigOperators/Group/Finset/Powerset.lean Mathlib/Algebra/Order/BigOperators/Group/Finset.lean
 fi
-if [[ ${1:-bounds} == sparse-orders || ${1:-bounds} == slots || ${1:-bounds} == regrouping || ${1:-bounds} == sieve || ${1:-bounds} == exact-k36 || ${1:-bounds} == k30 || ${1:-bounds} == large-orders || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior || ${1:-bounds} == palette19 ]]; then
+if [[ ${1:-bounds} == sparse-orders || ${1:-bounds} == slots || ${1:-bounds} == regrouping || ${1:-bounds} == sieve || ${1:-bounds} == exact-k36 || ${1:-bounds} == k24 || ${1:-bounds} == k30 || ${1:-bounds} == large-orders || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior || ${1:-bounds} == palette19 ]]; then
     extras=(Mathlib/Combinatorics/Hall/Finite Mathlib/Data/ZMod/Basic Mathlib/Data/Fintype/Prod Mathlib/Data/List/Dedup Mathlib/Data/Int/GCD Mathlib/Tactic/Ring)
-    if [[ ${1:-bounds} == sparse-orders || ${1:-bounds} == sieve || ${1:-bounds} == exact-k36 || ${1:-bounds} == k30 || ${1:-bounds} == large-orders || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior || ${1:-bounds} == palette19 ]]; then
+    if [[ ${1:-bounds} == sparse-orders || ${1:-bounds} == sieve || ${1:-bounds} == exact-k36 || ${1:-bounds} == k24 || ${1:-bounds} == k30 || ${1:-bounds} == large-orders || ${1:-bounds} == anchor-packing || ${1:-bounds} == exterior || ${1:-bounds} == palette19 ]]; then
         extras=(Mathlib/Tactic/Linarith Mathlib/Tactic/FieldSimp)
         if [[ ${1:-bounds} == sieve || ${1:-bounds} == large-orders ]]; then
             extras+=(Mathlib/Tactic/Ring Mathlib/Algebra/Order/Ring/Pow)
         fi
     fi
-    if [[ ${1:-bounds} == k30 || ${1:-bounds} == sieve ]]; then
+    if [[ ${1:-bounds} == k24 || ${1:-bounds} == k30 || ${1:-bounds} == sieve ]]; then
         extras+=(Mathlib/Algebra/Order/Field/Rat Mathlib/Algebra/BigOperators/Ring/List
             Mathlib/Data/List/FinRange Mathlib/Data/Multiset/Powerset Mathlib/Algebra/Ring/Parity
-            Mathlib/Data/Fintype/EquivFin Mathlib/Tactic/Ring Mathlib/Tactic/NormNum)
+            Mathlib/Data/Fintype/EquivFin Mathlib/Tactic/Ring Mathlib/Tactic/NormNum Mathlib/GroupTheory/Perm/ViaEmbedding Mathlib/Algebra/Group/Fin/Basic)
     fi
     if [[ ${1:-bounds} == slots ]]; then
         extras=(Mathlib/LinearAlgebra/Dimension/Constructions Mathlib/LinearAlgebra/Dimension/Finite Mathlib/Combinatorics/Enumerative/DyckWord Mathlib/Order/PiLex Mathlib/Logic/Equiv/Fintype Mathlib/Data/Fintype/Sum Mathlib/Tactic/Ring)
@@ -57,7 +57,7 @@ if [[ ${1:-bounds} == sparse-orders || ${1:-bounds} == slots || ${1:-bounds} == 
         fi
     done
 fi
-if [[ ( ${1:-bounds} == anchored || ${1:-bounds} == steiner-k15 ) && ! -f .lake/build/lib/lean/Mathlib/Dynamics/PeriodicPts/Lemmas.olean ]]; then
+if [[ ( ${1:-bounds} == anchored || ${1:-bounds} == k24 || ${1:-bounds} == sieve || ${1:-bounds} == steiner-k15 ) && ! -f .lake/build/lib/lean/Mathlib/Dynamics/PeriodicPts/Lemmas.olean ]]; then
     "$lake" exe cache get Mathlib/Dynamics/PeriodicPts/Lemmas.lean
 fi
 if [[ ${1:-bounds} == steiner-k15 || ${1:-bounds} == cyclic-k21 || ${1:-bounds} == cyclic-k23 || ${1:-bounds} == cyclic-k25 || ${1:-bounds} == cyclic-k27 ]]; then
@@ -179,7 +179,7 @@ case ${1:-bounds} in
       "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/one-extra/$name.lean"
     done
     ;;
-  sparse-orders|sieve|exact-k36|k30|large-orders|anchor-packing|exterior|palette19)
+  sparse-orders|sieve|exact-k36|k24|k30|large-orders|anchor-packing|exterior|palette19)
     for name in ExactModel UniversalLower MatchingModel; do
       "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/verification/exact/$name.lean"
     done
@@ -210,8 +210,21 @@ case ${1:-bounds} in
         "$lean" --root="$root" -j1 -s 65536 -o "$build/$name.olean" "$root/cases/sieve/$name.lean"
       done
     }
+    check_k24() {
+      for name in PairFibers PairPlacement AnchoredGraph PairTable CycleTemplates MaskSum CycleLists LocalFrames AlternatingOrbits AlternatingLists MatchingCycles; do
+        "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/anchored/$name.lean"
+      done
+      for name in Motifs24 Concentration24 CycleData24 CutModel24 CutPrices24 GraphRegions24 BalancedSampling24 ShortCuts24 DuplicatePairs24 CompanionCounts24 GraphCycles24 HalfProfiles24 HalfTable24 GraphTable24 PairCensus24 PopulationMoments24; do
+        "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/k24/$name.lean"
+      done
+    }
+    check_root_density() {
+      for file in cases/regrouping/{TripleRepair,SymmetricRepair,ValidTriples} cases/sieve/{TripleIncidence,TripleDensity,RootDensity,UniformRootDensity}; do
+        "$lean" --root="$root" -s 65536 -o "$build/${file##*/}.olean" "$root/$file.lean"
+      done
+    }
     check_k30() {
-      for name in JointDegrees EdgeDeletion MatchingSpectrum SealSpectrum RegionLayouts; do
+      for name in JointDegrees RestrictedNeighbors EdgeDeletion MatchingSpectrum SealSpectrum RegionLayouts; do
         "$lean" --root="$root" -s 65536 -o "$build/$name.olean" "$root/cases/sieve/$name.lean"
       done
       for name in CutModel30 CutPrices30 Budget30 Population30 Signature30 SixCounts30 GraphPopulation30 \
@@ -230,12 +243,18 @@ case ${1:-bounds} in
         "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/k36/$name.lean"
       done
     }
-    if [[ ${1:-bounds} == exact-k36 || ${1:-bounds} == k30 ]]; then
+    if [[ ${1:-bounds} == exact-k36 || ${1:-bounds} == k30 || ${1:-bounds} == k24 ]]; then
       for name in EvenTriples TrimmedEvents InnerCuts LocalSeals PairRegions RootRegions RegionBudget \
           LayoutSplit MatchingSixes MixedSixes OverlapCredit LongCredit; do
         "$lean" --root="$root" -j2 -s 65536 -o "$build/$name.olean" "$root/cases/sieve/$name.lean"
       done
-      if [[ ${1:-bounds} == k30 ]]; then
+      if [[ ${1:-bounds} == k24 ]]; then
+        check_pattern_pairs
+        for file in cases/sieve/{JointDegrees,RestrictedNeighbors,EdgeDeletion,MatchingSpectrum,SealSpectrum,RegionLayouts} cases/k30/{CutModel30,MotifCheck30,MotifRelabel30}; do
+          "$lean" --root="$root" -s 65536 -o "$build/${file##*/}.olean" "$root/$file.lean"
+        done
+        check_k24
+      elif [[ ${1:-bounds} == k30 ]]; then
         check_pattern_pairs
         check_k30
       else
@@ -273,6 +292,8 @@ case ${1:-bounds} in
     done
     check_k36
     check_k30
+    check_k24
+    check_root_density
     check_large_orders
     "$lean" --root="$root" -s 65536 -o "$build/AllLarge.olean" "$root/cases/sieve/AllLarge.lean"
     "$lean" --root="$root" -j2 -s 65536 -o "$build/InfiniteEven.olean" "$root/cases/sieve/InfiniteEven.lean"
@@ -318,5 +339,5 @@ case ${1:-bounds} in
       "$lean" --root="$pieces" -s 65536 -o "$build/$name.olean" "$pieces/$name.lean"
     done
     ;;
-  *) echo 'Use steiner-k15, sparse-orders, cyclic-k21, cyclic-k23, cyclic-k25, cyclic-k27, exact, exact-k36, large-orders, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, slots, anchored, exterior, palette19, anchor-packing, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
+  *) echo 'Use steiner-k15, sparse-orders, cyclic-k21, cyclic-k23, cyclic-k25, cyclic-k27, exact, k24, k30, exact-k36, large-orders, exact-k13, exact-k17, exact-k17-pairs, bounds, sieve, slots, anchored, exterior, palette19, anchor-packing, one-extra, regrouping, redraw, pieces or last-colors.' >&2; exit 2 ;;
 esac

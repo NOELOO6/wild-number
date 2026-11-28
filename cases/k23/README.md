@@ -1,6 +1,6 @@
 # Cyclic colorings of K23
 
-A minimum proper coloring of K23 has wild number 16 whenever it admits a 23-cycle permuting its color classes. The same value holds for a minimum coloring of K24 if deleting a vertex gives such a coloring. The unrestricted bounds at both orders are 16–17. [Graph theorems](Cyclic23.lean) · [General bounds](../one-extra/)
+A minimum proper coloring of K23 has wild number 16 whenever it admits a 23-cycle permuting its color classes. The same value holds for a minimum coloring of K24 if deleting a vertex gives such a coloring. The unrestricted bounds at K23 are 16–17. A separate counting proof gives 16 for every K24 coloring. [Unrestricted K24](../k24/) · [Graph theorems](Cyclic23.lean) · [General bounds](../one-extra/)
 
 Label the cycle by the residues modulo 23. The color missing at zero pairs up the other 22 vertices. It uses each circular edge length exactly once. Edges of the same length are translates, and translating an edge of this color to another edge of this color would fix its unique missing vertex. Lean proves this reduction at arbitrary odd order. [Starter extraction](../../verification/exact/CyclicExtraction.lean)
 

@@ -32,6 +32,39 @@ theorem deletion_sum (w : Finset α → Nat) (k : Nat) (S : Finset α) :
   simp only [bill,per,sum_filter]
   rw [sum_comm,sum_congr rfl row,mul_sum]
 
+/-- Sum the inequality over all single-edge deletions. The lower bound on the
+pair bill controls the error when the constant and linear terms are restored. -/
+theorem lift_weighted (q b : Finset α → Nat) (scale limit : Nat) (enough : 3≤limit) (S : Finset α)
+    (large : ∀ T⊆S,limit<T.card → (2*scale)*(T.card-1)≤bill q 2 T)
+    (base : ∀ T⊆S, 0<T.card → T.card≤limit → scale+bill q 2 T≤scale*T.card+bill b 3 T)
+    (nonempty : 0<S.card) : scale+bill q 2 S≤scale*S.card+bill b 3 S := by
+  classical
+  induction S using Finset.strongInductionOn with
+  | _ S ih =>
+    by_cases small : S.card≤limit
+    · exact base S Subset.rfl nonempty small
+    have many : 4≤S.card := by omega
+    have each (e : α) (he : e∈S) : scale+bill q 2 (S.erase e)≤scale*(S.card-1)+bill b 3 (S.erase e) := by
+      rw [←card_erase_of_mem he]
+      exact ih _ (erase_ssubset he) (fun T h => large T (h.trans (erase_subset _ _)))
+        (fun T h => base T (h.trans (erase_subset _ _))) (by rw [card_erase_of_mem he]; omega)
+    have all := sum_le_sum each
+    rw [sum_add_distrib,sum_add_distrib,deletion_sum,deletion_sum,sum_const,sum_const] at all
+    simp only [nsmul_eq_mul,Nat.cast_id] at all
+    have qlower := large S Subset.rfl (Nat.lt_of_not_ge small)
+    apply le_of_not_gt
+    intro fail
+    have pp := Nat.mul_lt_mul_of_pos_left fail (show 0<S.card-3 by omega)
+    have s1 : S.card-1=(S.card-3)+2 := by omega
+    have s2 : S.card-2=(S.card-3)+1 := by omega
+    have s3 : S.card=(S.card-3)+3 := by omega
+    generalize S.card-3=z at *
+    rw [s1,s2,s3] at all
+    rw [s3] at pp
+    rw [s1] at qlower
+    nlinarith only [all,pp,qlower]
+
+
 /-- An inequality for all nonempty edge sets with at most five edges lifts to
 arbitrary edge sets. Every pair must carry a penalty of at least four. -/
 theorem lift_five (q b : Finset α → Nat) (S : Finset α)

@@ -52,17 +52,17 @@ def edge_totals(sizes):
             for i, a in enumerate(sizes) for j in range(i, len(sizes))]
 
 
-def first(i):
+def first(i, order=30):
     """Expected labelled six-point cuts for one color closing i pairs on the left."""
-    j, b = i + 3, 12 - 2 * i
+    j, b = i + (order - 24)//2, 12 - 2 * i
     return (10 * choose(i, 3) * prescribe(12, 2),
-            (choose(b, 3) + i*j*b) * prescribe(12, 1) * prescribe(18, 1),
-            10 * choose(j, 3) * prescribe(18, 2))
+            (choose(b, 3) + i*j*b) * prescribe(12, 1) * prescribe(order - 12, 1),
+            10 * choose(j, 3) * prescribe(order - 12, 2))
 
 
-def region_data(t, e):
+def region_data(t, e, order=30):
     left = (6, 9, 12)[t]
-    right = 24 - left
+    right = order - 6 - left
     a, b, c, d, f, g, h, x, y, z = e
     bills = [10 * choose(x, 3) * prescribe(left, 2),
              (choose(y, 3) + x*z*y) * prescribe(left, 1)*prescribe(right, 1),
@@ -81,24 +81,24 @@ def region_data(t, e):
     return bills, inside, anchor, marked, complement
 
 
-def populations():
+def populations(order=30):
     """Vertices of the color-count polytope after setting one closing color aside."""
     for i, j in combinations(range(7), 2):
-        a = Q(28*j - 60, j - i)
-        if 0 <= a <= 28:
+        a = Q((order - 2)*j - 60, j - i)
+        if 0 <= a <= order - 2:
             p = [Q(0)] * 7
             p[6] = 1
             p[i] += a
-            p[j] += 28 - a
+            p[j] += order - 2 - a
             yield p
 
 
-def duplicate_weight(t, i):
+def duplicate_weight(t, i, order=30):
     """Chance a given six is hit in category t, at a random long cut of one anchor."""
-    endpoint_counts = [2]*i + [1]*(6-2*i) + [0]*(9+i)
+    endpoint_counts = [2]*i + [1]*(6-2*i) + [0]*(order//2-6+i)
     good = sum(sum(s) == (6, 3, 0)[t] for s in combinations(endpoint_counts, 6))
-    factors = (10*prescribe(12, 2), prescribe(12, 1)*prescribe(18, 1), 10*prescribe(18, 2))
-    return Q(good, choose(15, 6)) * factors[t]
+    factors = (10*prescribe(12, 2), prescribe(12, 1)*prescribe(order - 12, 1), 10*prescribe(order - 12, 2))
+    return Q(good, choose(order//2, 6)) * factors[t]
 
 
 class Model:
@@ -112,40 +112,44 @@ class Model:
         self.rows[name] = ({v: Q(q) for v, q in coeff.items() if q}, relation, Q(value))
 
 
-def long_model():
+def long_model(order=30):
     """Exact inequalities for deleting all six-point cuts from the twelve-point loss."""
+    if order not in (24, 30):
+        raise ValueError("The cut has four triples on the left and four or six on the right.")
+    colors = order - 1
+    right_blocks = (order - 12)//3
     model = Model()
     add = model.add
     xs = [f'x{i}' for i in range(7)]
     ds = [f'd{i}' for i in range(4)]
-    states = list(product(range(7), range(25), range(16)))
+    states = list(product(range(7), range(4*right_blocks + 1), range(choose(right_blocks, 2) + 1)))
     ys = ['y%d_%d_%d' % r for r in states]
 
     def moment(j, k=None):
         return [(v, r[j] * (1 if k is None else r[k] - int(k == j))) for r, v in zip(states, ys)]
 
     add('mass', zip(ys, [1]*len(ys)), '=', 1)
-    add('colors', zip(xs, [1]*7), '=', 29)
+    add('colors', zip(xs, [1]*7), '=', colors)
     add('left_edges', zip(xs, range(7)), '=', 66)
     add('anchor_color', [(xs[6], 1)], '>=', 1)
-    add('duplicate_colors', [*zip(ds, [1]*4), ('D', -29)], '=')
+    add('duplicate_colors', [*zip(ds, [1]*4), ('D', -colors)], '=')
     add('duplicate_edges', [*zip(ds, range(4)), ('D', -15)], '=')
     add('duplicate_closing', [(ds[3], 1), ('D', -2)], '>=')
-    ext = list(populations())
+    ext = list(populations(order))
     for j, tag in enumerate(TYPES):
         u = 'u' + str(j)
-        firsts = [first(i)[j] for i in range(7)]
+        firsts = [first(i, order)[j] for i in range(7)]
         expectations = [sum(a*b for a, b in zip(p, firsts)) for p in ext]
         low_mass, high_mass = min(expectations)/5, max(expectations)
         add(tag+'_mean', moment(j) + [(u, -1)], '=')
         add(tag+'_distinct', [(u, 1)] + list(zip(xs, [-v for v in firsts]))
-            + [(v, duplicate_weight(j, i)/29) for i, v in enumerate(ds)], '=')
+            + [(v, duplicate_weight(j, i, order)/colors) for i, v in enumerate(ds)], '=')
         left = (6, 9, 12)[j]
-        sizes = (3, 3, left, 24-left)
+        sizes = (3, 3, left, order-6-left)
         sig = signatures(sizes)
         vs = ['v%d_%d' % (j, i) for i in range(len(sig))]
-        data = [region_data(j, e) for e in sig]
-        add(tag+'_colors', [(v, 1) for v in vs] + [(u, -29)], '=')
+        data = [region_data(j, e, order) for e in sig]
+        add(tag+'_colors', [(v, 1) for v in vs] + [(u, -colors)], '=')
         for k, total in enumerate(edge_totals(sizes)):
             add(tag+'_edges_'+str(k), [(v, e[k]) for v, e in zip(vs, sig)] + [(u, -total)], '=')
         add(tag+'_anchor', [(v, q[2]) for v, q in zip(vs, data)] + [(u, -1)], '>=')
@@ -162,6 +166,9 @@ def long_model():
         if j == 0:
             add('LL_complement', moment(0, 0) + [(v, q[4] - q[0][0]) for v, q in zip(vs, data)]
                 + [(u, -1)], '<=')
+        if order == 24 and j == 2:
+            add('RR_complement', moment(2, 2) + [(v, int(e[3]+e[6]+e[8] == 0) - q[0][2])
+                for v, e, q in zip(vs, sig, data)] + [(u, -1)], '<=')
     return model
 
 

@@ -1,9 +1,11 @@
 # Exact wild numbers from finite partition counts
 
-At every order from K77 upward and at every multiple of six from 36 upward, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The interval proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [All orders from 77](AllLarge.lean) · [Finite interval theorem](ExactInterval.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
+At every order from K77 upward and at every multiple of six from 30 upward, every minimum proper edge coloring has wild number ⌊4⌈n/2⌉/3⌋. The interval proof treats the odd orders together. Deleting or adding one vertex transfers the result to the following even order. [All orders from 77](AllLarge.lean) · [Finite interval theorem](ExactInterval.lean) · [Odd/even transfer](../../verification/exact/UniversalLower.lean)
 
 | Orders | Wild number |
 | --- | ---: |
+| K24 | [16, with written counting proof](../k24/) |
+| K30 | [20](../k30/) |
 | K36 | [24](../k36/) |
 | K42 | 28 |
 | K48, K54, K60, K66, K72 | 32, 36, 40, 44, 48 |
@@ -16,6 +18,8 @@ At every order from K77 upward and at every multiple of six from 36 upward, ever
 | K93, K94 | 62 |
 | K153, K154 | 102 |
 
+At each order n = 6s + 15, at least 10/91 of all partitions into triples have an edge of every color leaving each triple, for every minimum proper coloring. More generally, the same fraction avoids any family of forbidden triples in which at most three contain each pair of vertices. The theorem also gives an order-dependent count. If $W_t$ is the number of partitions of $3t$ points into triples, it guarantees $P(s)W_{2s+2}$ partitions, where $P(s)=15400+77118s+146688s^2+139374s^3+70848s^4+18468s^5+1944s^6$. Dividing by $W_{2s+5}$ gives a lower bound tending to one third as $s$ grows. This counts partitions that pass the first cut test. Unions of multiple triples can still be closed. [Uniform density theorem](UniformRootDensity.lean) · [Sharper finite counts](RootDensity.lean)
+
 ## Counting argument
 
 Add one auxiliary vertex so that every color is a perfect matching. Set aside a small group whose internal edges have distinct colors, then partition the remaining vertices into triples. Within each group, draw a star of wild edges. A color fails to connect precisely when some nonempty proper union of groups has no matching edge crossing its boundary. [Choice of group](Rainbow.lean) · [Graph connectivity](GraphSieve.lean)
@@ -25,6 +29,8 @@ The proof first counts partitions avoiding every such cut involving one or two f
 The proof uses the matching and random-partition approach of the separate large-order project. The finite comparison sequence and its order-by-order certificates are developed here. [Large-order proof](https://github.com/1337isnot1337/solved-conjectures/blob/main/results/wild-number-complete-graphs/IMPROVEMENT.md)
 
 ## Orders divisible by six
+
+The original paper settles K6 and K12. Together with K18, the K24 counting proof and the infinite theorem starting at K30, this gives wild number 4m for every K₆ₘ, m ≥ 1. [Original paper](https://arxiv.org/html/2610.22142v1#S3.SS3) · [K18](../../verification/exact/K17K18.lean) · [K24](../k24/) · [Lean theorem starting at K30](SixFamily.lean)
 
 At K48, K54, K60, K66 and K72 all vertices can be divided into triples. A color pairs up every vertex. A closed union of triples must therefore contain an even number of triples. The first possible obstruction has six vertices. When a cut divides the vertices equally, its two sides describe the same failure, so the count keeps the side avoiding one fixed point. The resulting inequalities leave a working grouping at all five orders. [Graph proof](EvenTriples.lean) · [Exact values](EvenOrders.lean)
 

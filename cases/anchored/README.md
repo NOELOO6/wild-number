@@ -8,7 +8,7 @@ Choose one color as an anchor. Its edges pair up the vertices. Together with any
 | K30 | No alternating four-cycle with any other color | [20](GraphCycles30.lean) |
 | K36 | At most one alternating four-cycle in total | [24](Anchor36.lean) |
 
-Each theorem applies to every minimum proper coloring with the stated cycle data. The unrestricted bounds at K24 and K30 are 16–17 and 20–21. A separate counting proof gives 24 at K36 for every minimum coloring. [General bounds](../one-extra/) · [Unrestricted K36](../k36/)
+Each theorem applies to every minimum proper coloring with the stated cycle data. Separate counting proofs give the unrestricted wild numbers 16, 20 and 24 at the three orders. [K24](../k24/) · [K30](../k30/) · [K36](../k36/)
 
 ## Proof
 

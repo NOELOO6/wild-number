@@ -88,7 +88,7 @@ private theorem crossing {n : Nat} (g : Coloring n n) (odd : n%2=1) {x y z : Fin
 def SealedTriple {n : Nat} (g : Coloring n n) (S : Finset (Fin n)) : Prop :=
   S.card=3 ∧ ∃ c, ∀ x∈S, ∀ y∉S, g.paint x y≠c
 
-private theorem sealed_degree {n : Nat} (g : Coloring n n) (odd : n%2=1) (x y : Fin n)
+theorem sealed_degree {n : Nat} (g : Coloring n n) (odd : n%2=1) (x y : Fin n)
     (xy : x≠y) : by classical exact (univ.filter fun z => SealedTriple g {x,y,z}).card≤3 := by
   classical
   apply le_trans _ (blocked_degree g odd x y)

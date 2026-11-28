@@ -4,11 +4,12 @@ Use Lean **4.19.0**, Python **3.10 or later**, Bash and gzip. The independent K1
 
 | What to check | Command |
 | --- | --- |
+| K24 graph inequalities, exact rational certificate and guaranteed number of winning partitions in the written proof | `./verification/graph-bounds.sh k24` and `python3 cases/k24/verify.py` |
 | Unrestricted K30 theorem, guaranteed number of winning partitions and rational certificate | `./verification/graph-bounds.sh k30` and `python3 cases/k30/verify.py` |
-| All unrestricted exact orders proved in this repository | `./verification/graph-bounds.sh exact` |
+| End-to-end Lean theorems for unrestricted exact orders and K24 component checks | `./verification/graph-bounds.sh exact` |
 | Exact wild number 9 for every minimum proper coloring of K13 and K14 | `./verification/graph-bounds.sh exact-k13` |
 | Exact wild number 12 for every minimum proper coloring of K17 and K18 | `./verification/graph-bounds.sh exact-k17` |
-| Exact wild numbers for every multiple of six from 36 upward and every order from K77 upward | `./verification/graph-bounds.sh sieve` |
+| Exact wild numbers for every multiple of six from 30 upward and every order from K77 upward, plus the 10/91 lower bound for avoiding closed triples at every n = 6s + 15 | `./verification/graph-bounds.sh sieve` |
 | All orders from 155 upward, including the uniform large-order proof | `./verification/graph-bounds.sh large-orders` |
 | Sparse rooted-cut bounds at seven odd orders and their even transfers | `./verification/graph-bounds.sh sparse-orders` |
 | Steiner triple system colorings of K15 and K16 colorings with a Steiner deletion | `./verification/graph-bounds.sh steiner-k15` |

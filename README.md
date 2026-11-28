@@ -17,10 +17,11 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | K₁₇, K₁₈ | 12 | ✅ Solved in Lean | [End-to-end theorem](verification/exact/K17K18.lean) · [Counting proof](cases/k17/) |
 | K₁₉, K₂₀ | 13 | Partial | 13–14 · [K19 families](cases/k19/) · [General bound](cases/one-extra/) |
 | K₂₁, K₂₂ | 14 | Partial | 14–15 · [Graph bounds](cases/one-extra/) · [Exact cyclic cases](cases/k21/) |
+| K₂₄ | 16 | Proved by counting | [Proof and exact rational certificate](cases/k24/) · [Lean certificate](cases/k24/CutPrices24.lean) |
 | K₃₀ | 20 | ✅ Solved in Lean | [End-to-end theorem](cases/k30/Exact30.lean) · [Counting proof and certificate](cases/k30/) |
 | K₃₆ | 24 | ✅ Solved in Lean | [End-to-end theorem and counting proof](cases/k36/) |
 | K₆ₘ for every m ≥ 5 | 4m | ✅ Solved in Lean | [Infinite-family theorem](cases/sieve/SixFamily.lean) · [First values](cases/sieve/#orders-divisible-by-six) |
-| Other K₂₃ through K₇₆ | ⌊4⌈n/2⌉/3⌋ | Partial | Conjectured value or one more · [General bound](cases/one-extra/NearRange.lean) · [Cyclic K23 and K24](cases/k23/) · [Cyclic K25 and K26](cases/k25/) · [Cyclic K27 and K28](cases/k27/) · [K24 and K30 families](cases/anchored/) · [Sparse rooted cuts below K77](cases/sieve/#sparse-rooted-cuts-below-k77) |
+| Other K₂₃ through K₇₆ | ⌊4⌈n/2⌉/3⌋ | Partial | Conjectured value or one more · [General bound](cases/one-extra/NearRange.lean) · [Cyclic K23 and K24](cases/k23/) · [Cyclic K25 and K26](cases/k25/) · [Cyclic K27 and K28](cases/k27/) · [Sparse rooted cuts below K77](cases/sieve/#sparse-rooted-cuts-below-k77) |
 | Every Kₙ with n ≥ 77 | ⌊4⌈n/2⌉/3⌋ | ✅ Solved in Lean | [Uniform theorem](cases/sieve/AllLarge.lean) · [Proof for n ≥ 155](cases/sieve/ExactLarge.lean) |
 | K₇₇, K₇₈ | 52 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactTrimmed.lean) |
 | K₇₉, K₈₀ | 53 | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactSplit.lean) |
@@ -28,6 +29,8 @@ Dawkins, Nappo, Tong, and Zimbizi conjecture that every proper edge coloring usi
 | K₈₃ through K₁₅₄ | ⌊4⌈n/2⌉/3⌋ | ✅ Solved in Lean | [End-to-end theorem](cases/sieve/ExactRange.lean) · [Counting argument](cases/sieve/) |
 
 The exact theorems start with an arbitrary minimum proper coloring and prove both bounds. Run `./verification/graph-bounds.sh exact` to replay them. K13–K14, K17–K18 and the 526 odd base orders from 155 to 1205 use Lean’s native evaluator for finite calculations. Lean’s ordinary kernel checks the full K77–K154 interval, every order from 1207 upward, and the infinite family K₆ₘ for m ≥ 6. [Full interval theorem](cases/sieve/ExactInterval.lean) · [Verification guide](verification/)
+
+Combining the original K6 and K12 results, the K18 theorem, the K24 counting proof and the infinite Lean theorem gives **wld(K₆ₘ) = 4m for every minimum proper coloring and every m ≥ 1**. At K24 the count guarantees 33,258,864,925 winning partitions. Lean verifies the finite certificate and several graph inequalities. The remaining counting steps are given in the written proof. [K24 proof and verification](cases/k24/) · [Lean theorem from K30 onward](cases/sieve/SixFamily.lean)
 
 Lean proves that every K30 coloring has at least 2,211,739,995,828,567 winning partitions into ten triples. Its finite checks use the native evaluator. [K30 counting proof and replay](cases/k30/)
 
